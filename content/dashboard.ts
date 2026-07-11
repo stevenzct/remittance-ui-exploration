@@ -187,7 +187,7 @@ export const THEME_02_SAMPLES = [
 export const THEME_03_SAMPLES = [
   {
     id: "theme-03-sample-01",
-    image: "/assets/theme-03/iPhone 13 mini - 510.png",
+    image: "/assets/theme-03/iPhone 13 mini - 510.svg",
     label: "Sample 01",
     title: "Philippine Flag Card",
     description: "A bold Philippine-led card with a clear balance and local accents.",
@@ -195,7 +195,7 @@ export const THEME_03_SAMPLES = [
   },
   {
     id: "theme-03-sample-02",
-    image: "/assets/theme-03/iPhone 13 mini - 511.png",
+    image: "/assets/theme-03/iPhone 13 mini - 511.svg",
     label: "Sample 02",
     title: "Bright Wallet Actions",
     description: "Primary actions use warm accents and focused labels for clarity.",
@@ -203,7 +203,7 @@ export const THEME_03_SAMPLES = [
   },
   {
     id: "theme-03-sample-03",
-    image: "/assets/theme-03/iPhone 13 mini - 512.png",
+    image: "/assets/theme-03/iPhone 13 mini - 512.svg",
     label: "Sample 03",
     title: "Top Tab Country Selector",
     description: "A localized top-tab selector with a lifted Home state and subtle shadows.",
@@ -211,7 +211,7 @@ export const THEME_03_SAMPLES = [
   },
   {
     id: "theme-03-sample-04",
-    image: "/assets/theme-03/iPhone 13 mini - 513.png",
+    image: "/assets/theme-03/iPhone 13 mini - 513.svg",
     label: "Sample 04",
     title: "Soft Home Tile",
     description: "A softer home tile with rounded visuals and a balanced action row.",
@@ -219,7 +219,7 @@ export const THEME_03_SAMPLES = [
   },
   {
     id: "theme-03-sample-05",
-    image: "/assets/theme-03/iPhone 13 mini - 514.png",
+    image: "/assets/theme-03/iPhone 13 mini - 514.svg",
     label: "Sample 05",
     title: "Compact Notifications",
     description: "Short, two-line notifications that keep the header light and informative.",

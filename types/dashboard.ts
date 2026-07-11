@@ -33,7 +33,7 @@ export type DashboardIconKey =
   | "zoomIn"
   | "zoomOut";
 
-export type ShowcaseImagePath = `/assets/${string}.png`;
+export type ShowcaseImagePath = `/assets/${string}`;
 export type ShowcaseSampleId = string;
 export type ShowcaseSampleLabel = string;
 export type ThemeColorName = "Blue Gem" | "Brick Red";
