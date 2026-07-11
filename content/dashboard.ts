@@ -111,7 +111,7 @@ export const SHOWCASE_SAMPLES = [
     image: "/assets/sample-05.png",
     label: "Sample 05",
     title: "Top Tab Direction",
-    description: "Country selection appears as a top tab with an active color and underline. The active bottom navigation item also uses a top underline.",
+    description: "Country selection appears as a top tab with an active color and underline. The active bottom navigation item also uses a top underline. Latest messages section use a monochrome Blue Gem color icon.",
     tags: ["Top tab selector", "Neutral actions", "Monochrome icons"],
   },
 ] as const satisfies readonly ShowcaseSample[];
