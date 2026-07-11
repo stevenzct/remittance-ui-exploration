@@ -1,13 +1,15 @@
 import { DASHBOARD_THEME } from "@/content/dashboard";
+import { CarouselControls } from "@/components/showcase/carousel-controls";
 import { PhoneMockup } from "@/components/showcase/phone-mockup";
 import type { ShowcaseSample } from "@/types/dashboard";
 
 interface SampleCardProps {
   readonly sample: ShowcaseSample;
   readonly number: number;
+  readonly total: number;
 }
 
-export function SampleCard({ sample, number }: SampleCardProps) {
+export function SampleCard({ sample, number, total }: SampleCardProps) {
   return (
     <article className="grid items-center gap-8 rounded-[28px] bg-[#faf9fc] p-5 sm:p-8 lg:grid-cols-[minmax(300px,.8fr)_1fr] lg:p-10">
       <div className="flex min-h-[620px] items-center justify-center rounded-[26px] bg-white p-7 shadow-[inset_0_0_0_1px_#ece9f1] sm:min-h-[730px]">
@@ -19,6 +21,7 @@ export function SampleCard({ sample, number }: SampleCardProps) {
         <h3 className="mt-3 text-3xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-5xl">{sample.title}</h3>
         <p className="mt-4 text-base leading-7 text-[#7b7580]">{sample.description}</p>
         <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white px-3 py-2 text-xs font-semibold text-[#5a5261]">{tag}</span>)}</div>
+        <CarouselControls current={number} total={total} />
       </div>
     </article>
   );

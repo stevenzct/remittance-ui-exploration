@@ -9,6 +9,8 @@ export type DashboardIconName =
   | "solar:layers-minimalistic-linear"
   | "solar:lightbulb-bolt-linear"
   | "solar:menu-dots-bold"
+  | "solar:magnifer-zoom-in-linear"
+  | "solar:magnifer-zoom-out-linear"
   | "solar:palette-linear"
   | "solar:smartphone-2-linear"
   | "solar:smartphone-linear"
@@ -27,7 +29,9 @@ export type DashboardIconKey =
   | "previousSample"
   | "sampleStatistic"
   | "showcaseNavigation"
-  | "themeSummary";
+  | "themeSummary"
+  | "zoomIn"
+  | "zoomOut";
 
 export type ShowcaseImagePath = `/assets/sample-0${1 | 2 | 3 | 4 | 5}.png`;
 export type ShowcaseSampleId = `sample-0${1 | 2 | 3 | 4 | 5}`;

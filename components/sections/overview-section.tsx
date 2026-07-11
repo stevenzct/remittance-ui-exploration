@@ -28,7 +28,7 @@ export function OverviewSection() {
         <div className="relative mx-auto flex min-h-[560px] w-full max-w-[620px] items-center justify-center overflow-hidden rounded-[30px] bg-[#f4f1fa] p-8 sm:min-h-[650px]">
           <div className="absolute left-[8%] top-[12%] size-28 rounded-full bg-[#ba3245]/10 blur-2xl" />
           <div className="absolute bottom-[8%] right-[8%] size-40 rounded-full bg-[#381c8d]/10 blur-3xl" />
-          <PhoneMockup src="/assets/sample-01.png" alt="Payso mobile dashboard preview" priority className="relative z-10 -rotate-3" />
+          <PhoneMockup src="/assets/sample-01.png" alt="Bold Active Navigation" priority className="relative z-10 -rotate-3" />
         </div>
       </div>
     </section>

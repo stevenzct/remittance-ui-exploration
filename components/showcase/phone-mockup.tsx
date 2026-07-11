@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ImagePreview } from "@/components/showcase/image-preview";
 
 interface PhoneMockupProps {
   readonly src: string;
@@ -11,8 +12,10 @@ export function PhoneMockup({ src, alt, priority = false, className }: PhoneMock
   const shellClassName = className ? `phone-shell ${className}` : "phone-shell";
 
   return (
-    <div className={shellClassName}>
-      <Image src={src} alt={alt} width={750} height={1624} priority={priority} className="phone-screen" />
-    </div>
+    <ImagePreview src={src} alt={alt}>
+      <div className={shellClassName}>
+        <Image src={src} alt={alt} width={750} height={1624} priority={priority} className="phone-screen" />
+      </div>
+    </ImagePreview>
   );
 }

@@ -21,6 +21,8 @@ export const DASHBOARD_ICONS = {
   sampleStatistic: "solar:smartphone-2-linear",
   showcaseNavigation: "solar:smartphone-linear",
   themeSummary: "solar:lightbulb-bolt-linear",
+  zoomIn: "solar:magnifer-zoom-in-linear",
+  zoomOut: "solar:magnifer-zoom-out-linear",
 } as const satisfies Readonly<Record<DashboardIconKey, DashboardIconName>>;
 
 export const DASHBOARD_THEME = {
