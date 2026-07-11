@@ -64,8 +64,8 @@ export interface ShowcaseSample {
 }
 
 export interface ShowcaseTheme {
-  readonly id: "theme-01" | "theme-02";
-  readonly label: "Theme 01" | "Theme 02";
+  readonly id: "theme-01" | "theme-02" | "theme-03";
+  readonly label: "Theme 01" | "Theme 02" | "Theme 03";
   readonly name: string;
   readonly summary: string;
   readonly samples: readonly ShowcaseSample[];

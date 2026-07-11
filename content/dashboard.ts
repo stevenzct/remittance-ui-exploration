@@ -27,9 +27,9 @@ export const DASHBOARD_ICONS = {
 } as const satisfies Readonly<Record<DashboardIconKey, DashboardIconName>>;
 
 export const DASHBOARD_THEME = {
-  label: "2 Themes",
-  name: "Blue Gem + Rose",
-  summary: "Thirteen interface directions across two Payso remittance themes.",
+  label: "3 Themes",
+  name: "Blue Gem + Rose + Philippine",
+  summary: "Eighteen interface directions across three Payso remittance themes.",
 } as const satisfies DashboardTheme;
 
 export const NAVIGATION_ITEMS = [
@@ -57,7 +57,7 @@ export const DASHBOARD_STATISTICS = [
   {
     id: "samples",
     icon: DASHBOARD_ICONS.sampleStatistic,
-    value: "13",
+    value: "18",
     label: "Interface samples",
   },
   {
@@ -69,7 +69,7 @@ export const DASHBOARD_STATISTICS = [
   {
     id: "direction",
     icon: DASHBOARD_ICONS.directionStatistic,
-    value: "2",
+    value: "3",
     label: "Design themes",
   },
 ] as const satisfies readonly DashboardStatistic[];
@@ -184,6 +184,49 @@ export const THEME_02_SAMPLES = [
   },
 ] as const satisfies readonly ShowcaseSample[];
 
+export const THEME_03_SAMPLES = [
+  {
+    id: "theme-03-sample-01",
+    image: "/assets/theme-03/iPhone 13 mini - 510.png",
+    label: "Sample 01",
+    title: "Philippine Flag Card",
+    description: "A bold Philippine-led card with a clear balance and local accents.",
+    tags: ["Flag motif", "Local accents", "Clear hierarchy"],
+  },
+  {
+    id: "theme-03-sample-02",
+    image: "/assets/theme-03/iPhone 13 mini - 511.png",
+    label: "Sample 02",
+    title: "Bright Wallet Actions",
+    description: "Primary actions use warm accents and focused labels for clarity.",
+    tags: ["Primary action", "Warm accents", "Focused labels"],
+  },
+  {
+    id: "theme-03-sample-03",
+    image: "/assets/theme-03/iPhone 13 mini - 512.png",
+    label: "Sample 03",
+    title: "Top Tab Country Selector",
+    description: "A localized top-tab selector with a lifted Home state and subtle shadows.",
+    tags: ["Top tab", "Lifted Home", "Local language"],
+  },
+  {
+    id: "theme-03-sample-04",
+    image: "/assets/theme-03/iPhone 13 mini - 513.png",
+    label: "Sample 04",
+    title: "Soft Home Tile",
+    description: "A softer home tile with rounded visuals and a balanced action row.",
+    tags: ["Soft tile", "Balanced actions", "Rounded visuals"],
+  },
+  {
+    id: "theme-03-sample-05",
+    image: "/assets/theme-03/iPhone 13 mini - 514.png",
+    label: "Sample 05",
+    title: "Compact Notifications",
+    description: "Short, two-line notifications that keep the header light and informative.",
+    tags: ["Compact", "Two-line", "Light header"],
+  },
+] as const satisfies readonly ShowcaseSample[];
+
 export const SHOWCASE_THEMES = [
   {
     id: "theme-01",
@@ -198,6 +241,13 @@ export const SHOWCASE_THEMES = [
     name: "Rose Remittance",
     summary: "Eight rose-led interface directions.",
     samples: THEME_02_SAMPLES,
+  },
+  {
+    id: "theme-03",
+    label: "Theme 03",
+    name: "Philippine Theme",
+    summary: "Five Philippine-themed interface directions.",
+    samples: THEME_03_SAMPLES,
   },
 ] as const satisfies readonly ShowcaseTheme[];
 
