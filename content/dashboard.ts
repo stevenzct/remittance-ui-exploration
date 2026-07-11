@@ -5,6 +5,7 @@ import type {
   DashboardTheme,
   NavigationItem,
   ShowcaseSample,
+  ShowcaseTheme,
   ThemeColor,
 } from "@/types/dashboard";
 
@@ -26,9 +27,9 @@ export const DASHBOARD_ICONS = {
 } as const satisfies Readonly<Record<DashboardIconKey, DashboardIconName>>;
 
 export const DASHBOARD_THEME = {
-  label: "Theme 01",
-  name: "Blue Gem",
-  summary: "Five interface directions for the Payso remittance experience.",
+  label: "2 Themes",
+  name: "Blue Gem + Rose",
+  summary: "Thirteen interface directions across two Payso remittance themes.",
 } as const satisfies DashboardTheme;
 
 export const NAVIGATION_ITEMS = [
@@ -56,7 +57,7 @@ export const DASHBOARD_STATISTICS = [
   {
     id: "samples",
     icon: DASHBOARD_ICONS.sampleStatistic,
-    value: "5",
+    value: "13",
     label: "Interface samples",
   },
   {
@@ -68,8 +69,8 @@ export const DASHBOARD_STATISTICS = [
   {
     id: "direction",
     icon: DASHBOARD_ICONS.directionStatistic,
-    value: "1",
-    label: "Design direction",
+    value: "2",
+    label: "Design themes",
   },
 ] as const satisfies readonly DashboardStatistic[];
 
@@ -115,6 +116,90 @@ export const SHOWCASE_SAMPLES = [
     tags: ["Top tab selector", "Neutral actions", "Monochrome icons"],
   },
 ] as const satisfies readonly ShowcaseSample[];
+
+export const THEME_02_SAMPLES = [
+  {
+    id: "theme-02-sample-01",
+    image: "/assets/theme-02/iPhone 13 mini - 410.png",
+    label: "Sample 01",
+    title: "Top Tab Country Direction",
+    description: "Rose accents introduce a top country tab, a two-line update message, neutral wallet actions, and a lightweight active Home state.",
+    tags: ["Top tab selector", "Rose accent", "Neutral actions"],
+  },
+  {
+    id: "theme-02-sample-02",
+    image: "/assets/theme-02/iPhone 13 mini - 411.png",
+    label: "Sample 02",
+    title: "Contained Home Navigation",
+    description: "A stronger contained Home state pairs with the rose wallet treatment and a prominent Transfer action.",
+    tags: ["Contained active tab", "Primary transfer", "Two-line actions"],
+  },
+  {
+    id: "theme-02-sample-03",
+    image: "/assets/theme-02/iPhone 13 mini - 412.png",
+    label: "Sample 03",
+    title: "Minimal Home Navigation",
+    description: "A compact country selector and shortened update message keep the header light while the Home state remains minimal.",
+    tags: ["Compact selector", "Minimal navigation", "Rose wallet"],
+  },
+  {
+    id: "theme-02-sample-04",
+    image: "/assets/theme-02/iPhone 13 mini - 413.png",
+    label: "Sample 04",
+    title: "Soft Home Tile",
+    description: "A soft rose tile gives Home more presence while preserving the same wallet hierarchy and paired actions.",
+    tags: ["Soft active tile", "Balanced actions", "Rose accent"],
+  },
+  {
+    id: "theme-02-sample-05",
+    image: "/assets/theme-02/iPhone 13 mini - 414.png",
+    label: "Sample 05",
+    title: "Compact Action Labels",
+    description: "Shorter Transfer and Exchange labels reduce visual weight while the selected Home treatment stays clear.",
+    tags: ["Compact labels", "Soft navigation", "Focused actions"],
+  },
+  {
+    id: "theme-02-sample-06",
+    image: "/assets/theme-02/iPhone 13 mini - 415.png",
+    label: "Sample 06",
+    title: "Balanced Rose Actions",
+    description: "The solid Transfer action and quieter Exchange action create a clear primary-secondary relationship.",
+    tags: ["Primary action", "Secondary action", "Two-line content"],
+  },
+  {
+    id: "theme-02-sample-07",
+    image: "/assets/theme-02/iPhone 13 mini - 417.png",
+    label: "Sample 07",
+    title: "Brighter Wallet Card",
+    description: "A brighter red wallet card increases energy while keeping the surrounding rose interface soft and familiar.",
+    tags: ["Bright wallet", "Rose system", "Color contrast"],
+  },
+  {
+    id: "theme-02-sample-08",
+    image: "/assets/theme-02/iPhone 13 mini - 425.png",
+    label: "Sample 08",
+    title: "Refined Wallet Controls",
+    description: "Refined wallet controls and action styling complete the rose-led direction with a calmer supporting surface.",
+    tags: ["Refined controls", "Calm surfaces", "Rose navigation"],
+  },
+] as const satisfies readonly ShowcaseSample[];
+
+export const SHOWCASE_THEMES = [
+  {
+    id: "theme-01",
+    label: "Theme 01",
+    name: "Blue Gem",
+    summary: "Five Blue Gem interface directions.",
+    samples: SHOWCASE_SAMPLES,
+  },
+  {
+    id: "theme-02",
+    label: "Theme 02",
+    name: "Rose Remittance",
+    summary: "Eight rose-led interface directions.",
+    samples: THEME_02_SAMPLES,
+  },
+] as const satisfies readonly ShowcaseTheme[];
 
 export const THEME_COLORS = [
   {

@@ -33,9 +33,9 @@ export type DashboardIconKey =
   | "zoomIn"
   | "zoomOut";
 
-export type ShowcaseImagePath = `/assets/sample-0${1 | 2 | 3 | 4 | 5}.png`;
-export type ShowcaseSampleId = `sample-0${1 | 2 | 3 | 4 | 5}`;
-export type ShowcaseSampleLabel = `Sample 0${1 | 2 | 3 | 4 | 5}`;
+export type ShowcaseImagePath = `/assets/${string}.png`;
+export type ShowcaseSampleId = string;
+export type ShowcaseSampleLabel = string;
 export type ThemeColorName = "Blue Gem" | "Brick Red";
 export type ThemeColorHex = "#381C8D" | "#BA3245";
 export type ThemeColorValue = "#381c8d" | "#ba3245";
@@ -63,6 +63,14 @@ export interface ShowcaseSample {
   readonly tags: readonly string[];
 }
 
+export interface ShowcaseTheme {
+  readonly id: "theme-01" | "theme-02";
+  readonly label: "Theme 01" | "Theme 02";
+  readonly name: string;
+  readonly summary: string;
+  readonly samples: readonly ShowcaseSample[];
+}
+
 export interface ThemeColor {
   readonly hex: ThemeColorHex;
   readonly name: ThemeColorName;
@@ -70,7 +78,7 @@ export interface ThemeColor {
 }
 
 export interface DashboardTheme {
-  readonly label: "Theme 01";
-  readonly name: "Blue Gem";
+  readonly label: string;
+  readonly name: string;
   readonly summary: string;
 }

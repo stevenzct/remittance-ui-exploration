@@ -12,7 +12,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
       <DashboardSidebar />
       <main className="min-w-0">
         <DashboardHeader />
-        <div className="mx-auto max-w-[1500px] space-y-7 p-4 sm:p-7 lg:p-10">{children}</div>
+        <div className="mx-auto max-w-[1500px] space-y-5 p-3 sm:space-y-7 sm:p-7 lg:p-10">{children}</div>
       </main>
     </div>
   );

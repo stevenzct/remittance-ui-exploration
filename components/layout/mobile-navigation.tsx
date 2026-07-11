@@ -29,7 +29,7 @@ export function MobileNavigation() {
 
       <aside
         id={drawerId}
-        className={`fixed inset-y-0 left-0 z-50 flex w-[272px] flex-col border-r border-[#ece9f1] bg-white p-5 transition-transform duration-300 lg:hidden ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-[min(272px,calc(100vw-1.5rem))] flex-col border-r border-[#ece9f1] bg-white p-4 transition-transform duration-300 sm:p-5 lg:hidden ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
         aria-hidden={!menuOpen}
       >
         <div className="flex h-16 items-center justify-between border-b border-[#ece9f1] px-2 pb-4">
