@@ -8,7 +8,7 @@ interface DashboardShellProps {
 
 export function DashboardShell({ children }: DashboardShellProps) {
   return (
-    <div className="min-h-screen bg-[#f7f7fa] lg:grid lg:grid-cols-[272px_1fr]">
+    <div className="min-h-dvh bg-[#f7f7fa] lg:grid lg:grid-cols-[272px_1fr]">
       <DashboardSidebar />
       <main className="min-w-0">
         <DashboardHeader />

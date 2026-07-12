@@ -40,9 +40,22 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
   const theme = themes[themeIndex];
   const samples = theme.samples;
   const sample = samples[currentIndex];
-  const isFirst = currentIndex === 0;
-  const isLast = currentIndex === samples.length - 1;
-  const isRoseTheme = theme.id === "theme-02";
+  const isFirst = themeIndex === 0 && currentIndex === 0;
+  const isLast = themeIndex === themes.length - 1 && currentIndex === samples.length - 1;
+  const previousLabel = currentIndex === 0 && themeIndex > 0 ? "Previous theme" : "Previous";
+  const nextLabel = currentIndex === samples.length - 1 && themeIndex < themes.length - 1 ? "Next theme" : "Next";
+  const accent = theme.id === "theme-02" ? "rose" : theme.id === "theme-03" ? "royal" : "blue";
+  const accentBackgroundClassName = accent === "rose"
+    ? "bg-[#ba3245] shadow-[0_8px_20px_rgba(186,50,69,.18)]"
+    : accent === "royal"
+      ? "bg-[#2853bb] shadow-[0_8px_20px_rgba(40,83,187,.18)]"
+      : "bg-[#381c8d] shadow-[0_8px_20px_rgba(56,28,141,.18)]";
+  const accentHoverClassName = accent === "rose" ? "hover:text-[#ba3245]" : accent === "royal" ? "hover:text-[#2853bb]" : "hover:text-[#381c8d]";
+  const accentButtonClassName = accent === "rose"
+    ? "bg-[#ba3245] shadow-[0_12px_28px_rgba(186,50,69,.2)]"
+    : accent === "royal"
+      ? "bg-[#2853bb] shadow-[0_12px_28px_rgba(40,83,187,.2)]"
+      : "bg-[#381c8d] shadow-[0_12px_28px_rgba(56,28,141,.2)]";
 
   const changeContent = useCallback((nextThemeIndex: number, nextIndex: number, direction: number) => {
     const nextTheme = themes[nextThemeIndex];
@@ -132,8 +145,26 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
     };
   }, [currentIndex, themeIndex]);
 
-  const showPrevious = () => changeContent(themeIndex, currentIndex - 1, -1);
-  const showNext = () => changeContent(themeIndex, currentIndex + 1, 1);
+  const showPrevious = () => {
+    if (currentIndex > 0) {
+      changeContent(themeIndex, currentIndex - 1, -1);
+      return;
+    }
+
+    const previousThemeIndex = themeIndex - 1;
+    const previousTheme = themes[previousThemeIndex];
+    if (previousTheme) changeContent(previousThemeIndex, previousTheme.samples.length - 1, -1);
+  };
+
+  const showNext = () => {
+    if (currentIndex < samples.length - 1) {
+      changeContent(themeIndex, currentIndex + 1, 1);
+      return;
+    }
+
+    const nextThemeIndex = themeIndex + 1;
+    if (themes[nextThemeIndex]) changeContent(nextThemeIndex, 0, 1);
+  };
   const showTheme = (nextThemeIndex: number) => {
     changeContent(nextThemeIndex, 0, nextThemeIndex > themeIndex ? 1 : -1);
   };
@@ -164,7 +195,7 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="inline-flex w-full rounded-2xl bg-[#f4f1fa] p-1 sm:w-auto" role="tablist" aria-label="Showcase theme">
+        <div className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-[#f4f1fa] p-1 sm:inline-flex sm:w-auto" role="tablist" aria-label="Showcase theme">
           {themes.map((item, index) => {
             const isActive = index === themeIndex;
 
@@ -174,7 +205,7 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                className={`min-h-11 flex-1 rounded-xl px-4 text-sm font-bold transition sm:flex-none ${isActive ? (item.id === "theme-02" ? "bg-[#ba3245] text-white shadow-[0_8px_20px_rgba(186,50,69,.18)]" : "bg-[#381c8d] text-white shadow-[0_8px_20px_rgba(56,28,141,.18)]") : "text-[#706a76] hover:bg-white hover:text-[#381c8d]"}`}
+                className={`min-h-11 min-w-0 rounded-xl px-2 text-xs font-bold transition sm:flex-none sm:px-4 sm:text-sm ${isActive ? `${accentBackgroundClassName} text-white` : `text-[#706a76] hover:bg-white ${accentHoverClassName}`}`}
                 onClick={() => showTheme(index)}
               >
                 {item.label}
@@ -186,14 +217,14 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
       </div>
 
       <article
-        className="grid min-w-0 items-center gap-6 rounded-[22px] bg-[#faf9fc] p-3 sm:gap-8 sm:rounded-[28px] sm:p-8 lg:grid-cols-[minmax(300px,.8fr)_1fr] lg:p-10"
+        className="grid min-w-0 items-center gap-6 rounded-[22px] bg-[#faf9fc] p-3 sm:gap-8 sm:rounded-[28px] sm:p-8 lg:p-10 xl:grid-cols-[minmax(300px,.8fr)_1fr]"
         aria-label={`${theme.label} UI sample comparison`}
         aria-roledescription="carousel"
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
         <div
-          className="relative flex min-h-[480px] min-w-0 items-center justify-center overflow-hidden rounded-[20px] bg-white p-4 shadow-[inset_0_0_0_1px_#ece9f1] sm:min-h-[730px] sm:rounded-[26px] sm:p-7"
+          className="phone-presentation relative flex min-h-[440px] min-w-0 items-center justify-center overflow-hidden rounded-[20px] bg-white p-3 shadow-[inset_0_0_0_1px_#ece9f1] sm:min-h-[730px] sm:rounded-[26px] sm:p-7"
           style={{ touchAction: "pan-y" }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
@@ -212,10 +243,10 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
           </div>
         </div>
 
-        <div ref={textContentRef} className="max-w-xl" aria-live="polite">
-          <div className={`mb-6 grid size-14 place-items-center rounded-2xl text-base font-bold text-white ${isRoseTheme ? "bg-[#ba3245] shadow-[0_12px_28px_rgba(186,50,69,.2)]" : "bg-[#381c8d] shadow-[0_12px_28px_rgba(56,28,141,.2)]"}`}>{String(currentIndex + 1).padStart(2, "0")}</div>
+        <div ref={textContentRef} className="min-w-0 max-w-xl" aria-live="polite">
+          <div className={`mb-6 grid size-14 place-items-center rounded-2xl text-base font-bold text-white ${accentButtonClassName}`}>{String(currentIndex + 1).padStart(2, "0")}</div>
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#ba3245]">{theme.label} · {sample.label}</p>
-          <h3 className="mt-3 text-2xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-5xl">{sample.title}</h3>
+          <h3 className="mt-3 text-2xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-3xl md:text-4xl xl:text-5xl">{sample.title}</h3>
           <p className="mt-4 text-base leading-7 text-[#7b7580]">{sample.description}</p>
           <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white px-3 py-2 text-xs font-semibold text-[#5a5261]">{tag}</span>)}</div>
           <CarouselControls
@@ -223,9 +254,11 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
             total={samples.length}
             isFirst={isFirst}
             isLast={isLast}
+            previousLabel={previousLabel}
+            nextLabel={nextLabel}
             onPrevious={showPrevious}
             onNext={showNext}
-            accent={isRoseTheme ? "rose" : "blue"}
+            accent={accent}
           />
         </div>
       </article>

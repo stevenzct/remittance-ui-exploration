@@ -15,6 +15,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -111,8 +112,24 @@ a {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 639px) {
+  .phone-shell {
+    width: min(260px, 100%);
+  }
+}
+
+@media (min-width: 480px) and (max-width: 639px) {
   .phone-shell {
     width: min(300px, 100%);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .phone-shell {
+    width: min(210px, 100%);
+  }
+
+  .phone-presentation {
+    min-height: 32rem;
   }
 }

@@ -287,7 +287,7 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
       <button
         ref={triggerRef}
         type="button"
-        className="group relative block w-full max-w-[330px] cursor-zoom-in rounded-[52px] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#381c8d]"
+        className="group relative mx-auto flex w-full max-w-[330px] cursor-zoom-in justify-center rounded-[52px] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#381c8d]"
         onClick={openPreview}
         aria-label={`Open ${alt} image preview`}
         aria-haspopup="dialog"
@@ -360,23 +360,23 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
             </div>
           </div>
 
-          <div className="relative z-20 mx-auto flex max-w-[calc(100vw-1.5rem)] items-center gap-0.5 rounded-2xl bg-white p-1 shadow-[0_14px_40px_rgba(0,0,0,.28)] sm:gap-2 sm:p-1.5">
-            <button type="button" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label="Previous image">
+          <div className="relative z-20 mx-auto flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-between gap-0.5 rounded-2xl bg-white p-1 shadow-[0_14px_40px_rgba(0,0,0,.28)] sm:w-auto sm:justify-start sm:gap-2 sm:p-1.5">
+            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label="Previous image">
               <DashboardIcon icon={DASHBOARD_ICONS.previousSample} width="19" />
               <span className="hidden sm:inline">Previous</span>
             </button>
-            <span className="h-6 w-px bg-[#e4dfe9]" aria-hidden="true" />
-            <button type="button" className="grid size-11 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom - ZOOM_STEP)} disabled={zoom <= FIT_ZOOM} aria-label="Zoom out">
+            <span className="h-6 w-px shrink-0 bg-[#e4dfe9]" aria-hidden="true" />
+            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom - ZOOM_STEP)} disabled={zoom <= FIT_ZOOM} aria-label="Zoom out">
               <DashboardIcon icon={DASHBOARD_ICONS.zoomOut} width="20" />
             </button>
-            <button type="button" className="h-11 min-w-12 rounded-lg px-1 text-center text-xs font-bold text-[#5a5261] transition hover:bg-[#f1edfb] disabled:cursor-default" onClick={() => updateZoom(FIT_ZOOM)} disabled={zoom <= FIT_ZOOM} aria-label={zoom <= FIT_ZOOM ? "Image fitted to view" : "Reset image to fit"}>
+            <button type="button" className="h-11 min-w-11 shrink-0 rounded-lg px-1 text-center text-xs font-bold text-[#5a5261] transition hover:bg-[#f1edfb] disabled:cursor-default sm:min-w-12" onClick={() => updateZoom(FIT_ZOOM)} disabled={zoom <= FIT_ZOOM} aria-label={zoom <= FIT_ZOOM ? "Image fitted to view" : "Reset image to fit"}>
               <span aria-live="polite">{zoom <= FIT_ZOOM ? "Fit" : `${Math.round(zoom * 100)}%`}</span>
             </button>
-            <button type="button" className="grid size-11 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom + ZOOM_STEP)} disabled={zoom >= MAX_ZOOM} aria-label="Zoom in">
+            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom + ZOOM_STEP)} disabled={zoom >= MAX_ZOOM} aria-label="Zoom in">
               <DashboardIcon icon={DASHBOARD_ICONS.zoomIn} width="20" />
             </button>
-            <span className="h-6 w-px bg-[#e4dfe9]" aria-hidden="true" />
-            <button type="button" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white transition hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label="Next image">
+            <span className="h-6 w-px shrink-0 bg-[#e4dfe9]" aria-hidden="true" />
+            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white transition hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label="Next image">
               <span className="hidden sm:inline">Next</span>
               <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="19" />
             </button>

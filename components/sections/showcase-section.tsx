@@ -8,7 +8,7 @@ export function ShowcaseSection() {
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#381c8d]">UI Showcase</p>
           <h2 className="mt-2 text-3xl font-bold tracking-[-0.045em] sm:text-4xl">Compare each direction</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#807985]">Compare both visual themes without moving the surrounding page. Choose a theme, then use Previous or Next to update only the phone image and details.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#807985]"> Compare both visual themes Choose a theme, then use Previous or Next to see the samples, or select from the tab.</p>
         </div>
       </div>
 
