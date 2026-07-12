@@ -1,6 +1,6 @@
 # Payso Remittance UI
 
-A Payso Merchant dashboard and mobile UI design showcase built with the Next.js App Router.
+A remittance ui exploration dashboard and mobile UI design showcase built with the Next.js App Router.
 
 ## Technology stack
 

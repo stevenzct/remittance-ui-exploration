@@ -10,7 +10,7 @@ export function DashboardSidebar() {
   return (
     <aside className="hidden w-[272px] flex-col overflow-y-auto overscroll-contain border-r border-[#ece9f1] bg-white p-5 lg:sticky lg:top-0 lg:flex lg:h-dvh">
       <div className="flex h-16 items-center justify-center border-b border-[#ece9f1] px-2 pb-4">
-        <Image src="/payso-logo.svg" alt="Payso Merchant" width={159} height={46} priority className="h-10 w-auto object-contain" />
+        <Image src="/payso-logo.svg" alt="Payso logo" width={159} height={46} priority className="h-10 w-auto object-contain" />
       </div>
 
       <p className="px-3 pb-2 pt-7 text-[10px] font-bold uppercase tracking-[0.18em] text-[#aaa4b1]">Workspace</p>

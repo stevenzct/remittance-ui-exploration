@@ -67,7 +67,7 @@ export function MobileNavigation() {
         inert={!menuOpen}
       >
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#ece9f1] px-2 pb-4">
-          <Image src="/payso-logo.svg" alt="Payso Merchant" width={159} height={46} priority className="h-10 w-auto object-contain" />
+          <Image src="/payso-logo.svg" alt="Payso logo" width={159} height={46} priority className="h-10 w-auto object-contain" />
           <button type="button" className="grid size-9 place-items-center rounded-xl text-[#5d5765] hover:bg-[#f5f3f8] lg:hidden" onClick={closeMenu} aria-label="Close menu">
             <DashboardIcon icon={DASHBOARD_ICONS.closeMenu} width="24" />
           </button>
