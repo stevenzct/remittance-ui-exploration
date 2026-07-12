@@ -14,6 +14,7 @@ import {
 import { gsap } from "gsap";
 import { DASHBOARD_ICONS, SHOWCASE_SAMPLES } from "@/content/dashboard";
 import { DashboardIcon } from "@/components/ui/dashboard-icon";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { ShowcaseSample } from "@/types/dashboard";
 
 interface ImagePreviewProps {
@@ -49,6 +50,7 @@ function getImageIndex(samples: readonly ShowcaseSample[], src: string) {
 }
 
 export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }: ImagePreviewProps) {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(() => getImageIndex(samples, src));
   const [zoom, setZoom] = useState(FIT_ZOOM);
@@ -289,12 +291,12 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
         type="button"
         className="group relative mx-auto flex w-full max-w-[330px] cursor-zoom-in justify-center rounded-[52px] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#381c8d]"
         onClick={openPreview}
-        aria-label={`Open ${alt} image preview`}
+        aria-label={`${t("Open image preview")}: ${alt}`}
         aria-haspopup="dialog"
       >
         {children}
         <span className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-[#17131f]/85 px-3 py-2 text-[11px] font-bold text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-          View larger
+          {t("View larger")}
         </span>
       </button>
 
@@ -303,17 +305,17 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
           ref={overlayRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Image preview"
+          aria-label={t("Image preview")}
           className="image-preview-dialog fixed inset-0 z-[100] grid grid-rows-[2.75rem_minmax(0,1fr)_auto] gap-3 bg-[#130d1d]/82 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-md sm:gap-4 sm:px-6 sm:py-6"
         >
-          <button type="button" className="absolute inset-0 cursor-zoom-out" onClick={closePreview} aria-label="Close image preview" tabIndex={-1} />
+          <button type="button" className="absolute inset-0 cursor-zoom-out" onClick={closePreview} aria-label={t("Close image preview")} tabIndex={-1} />
 
           <button
             ref={closeButtonRef}
             type="button"
             className="image-preview-close relative z-20 grid size-11 place-items-center justify-self-end rounded-2xl bg-white text-[#381c8d] shadow-[0_10px_30px_rgba(0,0,0,.25)] transition hover:bg-[#f1edfb]"
             onClick={closePreview}
-            aria-label="Close image preview"
+            aria-label={t("Close image preview")}
           >
             <DashboardIcon icon={DASHBOARD_ICONS.closeMenu} width="24" />
           </button>
@@ -339,7 +341,7 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
                 <Image
                   ref={imageRef}
                   src={currentImage.image}
-                  alt={currentImage.title}
+                  alt={t(currentImage.title)}
                   width={750}
                   height={1624}
                   draggable={false}
@@ -353,7 +355,7 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
                 />
                 {zoom > FIT_ZOOM && (
                   <span className="pointer-events-none absolute left-1/2 top-3 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#17131f]/80 px-3 py-1.5 text-[11px] font-bold text-white shadow-lg backdrop-blur-sm" aria-hidden="true">
-                    {isDragging ? "Moving image" : "Drag to move"}
+                    {isDragging ? t("Moving image") : t("Drag to move")}
                   </span>
                 )}
               </div>
@@ -361,23 +363,23 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
           </div>
 
           <div className="relative z-20 mx-auto flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-between gap-0.5 rounded-2xl bg-white p-1 shadow-[0_14px_40px_rgba(0,0,0,.28)] sm:w-auto sm:justify-start sm:gap-2 sm:p-1.5">
-            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label="Previous image">
+            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label={t("Previous image")}>
               <DashboardIcon icon={DASHBOARD_ICONS.previousSample} width="19" />
-              <span className="hidden sm:inline">Previous</span>
+              <span className="hidden sm:inline">{t("Previous")}</span>
             </button>
             <span className="h-6 w-px shrink-0 bg-[#e4dfe9]" aria-hidden="true" />
-            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom - ZOOM_STEP)} disabled={zoom <= FIT_ZOOM} aria-label="Zoom out">
+            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom - ZOOM_STEP)} disabled={zoom <= FIT_ZOOM} aria-label={t("Zoom out")}>
               <DashboardIcon icon={DASHBOARD_ICONS.zoomOut} width="20" />
             </button>
-            <button type="button" className="h-11 min-w-11 shrink-0 rounded-lg px-1 text-center text-xs font-bold text-[#5a5261] transition hover:bg-[#f1edfb] disabled:cursor-default sm:min-w-12" onClick={() => updateZoom(FIT_ZOOM)} disabled={zoom <= FIT_ZOOM} aria-label={zoom <= FIT_ZOOM ? "Image fitted to view" : "Reset image to fit"}>
-              <span aria-live="polite">{zoom <= FIT_ZOOM ? "Fit" : `${Math.round(zoom * 100)}%`}</span>
+            <button type="button" className="h-11 min-w-11 shrink-0 rounded-lg px-1 text-center text-xs font-bold text-[#5a5261] transition hover:bg-[#f1edfb] disabled:cursor-default sm:min-w-12" onClick={() => updateZoom(FIT_ZOOM)} disabled={zoom <= FIT_ZOOM} aria-label={zoom <= FIT_ZOOM ? t("Image fitted to view") : t("Reset image to fit")}>
+              <span aria-live="polite">{zoom <= FIT_ZOOM ? t("Fit") : `${Math.round(zoom * 100)}%`}</span>
             </button>
-            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom + ZOOM_STEP)} disabled={zoom >= MAX_ZOOM} aria-label="Zoom in">
+            <button type="button" className="grid size-11 shrink-0 place-items-center rounded-xl text-[#381c8d] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35" onClick={() => updateZoom(zoom + ZOOM_STEP)} disabled={zoom >= MAX_ZOOM} aria-label={t("Zoom in")}>
               <DashboardIcon icon={DASHBOARD_ICONS.zoomIn} width="20" />
             </button>
             <span className="h-6 w-px shrink-0 bg-[#e4dfe9]" aria-hidden="true" />
-            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white transition hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label="Next image">
-              <span className="hidden sm:inline">Next</span>
+            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white transition hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label={t("Next image")}>
+              <span className="hidden sm:inline">{t("Next")}</span>
               <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="19" />
             </button>
           </div>

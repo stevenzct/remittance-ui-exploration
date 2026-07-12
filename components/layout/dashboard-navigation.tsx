@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { NAVIGATION_ITEMS } from "@/content/dashboard";
 import { DashboardIcon } from "@/components/ui/dashboard-icon";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { DashboardSectionId } from "@/types/dashboard";
 
 interface DashboardNavigationProps {
@@ -18,6 +19,7 @@ function sectionFromHash(): DashboardSectionId | null {
 }
 
 export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
+  const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState<DashboardSectionId>(firstSection);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
   }, []);
 
   return (
-    <nav className="space-y-1" aria-label="Dashboard navigation">
+    <nav className="space-y-1" aria-label={t("Dashboard navigation")}>
       {NAVIGATION_ITEMS.map((item) => {
         const isActive = item.id === activeSection;
 
@@ -82,7 +84,7 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
             <span className={`grid size-9 place-items-center rounded-xl ${isActive ? "bg-white shadow-sm" : "bg-[#f7f6f9]"}`}>
               <DashboardIcon icon={item.icon} width="20" />
             </span>
-            {item.label}
+            {t(item.label)}
           </a>
         );
       })}

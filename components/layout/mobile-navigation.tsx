@@ -8,10 +8,12 @@ import {
 } from "@/content/dashboard";
 import { DashboardNavigation } from "@/components/layout/dashboard-navigation";
 import { DashboardIcon } from "@/components/ui/dashboard-icon";
+import { useLanguage } from "@/components/providers/language-provider";
 
 const drawerId = "mobile-navigation-drawer";
 
 export function MobileNavigation() {
+  const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const wasOpenRef = useRef(false);
@@ -53,7 +55,7 @@ export function MobileNavigation() {
         type="button"
         className="grid size-11 shrink-0 place-items-center rounded-2xl border border-[#ece9f1] bg-white text-[#381c8d] sm:size-10 lg:hidden"
         onClick={() => setMenuOpen(true)}
-        aria-label="Open menu"
+        aria-label={t("Open menu")}
         aria-expanded={menuOpen}
         aria-controls={drawerId}
       >
@@ -68,24 +70,24 @@ export function MobileNavigation() {
       >
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#ece9f1] px-2 pb-4">
           <Image src="/payso-logo.svg" alt="Payso logo" width={159} height={46} priority className="h-10 w-auto object-contain" />
-          <button type="button" className="grid size-9 place-items-center rounded-xl text-[#5d5765] hover:bg-[#f5f3f8] lg:hidden" onClick={closeMenu} aria-label="Close menu">
+          <button type="button" className="grid size-9 place-items-center rounded-xl text-[#5d5765] hover:bg-[#f5f3f8] lg:hidden" onClick={closeMenu} aria-label={t("Close menu")}>
             <DashboardIcon icon={DASHBOARD_ICONS.closeMenu} width="24" />
           </button>
         </div>
 
-        <p className="px-3 pb-2 pt-7 text-[10px] font-bold uppercase tracking-[0.18em] text-[#aaa4b1]">Workspace</p>
+        <p className="px-3 pb-2 pt-7 text-[10px] font-bold uppercase tracking-[0.18em] text-[#aaa4b1]">{t("Workspace")}</p>
         <DashboardNavigation onNavigate={closeMenu} />
 
         <div className="mt-auto shrink-0 rounded-3xl border border-[#ece9f1] bg-[#faf9fc] p-4">
           <div className="mb-3 grid size-10 place-items-center rounded-2xl bg-[#381c8d] text-white">
             <DashboardIcon icon={DASHBOARD_ICONS.themeSummary} width="22" />
           </div>
-          <p className="text-sm font-bold text-[#24202a]">{DASHBOARD_THEME.name}</p>
-          <p className="mt-1 text-xs leading-5 text-[#837d89]">{DASHBOARD_THEME.summary}</p>
+          <p className="text-sm font-bold text-[#24202a]">{t(DASHBOARD_THEME.name)}</p>
+          <p className="mt-1 text-xs leading-5 text-[#837d89]">{t(DASHBOARD_THEME.summary)}</p>
         </div>
       </aside>
 
-      {menuOpen && <button type="button" className="fixed inset-0 z-40 bg-[#1e1729]/25 backdrop-blur-sm lg:hidden" onClick={closeMenu} aria-label="Close menu overlay" />}
+      {menuOpen && <button type="button" className="fixed inset-0 z-40 bg-[#1e1729]/25 backdrop-blur-sm lg:hidden" onClick={closeMenu} aria-label={t("Close menu overlay")} />}
     </>
   );
 }

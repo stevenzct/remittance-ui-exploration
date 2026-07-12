@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ImagePreview } from "@/components/showcase/image-preview";
 import { SHOWCASE_THEMES } from "@/content/dashboard";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { ShowcaseSample } from "@/types/dashboard";
 
 const HERO_THEME_SAMPLES = [
@@ -59,6 +60,7 @@ const HOLD_DURATION = 1.02;
 const TRANSITION_DURATION = 0.82;
 
 export function HeroThemeRotator() {
+  const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -224,19 +226,19 @@ export function HeroThemeRotator() {
       ref={rootRef}
       className="relative mx-auto flex min-h-[480px] w-full max-w-[620px] items-center justify-center overflow-hidden rounded-[24px] p-4 sm:min-h-[650px] sm:rounded-[30px] sm:p-8"
       role="group"
-      aria-label="Automatically rotating previews of the three remittance themes"
+      aria-label={t("Automatically rotating previews of the three remittance themes")}
     >
       <div ref={surfaceRef} className="absolute inset-0 bg-[#f4f1fa]" />
       <div ref={primaryGlowRef} className="absolute left-[8%] top-[12%] size-28 rounded-full bg-[#381c8d] opacity-10 blur-2xl will-change-transform" />
       <div ref={secondaryGlowRef} className="absolute bottom-[8%] right-[8%] size-40 rounded-full bg-[#ba3245] opacity-10 blur-3xl will-change-transform" />
 
       <div ref={labelRef} className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-white/70 bg-white/75 px-3 py-2 shadow-sm backdrop-blur-md sm:left-6 sm:top-6">
-        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#8a8390]">{activeTheme.label}</p>
-        <p className="mt-0.5 text-xs font-bold text-[#211b28] sm:text-sm">{activeTheme.name}</p>
+        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#8a8390]">{t(activeTheme.label)}</p>
+        <p className="mt-0.5 text-xs font-bold text-[#211b28] sm:text-sm">{t(activeTheme.name)}</p>
       </div>
 
       <div ref={phoneRef} className="relative z-10 w-full will-change-transform">
-        <ImagePreview src={activeTheme.sample.image} alt={activeTheme.sample.title} samples={HERO_THEME_SAMPLES}>
+        <ImagePreview src={activeTheme.sample.image} alt={t(activeTheme.sample.title)} samples={HERO_THEME_SAMPLES}>
           <div className="phone-shell">
             <div className="phone-screen-viewport">
               {HERO_THEMES.map((theme, index) => (
@@ -287,7 +289,7 @@ export function HeroThemeRotator() {
           type="button"
           className="motion-reduce:hidden inline-flex min-h-9 items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[#4f4856] shadow-sm backdrop-blur-md transition hover:bg-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#381c8d]"
           onClick={togglePlayback}
-          aria-label={isPaused ? "Resume theme rotation" : "Pause theme rotation"}
+          aria-label={isPaused ? t("Resume theme rotation") : t("Pause theme rotation")}
         >
           <span className="inline-flex size-3 items-center justify-center" aria-hidden="true">
             {isPaused ? (
@@ -296,7 +298,7 @@ export function HeroThemeRotator() {
               <span className="flex gap-0.5"><span className="h-2.5 w-0.5 rounded-full bg-current" /><span className="h-2.5 w-0.5 rounded-full bg-current" /></span>
             )}
           </span>
-          {isPaused ? "Play" : "Pause"}
+          {isPaused ? t("Play") : t("Pause")}
         </button>
       </div>
     </div>

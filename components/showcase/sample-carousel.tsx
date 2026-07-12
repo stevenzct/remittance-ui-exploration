@@ -11,6 +11,7 @@ import {
 import { gsap } from "gsap";
 import { CarouselControls } from "@/components/showcase/carousel-controls";
 import { PhoneMockup } from "@/components/showcase/phone-mockup";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { ShowcaseTheme } from "@/types/dashboard";
 
 interface SampleCarouselProps {
@@ -27,6 +28,7 @@ function duration(value: number) {
 }
 
 export function SampleCarousel({ themes }: SampleCarouselProps) {
+  const { t } = useLanguage();
   const [themeIndex, setThemeIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const imageContentRef = useRef<HTMLDivElement>(null);
@@ -195,7 +197,7 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-[#f4f1fa] p-1 sm:inline-flex sm:w-auto" role="tablist" aria-label="Showcase theme">
+        <div className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-[#f4f1fa] p-1 sm:inline-flex sm:w-auto" role="tablist" aria-label={t("Showcase theme")}>
           {themes.map((item, index) => {
             const isActive = index === themeIndex;
 
@@ -208,17 +210,17 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
                 className={`min-h-11 min-w-0 rounded-xl px-2 text-xs font-bold transition sm:flex-none sm:px-4 sm:text-sm ${isActive ? `${accentBackgroundClassName} text-white` : `text-[#706a76] hover:bg-white ${accentHoverClassName}`}`}
                 onClick={() => showTheme(index)}
               >
-                {item.label}
+                {t(item.label)}
               </button>
             );
           })}
         </div>
-        <p className="text-xs font-semibold text-[#8c8592]">{theme.name} · {samples.length} directions</p>
+        <p className="text-xs font-semibold text-[#8c8592]">{t(theme.name)} · {samples.length} {t("directions")}</p>
       </div>
 
       <article
         className="grid min-w-0 items-center gap-6 rounded-[22px] bg-[#faf9fc] p-3 sm:gap-8 sm:rounded-[28px] sm:p-8 lg:p-10 xl:grid-cols-[minmax(300px,.8fr)_1fr]"
-        aria-label={`${theme.label} UI sample comparison`}
+        aria-label={`${t(theme.label)} ${t("UI sample comparison")}`}
         aria-roledescription="carousel"
         tabIndex={0}
         onKeyDown={handleKeyDown}
@@ -239,16 +241,11 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
           }}
         >
           <div ref={imageContentRef} className="relative z-10 flex w-full items-center justify-center will-change-transform">
-            <PhoneMockup key={`${theme.id}-${sample.id}`} src={sample.image} alt={sample.title} samples={samples} />
+            <PhoneMockup key={`${theme.id}-${sample.id}`} src={sample.image} alt={t(sample.title)} samples={samples} />
           </div>
         </div>
 
-        <div ref={textContentRef} className="min-w-0 max-w-xl" aria-live="polite">
-          <div className={`mb-6 grid size-14 place-items-center rounded-2xl text-base font-bold text-white ${accentButtonClassName}`}>{String(currentIndex + 1).padStart(2, "0")}</div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#ba3245]">{theme.label} · {sample.label}</p>
-          <h3 className="mt-3 text-2xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-3xl md:text-4xl xl:text-5xl">{sample.title}</h3>
-          <p className="mt-4 text-base leading-7 text-[#7b7580]">{sample.description}</p>
-          <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white px-3 py-2 text-xs font-semibold text-[#5a5261]">{tag}</span>)}</div>
+        <div className="sm:hidden">
           <CarouselControls
             current={currentIndex + 1}
             total={samples.length}
@@ -260,6 +257,27 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
             onNext={showNext}
             accent={accent}
           />
+        </div>
+
+        <div ref={textContentRef} className="min-w-0 max-w-xl" aria-live="polite">
+          <div className={`mb-6 grid size-14 place-items-center rounded-2xl text-base font-bold text-white ${accentButtonClassName}`}>{String(currentIndex + 1).padStart(2, "0")}</div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#ba3245]">{t(theme.label)} · {t(sample.label)}</p>
+          <h3 className="mt-3 text-2xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-3xl md:text-4xl xl:text-5xl">{t(sample.title)}</h3>
+          <p className="mt-4 text-base leading-7 text-[#7b7580]">{t(sample.description)}</p>
+          <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white px-3 py-2 text-xs font-semibold text-[#5a5261]">{t(tag)}</span>)}</div>
+          <div className="hidden sm:block">
+            <CarouselControls
+              current={currentIndex + 1}
+              total={samples.length}
+              isFirst={isFirst}
+              isLast={isLast}
+              previousLabel={previousLabel}
+              nextLabel={nextLabel}
+              onPrevious={showPrevious}
+              onNext={showNext}
+              accent={accent}
+            />
+          </div>
         </div>
       </article>
     </div>
