@@ -57,7 +57,7 @@ const chineseTranslations: Readonly<Record<string, string>> = {
   "Soft Tile Navigation.": "柔和卡片式导航。",
   "Top Navigation Tab Country Switch": "顶部导航标签国家切换",
   "Use Blue Gem for the active bottom navigation. Notifications include a headline and subheadline 'New update available', open when tapped, close using the icon, and swipe left or right to dismiss. The top navigation displays the user’s Philippine account 2 letter country code tab button and includes a country dropdown for switching to Hong Kong, Singapore, and other locations account.": "底部导航的激活状态使用宝石蓝。通知包含标题和副标题“有新的更新可用”，点击即可打开，使用图标关闭，也可向左或向右滑动取消。顶部导航显示用户菲律宾账户的两位国家代码标签按钮，并包含国家下拉菜单，用于切换到香港、新加坡及其他地区账户。",
-  "A lighter bottom navigation treatment with less visual weight and remove the headline for notification 'We've improve your app for better user experience.'.": "采用更轻量的底部导航样式，降低视觉重量，并移除通知“我们已改进应用，为您带来更好的使用体验”的标题。",
+  "A lighter bottom navigation treatment with less visual weight and remove the headline for notification 'We've improve your app for better user experience.'": "采用更轻量的底部导航样式，降低视觉重量，并移除通知“我们已改进应用，为您带来更好的使用体验”的标题。",
   "A softer selected active state bottom navigation.": "底部导航的选中激活状态更加柔和。",
   "Remove the background from the “Latest Messages” header, use a white background with a divider line for visual consistency, and simplify the Transfer and Exchange buttons with short text and  icons only.": "移除“最新消息”标题栏的背景，改用带分隔线的白色背景以保持视觉一致性，并将转账和兑换按钮简化为短文字与图标。",
   "Country selection appears as a top tab with an active color and underline. The active bottom navigation item also uses a top underline. Latest messages section use a monochrome Blue Gem color icon.": "国家选择以顶部标签呈现，并使用激活颜色和下划线。底部导航的激活项同样使用顶部下划线。最新消息区域使用单色宝石蓝图标。",
