@@ -313,7 +313,7 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
           <button
             ref={closeButtonRef}
             type="button"
-            className="image-preview-close relative z-20 grid size-11 place-items-center justify-self-end rounded-2xl bg-white text-[#381c8d] shadow-[0_10px_30px_rgba(0,0,0,.25)] transition hover:bg-[#f1edfb]"
+            className="ui-button image-preview-close relative z-20 grid size-12 min-h-12 place-items-center justify-self-end rounded-2xl bg-white text-[#381c8d] shadow-[0_10px_30px_rgba(0,0,0,.25)] hover:bg-[#f1edfb]"
             onClick={closePreview}
             aria-label={t("Close image preview")}
           >
@@ -362,8 +362,8 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
             </div>
           </div>
 
-          <div className="relative z-20 mx-auto flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-between gap-0.5 rounded-2xl bg-white p-1 shadow-[0_14px_40px_rgba(0,0,0,.28)] sm:w-auto sm:justify-start sm:gap-2 sm:p-1.5">
-            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] transition hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label={t("Previous image")}>
+          <div className="relative z-20 mx-auto flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-between gap-0.5 rounded-[20px] border border-white/70 bg-white/95 p-1.5 shadow-[0_18px_50px_rgba(0,0,0,.3)] backdrop-blur-xl sm:w-auto sm:justify-start sm:gap-2">
+            <button type="button" className="ui-button inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl px-2 text-sm font-bold text-[#4f4856] hover:bg-[#f1edfb] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex - 1, -1)} disabled={isFirstImage} aria-label={t("Previous image")}>
               <DashboardIcon icon={DASHBOARD_ICONS.previousSample} width="19" />
               <span className="hidden sm:inline">{t("Previous")}</span>
             </button>
@@ -378,7 +378,7 @@ export function ImagePreview({ src, alt, children, samples = SHOWCASE_SAMPLES }:
               <DashboardIcon icon={DASHBOARD_ICONS.zoomIn} width="20" />
             </button>
             <span className="h-6 w-px shrink-0 bg-[#e4dfe9]" aria-hidden="true" />
-            <button type="button" className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white transition hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label={t("Next image")}>
+            <button type="button" className="ui-button inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#381c8d] px-2 text-sm font-bold text-white hover:bg-[#4b27a7] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3" onClick={() => showImage(currentIndex + 1, 1)} disabled={isLastImage} aria-label={t("Next image")}>
               <span className="hidden sm:inline">{t("Next")}</span>
               <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="19" />
             </button>

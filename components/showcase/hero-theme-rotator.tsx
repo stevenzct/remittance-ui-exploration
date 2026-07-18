@@ -224,7 +224,7 @@ export function HeroThemeRotator() {
   return (
     <div
       ref={rootRef}
-      className="relative mx-auto flex min-h-[480px] w-full max-w-[620px] items-center justify-center overflow-hidden rounded-[24px] p-4 sm:min-h-[650px] sm:rounded-[30px] sm:p-8"
+      className="relative mx-auto flex min-h-[500px] w-full max-w-[620px] items-center justify-center overflow-hidden rounded-[26px] border border-white/80 p-5 shadow-[0_24px_60px_rgba(37,27,57,.08)] sm:min-h-[650px] sm:rounded-[32px] sm:p-8"
       role="group"
       aria-label={t("Automatically rotating previews of the three remittance themes")}
     >
@@ -287,7 +287,7 @@ export function HeroThemeRotator() {
 
         <button
           type="button"
-          className="motion-reduce:hidden inline-flex min-h-9 items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[#4f4856] shadow-sm backdrop-blur-md transition hover:bg-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#381c8d]"
+          className="ui-button motion-reduce:hidden inline-flex min-h-11 items-center gap-2 rounded-full border border-white/70 bg-white/80 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-[#4f4856] shadow-sm backdrop-blur-md hover:bg-white"
           onClick={togglePlayback}
           aria-label={isPaused ? t("Resume theme rotation") : t("Pause theme rotation")}
         >

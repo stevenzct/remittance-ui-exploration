@@ -53,7 +53,7 @@ export function MobileNavigation() {
       <button
         ref={triggerRef}
         type="button"
-        className="grid size-11 shrink-0 place-items-center rounded-2xl border border-[#ece9f1] bg-white text-[#381c8d] sm:size-10 lg:hidden"
+        className="ui-button grid size-11 min-h-11 shrink-0 place-items-center rounded-2xl border border-[#e8e3ef] bg-white text-[#381c8d] shadow-[0_6px_18px_rgba(37,27,57,.05)] sm:size-10 sm:min-h-10 lg:hidden"
         onClick={() => setMenuOpen(true)}
         aria-label={t("Open menu")}
         aria-expanded={menuOpen}
@@ -70,7 +70,7 @@ export function MobileNavigation() {
       >
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#ece9f1] px-2 pb-4">
           <Image src="/payso-logo.svg" alt="Payso logo" width={159} height={46} priority className="h-10 w-auto object-contain" />
-          <button type="button" className="grid size-9 place-items-center rounded-xl text-[#5d5765] hover:bg-[#f5f3f8] lg:hidden" onClick={closeMenu} aria-label={t("Close menu")}>
+          <button type="button" className="ui-button grid size-11 min-h-11 place-items-center rounded-2xl text-[#5d5765] hover:bg-[#f5f3f8] lg:hidden" onClick={closeMenu} aria-label={t("Close menu")}>
             <DashboardIcon icon={DASHBOARD_ICONS.closeMenu} width="24" />
           </button>
         </div>

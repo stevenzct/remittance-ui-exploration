@@ -8,11 +8,11 @@ interface DashboardShellProps {
 
 export function DashboardShell({ children }: DashboardShellProps) {
   return (
-    <div className="min-h-dvh bg-[#f7f7fa] lg:grid lg:grid-cols-[272px_1fr]">
+    <div className="min-h-dvh lg:grid lg:grid-cols-[272px_1fr]">
       <DashboardSidebar />
       <main className="min-w-0">
         <DashboardHeader />
-        <div className="mx-auto max-w-[1500px] space-y-5 p-3 sm:space-y-7 sm:p-7 lg:p-10">{children}</div>
+        <div className="mx-auto max-w-[1500px] space-y-4 px-3 pb-8 pt-3 sm:space-y-8 sm:p-7 lg:space-y-10 lg:p-10 xl:p-12">{children}</div>
       </main>
     </div>
   );

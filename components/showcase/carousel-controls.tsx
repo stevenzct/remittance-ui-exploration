@@ -36,14 +36,14 @@ export function CarouselControls({
       : "bg-[#381c8d] shadow-[0_10px_24px_rgba(56,28,141,.2)] hover:bg-[#4b27a7]";
 
   return (
-    <div className="mt-8 flex flex-col gap-4 border-t border-[#e4dfe9] pt-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mt-8 flex flex-col gap-4 border-t border-[#e4dfe9] pt-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-xs font-semibold text-[#8c8592]">
         {t("Sample")} <span className={accentTextClassName}>{String(current).padStart(2, "0")}</span> {t("of")} {String(total).padStart(2, "0")}
       </p>
       <div className="grid min-w-0 grid-cols-2 gap-2 sm:flex">
         <button
           type="button"
-          className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-2xl border border-[#d9d3e2] bg-white px-2 text-xs font-bold text-[#4f4856] transition hover:border-[#bdb2d1] hover:bg-[#f5f2fb] disabled:cursor-not-allowed disabled:opacity-40 sm:px-4 sm:text-sm"
+          className="ui-button inline-flex min-h-[3.25rem] min-w-0 items-center justify-center gap-2 rounded-2xl border border-[#d9d3e2] bg-white px-3 text-xs font-bold text-[#4f4856] shadow-[0_7px_18px_rgba(37,27,57,.035)] hover:border-[#bdb2d1] hover:bg-[#f5f2fb] disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-12 sm:px-4 sm:text-sm"
           onClick={onPrevious}
           disabled={isFirst}
           aria-label={previousLabel === "Previous theme" ? t("Go to the previous theme") : t("Previous sample")}
@@ -53,7 +53,7 @@ export function CarouselControls({
         </button>
         <button
           type="button"
-          className={`inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-2xl px-2 text-xs font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none sm:px-5 sm:text-sm ${primaryButtonClassName}`}
+          className={`ui-button inline-flex min-h-[3.25rem] min-w-0 items-center justify-center gap-2 rounded-2xl px-3 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none sm:min-h-12 sm:px-5 sm:text-sm ${primaryButtonClassName}`}
           onClick={onNext}
           disabled={isLast}
           aria-label={nextLabel === "Next theme" ? t("Go to the next theme") : t("Next sample")}

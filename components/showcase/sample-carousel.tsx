@@ -195,9 +195,9 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="grid w-full grid-cols-3 gap-1 rounded-2xl bg-[#f4f1fa] p-1 sm:inline-flex sm:w-auto" role="tablist" aria-label={t("Showcase theme")}>
+    <div className="space-y-5 sm:space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="grid w-full grid-cols-3 gap-1.5 rounded-[20px] border border-[#ebe7f0] bg-[#f6f4f9] p-1.5 sm:inline-flex sm:w-auto" role="tablist" aria-label={t("Showcase theme")}>
           {themes.map((item, index) => {
             const isActive = index === themeIndex;
 
@@ -207,7 +207,7 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                className={`min-h-11 min-w-0 rounded-xl px-2 text-xs font-bold transition sm:flex-none sm:px-4 sm:text-sm ${isActive ? `${accentBackgroundClassName} text-white` : `text-[#706a76] hover:bg-white ${accentHoverClassName}`}`}
+                className={`ui-button min-h-12 min-w-0 rounded-[14px] px-1.5 text-xs font-bold sm:min-h-11 sm:flex-none sm:px-4 sm:text-sm ${isActive ? `${accentBackgroundClassName} text-white` : `text-[#706a76] hover:bg-white ${accentHoverClassName}`}`}
                 onClick={() => showTheme(index)}
               >
                 {t(item.label)}
@@ -219,14 +219,14 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
       </div>
 
       <article
-        className="grid min-w-0 items-center gap-6 rounded-[22px] bg-[#faf9fc] p-3 sm:gap-8 sm:rounded-[28px] sm:p-8 lg:p-10 xl:grid-cols-[minmax(300px,.8fr)_1fr]"
+        className="grid min-w-0 items-center gap-8 rounded-[24px] border border-[#eeeaf3] bg-[linear-gradient(145deg,#fbfafd,#f7f4fa)] p-3 sm:gap-10 sm:rounded-[32px] sm:p-8 lg:p-10 xl:grid-cols-[minmax(300px,.8fr)_1fr] xl:gap-14"
         aria-label={`${t(theme.label)} ${t("UI sample comparison")}`}
         aria-roledescription="carousel"
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
         <div
-          className="phone-presentation relative flex min-h-[440px] min-w-0 items-center justify-center overflow-hidden rounded-[20px] bg-white p-3 shadow-[inset_0_0_0_1px_#ece9f1] sm:min-h-[730px] sm:rounded-[26px] sm:p-7"
+          className="phone-presentation relative flex min-h-[460px] min-w-0 items-center justify-center overflow-hidden rounded-[21px] bg-white p-4 shadow-[inset_0_0_0_1px_#ece9f1,0_18px_50px_rgba(37,27,57,.05)] sm:min-h-[730px] sm:rounded-[26px] sm:p-7"
           style={{ touchAction: "pan-y" }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
@@ -259,12 +259,12 @@ export function SampleCarousel({ themes }: SampleCarouselProps) {
           />
         </div>
 
-        <div ref={textContentRef} className="min-w-0 max-w-xl" aria-live="polite">
+        <div ref={textContentRef} className="min-w-0 max-w-xl px-2 pb-2 sm:px-0 sm:pb-0" aria-live="polite">
           <div className={`mb-6 grid size-14 place-items-center rounded-2xl text-base font-bold text-white ${accentButtonClassName}`}>{String(currentIndex + 1).padStart(2, "0")}</div>
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#ba3245]">{t(theme.label)} · {t(sample.label)}</p>
           <h3 className="mt-3 text-2xl font-bold tracking-[-0.045em] text-[#201b26] sm:text-3xl md:text-4xl xl:text-5xl">{t(sample.title)}</h3>
-          <p className="mt-4 text-base leading-7 text-[#7b7580]">{t(sample.description)}</p>
-          <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white px-3 py-2 text-xs font-semibold text-[#5a5261]">{t(tag)}</span>)}</div>
+          <p className="mt-5 text-base leading-7 text-[#7b7580] sm:leading-8">{t(sample.description)}</p>
+          <div className="mt-7 flex flex-wrap gap-2">{sample.tags.map((tag) => <span key={tag} className="rounded-full border border-[#e4dfe9] bg-white/85 px-3 py-2 text-xs font-semibold text-[#5a5261] shadow-[0_4px_12px_rgba(37,27,57,.025)]">{t(tag)}</span>)}</div>
           <div className="hidden sm:block">
             <CarouselControls
               current={currentIndex + 1}

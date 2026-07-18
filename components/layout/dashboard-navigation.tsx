@@ -79,7 +79,7 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
               setActiveSection(item.id);
               onNavigate?.();
             }}
-            className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition ${isActive ? "bg-[#f1edfb] text-[#381c8d]" : "text-[#706a76] hover:bg-[#f7f6f9] hover:text-[#381c8d]"}`}
+            className={`flex min-h-12 items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold transition duration-200 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#5b2bd1]/25 ${isActive ? "bg-[#f1edfb] text-[#381c8d] shadow-[inset_0_0_0_1px_rgba(91,43,209,.06)]" : "text-[#706a76] hover:translate-x-0.5 hover:bg-[#f7f6f9] hover:text-[#381c8d]"}`}
           >
             <span className={`grid size-9 place-items-center rounded-xl ${isActive ? "bg-white shadow-sm" : "bg-[#f7f6f9]"}`}>
               <DashboardIcon icon={item.icon} width="20" />
