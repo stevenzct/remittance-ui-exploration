@@ -1,4 +1,4 @@
-export type DashboardSectionId = "overview" | "showcase" | "brand";
+export type DashboardSectionId = "overview" | "showcase" | "prototype" | "brand";
 export type DashboardStatisticId = "samples" | "colors" | "direction";
 
 export type DashboardIconName =
@@ -27,6 +27,7 @@ export type DashboardIconKey =
   | "overviewNavigation"
   | "palette"
   | "previousSample"
+  | "prototypeNavigation"
   | "sampleStatistic"
   | "showcaseNavigation"
   | "themeSummary"
@@ -43,7 +44,7 @@ export type ThemeColorValue = "#381c8d" | "#ba3245";
 export interface NavigationItem {
   readonly id: DashboardSectionId;
   readonly label: string;
-  readonly href: `#${DashboardSectionId}`;
+  readonly href: `/${string}`;
   readonly icon: DashboardIconName;
 }
 

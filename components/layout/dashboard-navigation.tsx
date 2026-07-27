@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { NAVIGATION_ITEMS } from "@/content/dashboard";
 import { DashboardIcon } from "@/components/ui/dashboard-icon";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -20,9 +21,13 @@ function sectionFromHash(): DashboardSectionId | null {
 
 export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
   const { t } = useLanguage();
+  const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<DashboardSectionId>(firstSection);
+  const visibleActiveSection = pathname === "/prototype" ? "prototype" : activeSection;
 
   useEffect(() => {
+    if (pathname === "/prototype") return;
+
     let animationFrame = 0;
 
     const updateActiveSection = () => {
@@ -63,12 +68,12 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
       window.removeEventListener("resize", updateActiveSection);
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <nav className="space-y-1" aria-label={t("Dashboard navigation")}>
       {NAVIGATION_ITEMS.map((item) => {
-        const isActive = item.id === activeSection;
+        const isActive = item.id === visibleActiveSection;
 
         return (
           <a

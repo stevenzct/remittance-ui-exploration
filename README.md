@@ -2,7 +2,7 @@
 
 ![Payso logo](public/payso-logo.svg)
 
-A responsive design-review dashboard for comparing Payso remittance homepage concepts. The project presents three visual themes, 18 mobile interface samples, and the supporting brand system in a single Next.js page.
+A responsive design-review dashboard for comparing Payso remittance homepage concepts. The project presents three visual themes, 18 mobile interface samples, a live three-theme mobile wallet prototype, and the supporting brand system in a single Next.js page.
 
 This repository is a front-end presentation prototype. It does not process remittances and does not include authentication, API routes, a database, or persistent user data.
 
@@ -25,12 +25,13 @@ This repository is a front-end presentation prototype. It does not process remit
 
 ## Overview
 
-The application has one route, `/`, composed of three anchor sections:
+The application has one route, `/`, composed of four anchor sections:
 
 | Section | Anchor | Purpose |
 | --- | --- | --- |
 | Overview | `#overview` | Introduces the exploration and automatically previews one screen from each theme. |
 | UI Showcase | `#showcase` | Compares every mobile sample with theme tabs, descriptions, tags, and image controls. |
+| Prototype | `#prototype` | Provides a live mobile wallet with three switchable themes and working interface controls. |
 | Brand System | `#brand` | Documents the Blue Gem and Brick Red colors and the Philippine flag inspiration. |
 
 The current theme catalog is:
@@ -40,6 +41,8 @@ The current theme catalog is:
 | Theme 01 | Blue Gem | 5 | Blue-led interface treatments. |
 | Theme 02 | Brick Red | 8 | Rose and brick-red interface treatments. |
 | Theme 03 | Country Card Theme | 5 | Country-card concepts inspired by the Philippine flag. |
+
+The live prototype has three independent visual choices: Theme 1 Classic, Theme 2 Fresh, and Theme 3 Midnight. Changing the prototype theme updates its palette while keeping the current wallet and other phone state available for continued interaction.
 
 All showcase copy, theme metadata, sample records, image paths, navigation items, and brand colors are local constants in `content/dashboard.ts`.
 
@@ -51,6 +54,8 @@ All showcase copy, theme metadata, sample records, image paths, navigation items
 - Theme tabs and sample navigation that continue across theme boundaries.
 - Mouse, touch, and keyboard carousel controls, including horizontal swipe gestures.
 - Full-screen image preview with previous/next navigation, zoom from 100% to 250%, and constrained pan controls.
+- Live remittance phone with Classic, Fresh, and Midnight theme choices.
+- Working country and workplace selectors, balance visibility, wallet selection, account copying, action sheets, bottom navigation, and status feedback.
 - English and Simplified Chinese UI copy through a small client-side translation provider.
 - Reduced-motion handling, focus restoration, body-scroll locking, semantic labels, and keyboard dismissal.
 - Local image delivery through `next/image`; no remote asset host is required.
@@ -65,6 +70,7 @@ All showcase copy, theme metadata, sample records, image paths, navigation items
 | Tailwind CSS 4 | Utility-first responsive styling through PostCSS. |
 | GSAP | Hero, carousel, and image-preview transitions. |
 | Iconify | Solar interface icons and language flag icons. |
+| Fontsource | Self-hosted Inter variable font used by the dashboard and live prototype. |
 
 Swiper is installed in `package.json`, but the current showcase carousel does not use it. Carousel behavior is implemented with React state, pointer events, and GSAP.
 
@@ -113,20 +119,21 @@ npm run start
 
 ```text
 app/
-  globals.css                 Global tokens, phone shell, and preview sizing
+  globals.css                 Global tokens, showcase phone shell, and live prototype styling
   layout.tsx                  Metadata and LanguageProvider boundary
   page.tsx                    Single-page section composition
 components/
   layout/                     Header, sidebar, mobile drawer, and navigation
+  prototype/                  Live wallet state, controls, and inline SVG icons
   providers/                  Client-side language context
-  sections/                   Overview, showcase, brand, and optional stats UI
+  sections/                   Overview, showcase, prototype, brand, and optional stats UI
   showcase/                   Hero rotator, carousel, phone, and image preview
   ui/                         Shared Iconify renderer
 content/
   dashboard.ts                Primary UI content and theme catalog
   translations.ts             English-to-Chinese exact-string dictionary
 public/
-  assets/                     Runtime screenshots and brand reference images
+  assets/                     Runtime screenshots, prototype artwork, and brand references
   payso-logo.svg              Shared Payso logo
 types/
   dashboard.ts                Content and component domain types
@@ -159,16 +166,20 @@ RootLayout
                 |       |-- PhoneMockup
                 |       |   `-- ImagePreview
                 |       `-- CarouselControls
+                |-- PrototypeSection
+                |   `-- RemittancePrototype
+                |       `-- PrototypeIcon
                 `-- BrandSection
 ```
 
 The main flow is deliberately simple:
 
 1. `content/dashboard.ts` defines the navigation, themes, samples, icons, and brand colors.
-2. `app/page.tsx` composes the three visible sections inside `DashboardShell`.
+2. `app/page.tsx` composes the four visible sections inside `DashboardShell`.
 3. `ShowcaseSection` passes `SHOWCASE_THEMES` into `SampleCarousel`.
-4. Interactive client components keep temporary state locally for language, section tracking, selected theme/sample, modal state, zoom, and pan.
-5. Images resolve from `public/assets` through paths such as `/assets/sample-01.png`.
+4. `PrototypeSection` renders `RemittancePrototype`, which owns its demo themes, wallets, selectors, panels, bottom navigation, and feedback state locally.
+5. Interactive client components keep temporary state locally for language, section tracking, selected theme/sample, modal state, zoom, pan, and the live phone controls.
+6. Images resolve from `public/assets` through paths such as `/assets/sample-01.png` and `/assets/prototype-figma/aub-card.png`.
 
 `app/page.tsx` and `DashboardShell` are server components. Components that use browser APIs, context, effects, animation, or local interaction state explicitly use the client boundary.
 
@@ -234,8 +245,11 @@ Missing keys fall back to the English input. The selected language starts in Eng
 - Put runtime images in `public/assets`; this is the canonical asset directory used by the application.
 - Reference public files from the site root, such as `/assets/theme-03/1.png`.
 - Mobile screenshots are designed around a `750 / 1624` aspect ratio.
+- `public/assets/prototype-figma/` contains the exact bank card, flag fabric, and interface icon exports from the linked Figma frame.
+- `public/assets/ph-flag.png` is used by the brand section; the live phone uses the exact exported Figma flag and fabric artwork.
 - `public/payso-logo.svg` is used by both desktop and mobile navigation.
-- `app/globals.css` defines the core color variables, base styles, phone frame, preview sizing, and short-landscape adjustments.
+- `components/prototype/prototype-icon.tsx` keeps supplementary prototype controls local as reusable inline SVG paths.
+- `app/globals.css` defines the core color variables, base styles, shared showcase/prototype phone frame, prototype theme variables, and short-landscape adjustments.
 - Tailwind responsive utilities handle most component layout and spacing.
 - The desktop sidebar appears at `lg`; the showcase and other wide splits wait until `xl` so the 272px sidebar does not crowd the content.
 
@@ -258,6 +272,15 @@ The tracked root-level `assets/` directory is not referenced by the current runt
 - Previous and Next continue into adjacent themes at collection boundaries.
 - The focused carousel responds to Left Arrow and Right Arrow.
 - Touch and pointer users can swipe horizontally across the phone presentation.
+
+### Live prototype
+
+- Theme 1 Classic, Theme 2 Fresh, and Theme 3 Midnight can be selected from the controls beside the phone on wide screens or above it on narrower screens.
+- Country account and workplace buttons open selectable menus, while the eye control hides or reveals the active balance.
+- All Wallets switches between PHP, USD, and HKD balances, and the receiving-account hit area copies a safe demo account value.
+- Transfer, Exchange, and View All open modal sheets with demo inputs and actions; the backdrop and close button dismiss them.
+- The announcement, message rows, action confirmations, and non-Home navigation items provide temporary status feedback.
+- Theme choices use radio semantics, selector options use listbox semantics, modal sheets identify themselves as dialogs, and status messages are announced through a live region.
 
 ### Image preview
 
@@ -285,8 +308,12 @@ This runs ESLint, strict TypeScript checking, and a production build. There is c
 - Switch between English and Simplified Chinese.
 - Traverse all 18 samples, including the boundaries between themes.
 - Open the image preview, navigate, zoom, pan, and close it with the keyboard.
+- Follow `#prototype`, switch among all three prototype themes, and confirm the phone remains usable at each palette.
+- Exercise the country and workplace menus, balance toggle, account copy control, wallet picker, message rows, and bottom navigation.
+- Open the Transfer, Exchange, and All Messages sheets; test their inputs and actions, then dismiss each by its close button and backdrop.
+- Confirm prototype toasts and selection states update without navigating or reloading the page.
 - Check reduced-motion behavior.
-- Review the layout at approximately 320px, tablet width, and desktop width.
+- Review the layout and live phone at approximately 320px, tablet width, and desktop width.
 
 For a quick formatting check on changed files, run:
 
@@ -315,6 +342,7 @@ This project is not configured with `output: "export"`, so do not treat the curr
 - Only the `/` page exists.
 - Content and images are bundled locally; there is no CMS or remote data source.
 - There are no API routes, server actions, network requests, authentication flows, database clients, or remittance transactions.
+- The live phone is an in-memory UI simulation; wallet changes, transfers, exchange quotes, copied account values, and messages are not persisted or submitted.
 - Language selection is session-only React state and resets after a reload.
 - `StatsSection` and `DASHBOARD_STATISTICS` remain in the source tree but are not rendered by the current page.
 - Swiper is installed but unused by the current source.

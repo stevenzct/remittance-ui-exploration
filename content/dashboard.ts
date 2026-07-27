@@ -19,6 +19,7 @@ export const DASHBOARD_ICONS = {
   overviewNavigation: "solar:widget-5-linear",
   palette: "solar:palette-linear",
   previousSample: "solar:arrow-left-linear",
+  prototypeNavigation: "solar:smartphone-2-linear",
   sampleStatistic: "solar:smartphone-2-linear",
   showcaseNavigation: "solar:smartphone-linear",
   themeSummary: "solar:lightbulb-bolt-linear",
@@ -36,19 +37,25 @@ export const NAVIGATION_ITEMS = [
   {
     id: "overview",
     label: "Overview",
-    href: "#overview",
+    href: "/#overview",
     icon: DASHBOARD_ICONS.overviewNavigation,
   },
   {
     id: "showcase",
     label: "UI Showcase",
-    href: "#showcase",
+    href: "/#showcase",
     icon: DASHBOARD_ICONS.showcaseNavigation,
+  },
+  {
+    id: "prototype",
+    label: "Prototype",
+    href: "/prototype",
+    icon: DASHBOARD_ICONS.prototypeNavigation,
   },
   {
     id: "brand",
     label: "Brand System",
-    href: "#brand",
+    href: "/#brand",
     icon: DASHBOARD_ICONS.palette,
   },
 ] as const satisfies readonly NavigationItem[];
