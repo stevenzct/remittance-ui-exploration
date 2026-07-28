@@ -1827,7 +1827,7 @@ a[href] {
   z-index: 130;
   inset: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--prototype-surface, #fff);
   opacity: 0;
   visibility: hidden;
   cursor: progress;
@@ -1854,10 +1854,10 @@ a[href] {
 }
 
 .prototype-work-location-loading-artwork--world {
-  top: 72.533cqw;
+  top: 34.133cqw;
   left: 2.133cqw;
   width: 95.733cqw;
-  height: 71.733cqw;
+  height: 127.6cqw;
   perspective: 186.667cqw;
 }
 
@@ -1892,38 +1892,49 @@ a[href] {
   pointer-events: none;
 }
 
-.prototype-world-route-canvas,
-.prototype-world-route-globe-fallback,
-.prototype-world-route-plane-flight,
+.prototype-world-route-globe {
+  position: absolute;
+  z-index: 1;
+  top: 25%;
+  left: .575%;
+  width: 98.851%;
+  height: 74.138%;
+  filter: drop-shadow(0 1.867cqw 2.667cqw rgb(31 98 153 / 12%));
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.prototype-world-route-globe img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.prototype-world-route-plane-flight {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
 .prototype-world-route-plane-visual {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  transform-style: preserve-3d;
   pointer-events: none;
 }
 
-.prototype-world-route-canvas {
-  z-index: 2;
-  display: block;
-  clip-path: inset(0 0 3.5% 0);
-  opacity: 0;
-}
-
-.prototype-world-route-globe-fallback {
-  z-index: 1;
-  clip-path: inset(38.3% 0 0);
-  transform-style: preserve-3d;
-}
-
-.prototype-world-route-plane-flight {
-  z-index: 4;
-  transform-style: preserve-3d;
-}
-
-.prototype-world-route-plane-visual {
-  clip-path: inset(0 0 59.5% 0);
-  transform-style: preserve-3d;
+.prototype-world-route-plane-visual img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 .8cqw 1.333cqw rgb(31 23 49 / 15%));
+  object-fit: contain;
 }
 
 .prototype-world-route-destination {
