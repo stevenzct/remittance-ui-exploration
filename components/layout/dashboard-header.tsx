@@ -48,9 +48,27 @@ export function DashboardHeader() {
         </button>
         <span className="hidden rounded-full border border-[#e7e3eb] bg-white px-3 py-2 text-xs font-semibold text-[#706a76] sm:inline-flex">{t(DASHBOARD_THEME.label)}</span>
         <div className="inline-flex min-h-11 items-center rounded-2xl border border-[#e7e3eb] bg-white/90 px-1.5 text-xs font-semibold shadow-[0_6px_18px_rgba(37,27,57,.04)]" aria-label={t("Language")}>
-          <button type="button" className={`inline-flex min-h-9 items-center gap-1 rounded-xl px-1.5 transition hover:bg-[#f5f2fb] focus-visible:outline-2 focus-visible:outline-[#5b2bd1] ${language === "en" ? "text-[#381c8d]" : "text-[#99929f]"}`} onClick={() => setLanguage("en")} aria-pressed={language === "en"}><Icon icon="circle-flags:us" width="16" aria-hidden="true" /> EN</button>
+          <button
+            type="button"
+            className={`ui-tooltip inline-flex min-h-9 items-center gap-1 rounded-xl px-1.5 transition hover:bg-[#f5f2fb] focus-visible:outline-2 focus-visible:outline-[#5b2bd1] ${language === "en" ? "text-[#381c8d]" : "text-[#99929f]"}`}
+            onClick={() => setLanguage("en")}
+            aria-label={t("English")}
+            aria-pressed={language === "en"}
+            data-tooltip-label={t("English")}
+          >
+            <Icon icon="circle-flags:us" width="16" aria-hidden="true" /> EN
+          </button>
           <span className="px-1.5 text-[#c8c3cc]" aria-hidden="true">|</span>
-          <button type="button" className={`inline-flex min-h-9 items-center gap-1 rounded-xl px-1.5 transition hover:bg-[#f5f2fb] focus-visible:outline-2 focus-visible:outline-[#5b2bd1] ${language === "zh" ? "text-[#381c8d]" : "text-[#99929f]"}`} onClick={() => setLanguage("zh")} aria-pressed={language === "zh"}><Icon icon="circle-flags:cn" width="16" aria-hidden="true" /> 中文</button>
+          <button
+            type="button"
+            className={`ui-tooltip ui-tooltip--end inline-flex min-h-9 items-center gap-1 rounded-xl px-1.5 transition hover:bg-[#f5f2fb] focus-visible:outline-2 focus-visible:outline-[#5b2bd1] ${language === "zh" ? "text-[#381c8d]" : "text-[#99929f]"}`}
+            onClick={() => setLanguage("zh")}
+            aria-label={t("Simplified Chinese")}
+            aria-pressed={language === "zh"}
+            data-tooltip-label={t("Simplified Chinese")}
+          >
+            <Icon icon="circle-flags:cn" width="16" aria-hidden="true" /> 中文
+          </button>
         </div>
       </div>
     </header>

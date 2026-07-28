@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { NAVIGATION_ITEMS } from "@/content/dashboard";
@@ -76,7 +77,7 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
         const isActive = item.id === visibleActiveSection;
 
         return (
-          <a
+          <Link
             key={item.id}
             href={item.href}
             aria-current={isActive ? "location" : undefined}
@@ -90,7 +91,7 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
               <DashboardIcon icon={item.icon} width="20" />
             </span>
             {t(item.label)}
-          </a>
+          </Link>
         );
       })}
     </nav>

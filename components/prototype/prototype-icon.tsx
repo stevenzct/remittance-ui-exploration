@@ -4,6 +4,7 @@ export type PrototypeIconName =
   | "wallet"
   | "eye-off"
   | "send"
+  | "play-circle"
   | "exchange"
   | "arrow-right"
   | "mail"
@@ -35,6 +36,12 @@ const icons: Record<PrototypeIconName, ReactNode> = {
     <>
       <path d="m22 2-7 20-4-9-9-4Z" />
       <path d="M22 2 11 13" />
+    </>
+  ),
+  "play-circle": (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m10 8 6 4-6 4Z" />
     </>
   ),
   exchange: (

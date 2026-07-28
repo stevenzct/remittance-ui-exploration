@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { LanguageProvider } from "@/components/providers/language-provider";
 import "./globals.css";
 
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body><LanguageProvider>{children}</LanguageProvider></body>
+      <body>
+        <LanguageProvider>
+          <DashboardShell>{children}</DashboardShell>
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

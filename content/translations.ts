@@ -154,6 +154,8 @@ const chineseTranslations: Readonly<Record<string, string>> = {
   Pause: "暂停",
   "Open menu": "打开菜单",
   Language: "语言",
+  English: "英语",
+  "Simplified Chinese": "简体中文",
   "Close menu": "关闭菜单",
   "Close menu overlay": "关闭菜单遮罩",
   "Dashboard navigation": "仪表板导航",

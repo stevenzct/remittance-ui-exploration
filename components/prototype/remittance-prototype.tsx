@@ -16,6 +16,7 @@ import {
   useState,
 } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { FlagSwooshLoader } from "@/components/prototype/flag-swoosh-loader";
 import { PrototypeIcon } from "@/components/prototype/prototype-icon";
 import { WorkLocationWorldLoader } from "@/components/prototype/work-location-world-loader";
 
@@ -28,6 +29,12 @@ type BottomNavigationId = "home" | "messages" | "profile";
 type PrototypeControlTab = "theme" | "motion";
 
 const PROTOTYPE_CONTROL_TABS = ["theme", "motion"] as const satisfies readonly PrototypeControlTab[];
+
+interface PrototypeToast {
+  readonly message: string;
+  readonly detail?: string;
+  readonly flag?: string;
+}
 
 const FIGMA_ICON_ASSETS = {
   announcement: "/assets/prototype-figma/icon-announcement.svg",
@@ -260,7 +267,7 @@ const WORK_LOCATION_ANIMATIONS = [
   {
     id: "animation-03",
     label: "Animation 3",
-    name: "Cloud glide",
+    name: "Flag swoosh",
     motion: {
       from: { x: "-22cqw", y: "-10cqw", z: 0, rotationX: -2, rotationY: -7, rotationZ: 4 },
       cruise: { x: "-5cqw", y: "2.5cqw", z: 0, rotationX: 0, rotationY: -2, rotationZ: 2 },
@@ -324,7 +331,7 @@ const WALLETS = [
 const WORK_LOCATION_OPTIONS = [
   {
     value: "Hong Kong",
-    label: "Hongkong",
+    label: "Hong Kong",
     flag: "/assets/prototype-figma/flag-hong-kong.svg",
     unselected: "/assets/prototype-figma/work-country-unselected.svg",
   },
@@ -417,7 +424,7 @@ export function RemittancePrototype() {
   const [isAnnouncementHeader, setIsAnnouncementHeader] = useState(false);
   const [isBalanceHeader, setIsBalanceHeader] = useState(false);
   const [loadingWorkLocation, setLoadingWorkLocation] = useState<LoadingLocation | null>(null);
-  const [toast, setToast] = useState<string | null>(null);
+  const [toast, setToast] = useState<PrototypeToast | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const phoneShellRef = useRef<HTMLDivElement | null>(null);
   const prototypeAppRef = useRef<HTMLDivElement | null>(null);
@@ -566,11 +573,21 @@ export function RemittancePrototype() {
     }
   }, [isBalanceHeader]);
 
-  const showToast = useCallback((message: string) => {
+  const showToast = useCallback((message: string, options?: Omit<PrototypeToast, "message">) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    setToast(message);
-    toastTimerRef.current = setTimeout(() => setToast(null), 2200);
+    setToast({ message, ...options });
+    toastTimerRef.current = setTimeout(() => setToast(null), options?.detail ? 2800 : 2200);
   }, []);
+
+  const showCountrySelectionToast = useCallback((location: LoadingLocation) => {
+    const selectedOption = WORK_LOCATION_OPTIONS.find((option) => option.value === location);
+    const isHomeCountry = location === "Philippines";
+
+    showToast(`${selectedOption?.label ?? location} selected`, {
+      detail: isHomeCountry ? "Home country · PHP wallet active" : "Work country · Local services updated",
+      flag: isHomeCountry ? "/assets/prototype-figma/flag-ph.svg" : selectedOption?.flag,
+    });
+  }, [showToast]);
 
   const finishWorkLocationLoading = useCallback(() => {
     if (!loadingWorkLocation) return;
@@ -586,12 +603,10 @@ export function RemittancePrototype() {
       focusTarget = countryTriggerRef.current;
     }
 
-    const loadingLabel = WORK_LOCATION_OPTIONS.find((option) => option.value === loadingWorkLocation)?.label
-      ?? loadingWorkLocation;
     setLoadingWorkLocation(null);
-    showToast(`${loadingLabel} selected`);
+    showCountrySelectionToast(loadingWorkLocation);
     requestAnimationFrame(() => focusTarget?.focus({ preventScroll: true }));
-  }, [loadingWorkLocation, showToast, setWalletId]);
+  }, [loadingWorkLocation, setWalletId, showCountrySelectionToast]);
 
   const openPrototypePanel = useCallback((panel: Exclude<PhonePanel, null>, trigger?: HTMLElement | null) => {
     panelReturnFocusRef.current = trigger
@@ -803,7 +818,11 @@ export function RemittancePrototype() {
   }, [dismissWorkSheet, openPanel]);
 
   useLayoutEffect(() => {
-    if (!loadingWorkLocation || workLocationAnimation.id === "animation-02") return;
+    if (
+      !loadingWorkLocation
+      || workLocationAnimation.id === "animation-02"
+      || workLocationAnimation.id === "animation-03"
+    ) return;
 
     const overlay = workLocationLoadingRef.current;
     const artwork = workLocationLoadingArtworkRef.current;
@@ -1031,11 +1050,13 @@ export function RemittancePrototype() {
                       if (
                         workLocationAnimation.id === "animation-01"
                         || workLocationAnimation.id === "animation-02"
+                        || workLocationAnimation.id === "animation-03"
                       ) {
                         setLoadingWorkLocation("Philippines");
                       } else {
                         setWalletId("php");
                         setActiveSelector("country");
+                        showCountrySelectionToast("Philippines");
                       }
                     }}
                     aria-pressed={activeSelector === "country"}
@@ -1335,7 +1356,7 @@ export function RemittancePrototype() {
                                     } else {
                                       setActiveSelector("work");
                                       dismissWorkSheet();
-                                      showToast(`${option.label} selected`);
+                                      showCountrySelectionToast(option.value);
                                     }
                                   }}
                                 />
@@ -1411,6 +1432,14 @@ export function RemittancePrototype() {
                     destination={loadingWorkLocation}
                     onComplete={finishWorkLocationLoading}
                   />
+                ) : workLocationAnimation.id === "animation-03" ? (
+                  <FlagSwooshLoader
+                    selectedCountry={loadingWorkLocation}
+                    onComplete={finishWorkLocationLoading}
+                    assetSrc={loadingWorkLocation === "Philippines"
+                      ? "/assets/prototype-figma/work-location-philippines-swoosh.png"
+                      : "/assets/prototype-figma/work-location-hongkong-swoosh.png"}
+                  />
                 ) : (
                   <div
                     ref={workLocationLoadingRef}
@@ -1434,8 +1463,24 @@ export function RemittancePrototype() {
                 )
               )}
 
-              <div className={`prototype-toast ${toast ? "is-visible" : ""}`} role="status" aria-live="polite">
-                <PrototypeIcon name="check" /> {toast}
+              <div
+                className={`prototype-toast${toast?.detail ? " prototype-toast--selection" : ""}${toast ? " is-visible" : ""}`}
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {toast?.flag ? (
+                  <span className="prototype-toast-flag" aria-hidden="true">
+                    <Image src={toast.flag} alt="" width={32} height={32} />
+                  </span>
+                ) : null}
+                <span className="prototype-toast-copy">
+                  <strong>{toast?.message}</strong>
+                  {toast?.detail ? <small>{toast.detail}</small> : null}
+                </span>
+                <span className="prototype-toast-check" aria-hidden="true">
+                  <PrototypeIcon name="check" />
+                </span>
               </div>
             </div>
           </div>
@@ -1481,7 +1526,7 @@ export function RemittancePrototype() {
               onClick={() => setActiveControlTab("motion")}
               onKeyDown={(event) => handleControlTabKeyDown(event, "motion")}
             >
-              <PrototypeIcon name="send" size={17} />
+              <PrototypeIcon name="play-circle" size={17} />
               {t("Motion")}
             </button>
           </div>
@@ -1496,7 +1541,7 @@ export function RemittancePrototype() {
               <div className="prototype-configurator-heading">
                 <div>
                   <h3>{t("Color theme")}</h3>
-                  <p>{t("Pick the look of the wallet.")}</p>
+                  <p>{t("Pick the look of the remittance app.")}</p>
                 </div>
                 <span>{t(theme.name)}</span>
               </div>
@@ -1543,19 +1588,21 @@ export function RemittancePrototype() {
                 <legend className="sr-only">{t("Country or work region animation")}</legend>
                 <div className="prototype-motion-options" role="radiogroup" aria-label={t("Country or work region animation")}>
                   {WORK_LOCATION_ANIMATIONS.map((item, index) => {
-                    const isActive = item.id === workLocationAnimationId;
-                    const isOff = item.id === "animation-03";
+                    const isDisabled = item.id === "animation-04" || item.id === "animation-05";
+                    const isActive = !isDisabled && item.id === workLocationAnimationId;
                     return (
                       <button
                         key={item.id}
                         type="button"
                         role="radio"
                         aria-checked={isActive}
-                        aria-label={isOff ? t("No animation") : t(item.label)}
-                        className={`prototype-motion-option${isActive ? " is-active" : ""}`}
+                        aria-label={isDisabled ? `${t(item.label)} · ${t("Coming soon")}` : t(item.label)}
+                        title={isDisabled ? t("Coming soon") : undefined}
+                        disabled={isDisabled}
+                        className={`prototype-motion-option${isActive ? " is-active" : ""}${isDisabled ? " is-coming-soon" : ""}`}
                         onClick={() => setWorkLocationAnimationId(item.id)}
                       >
-                        {isOff ? t("Off") : String(index + 1).padStart(2, "0")}
+                        {String(index + 1).padStart(2, "0")}
                       </button>
                     );
                   })}

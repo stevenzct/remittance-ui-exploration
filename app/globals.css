@@ -139,6 +139,30 @@ a[href] {
   transform: translateX(-50%) translateY(0);
 }
 
+.ui-tooltip--end::after {
+  right: 0;
+  left: auto;
+  transform: translateY(-4px);
+}
+
+.ui-tooltip--end::before {
+  right: 12px;
+  left: auto;
+  transform: translateY(-4px);
+}
+
+@media (hover: hover) {
+  .ui-tooltip--end:hover::after,
+  .ui-tooltip--end:hover::before {
+    transform: translateY(0);
+  }
+}
+
+.ui-tooltip--end:focus-visible::after,
+.ui-tooltip--end:focus-visible::before {
+  transform: translateY(0);
+}
+
 .phone-shell {
   position: relative;
   isolation: isolate;
@@ -384,20 +408,32 @@ a[href] {
   box-shadow: 0 8px 18px color-mix(in srgb, var(--prototype-primary) 20%, transparent);
 }
 
-.prototype-motion-options:has(button:disabled) {
-  opacity: .52;
+.prototype-motion-option.is-coming-soon {
+  cursor: not-allowed;
+  border-color: #f0edf3;
+  background: #f7f5f8;
+  color: #b5afb9;
+  box-shadow: none;
+  opacity: .72;
 }
 
 @media (hover: hover) {
   .prototype-configurator-tab:hover,
-  .prototype-theme-option:hover,
-  .prototype-motion-option:hover {
+  .prototype-theme-option:hover {
+    transform: translateY(-1px);
+  }
+
+  .prototype-motion-option:not(:disabled):hover {
     transform: translateY(-1px);
   }
 
   .prototype-configurator-tab:not(.is-active):hover,
-  .prototype-theme-option:not(.is-active):hover,
-  .prototype-motion-option:not(.is-active):hover {
+  .prototype-theme-option:not(.is-active):hover {
+    border-color: color-mix(in srgb, var(--prototype-primary) 18%, #ebe7f0);
+    color: var(--prototype-primary);
+  }
+
+  .prototype-motion-option:not(.is-active):not(:disabled):hover {
     border-color: color-mix(in srgb, var(--prototype-primary) 18%, #ebe7f0);
     color: var(--prototype-primary);
   }
@@ -1825,6 +1861,37 @@ a[href] {
   perspective: 186.667cqw;
 }
 
+/* Animation 3 — flag-swoosh loader (full-bleed splash, diagonal reveal) */
+.prototype-flag-swoosh-loading.prototype-work-location-loading {
+  background: #fff;
+}
+
+.prototype-flag-swoosh-artwork {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --reveal-edge: -25%;
+  transform-origin: 50% 50%;
+  mask-image: linear-gradient(45deg, #000 0%, #000 var(--reveal-edge), transparent calc(var(--reveal-edge) + 16%), transparent 100%);
+  -webkit-mask-image: linear-gradient(45deg, #000 0%, #000 var(--reveal-edge), transparent calc(var(--reveal-edge) + 16%), transparent 100%);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.prototype-flag-swoosh-artwork img {
+  pointer-events: none;
+}
+
+/* A soft light catching the destination once the wipe reaches the plane. */
+.prototype-flag-swoosh-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 82% 32%, rgb(255 255 255 / 90%) 0%, rgb(255 255 255 / 35%) 30%, rgb(255 255 255 / 0%) 60%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .prototype-world-route-canvas,
 .prototype-world-route-globe-fallback,
 .prototype-world-route-plane-flight,
@@ -2344,19 +2411,29 @@ a[href] {
   align-items: center;
   justify-content: center;
   gap: 2.133cqw;
-  transform: translateY(3.2cqw);
-  border: .267cqw solid color-mix(in srgb, var(--prototype-primary) 22%, transparent);
-  border-radius: 3.2cqw;
-  background: color-mix(in srgb, var(--prototype-surface) 95%, transparent);
+  transform: translateY(1.6cqw);
+  overflow: hidden;
+  border: .267cqw solid color-mix(in srgb, var(--prototype-primary) 12%, transparent);
+  border-radius: 3.733cqw;
+  background: color-mix(in srgb, var(--prototype-surface) 96%, var(--prototype-primary-soft));
   padding: 2.133cqw 3.2cqw;
   color: var(--prototype-ink);
-  box-shadow: 0 3.2cqw 8.533cqw rgb(0 0 0 / 17%);
+  box-shadow:
+    0 1.6cqw 4.267cqw rgb(31 23 49 / 10%),
+    inset 0 .267cqw 0 rgb(255 255 255 / 65%);
   font-size: 3.067cqw;
   font-weight: 700;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease, transform 180ms ease;
-  backdrop-filter: blur(3.2cqw);
+  backdrop-filter: blur(2.133cqw);
+}
+
+.prototype-toast--selection {
+  min-height: 13.333cqw;
+  justify-content: flex-start;
+  gap: 2.133cqw;
+  padding: 1.867cqw 2.4cqw;
 }
 
 .prototype-toast:empty {
@@ -2368,10 +2445,68 @@ a[href] {
   opacity: 1;
 }
 
-.prototype-toast svg {
-  width: 4.267cqw;
-  height: 4.267cqw;
+.prototype-toast-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: .533cqw;
+}
+
+.prototype-toast-copy strong {
+  overflow: hidden;
+  color: var(--prototype-ink);
+  font-size: 3.2cqw;
+  font-weight: 700;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prototype-toast-copy small {
+  overflow: hidden;
+  color: var(--prototype-muted);
+  font-size: 2.533cqw;
+  font-weight: 520;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prototype-toast-flag {
+  display: grid;
+  width: 8cqw;
+  height: 8cqw;
+  flex: 0 0 auto;
+  place-items: center;
+  border: .267cqw solid color-mix(in srgb, var(--prototype-primary) 9%, transparent);
+  border-radius: 50%;
+  background: var(--prototype-surface);
+  box-shadow: 0 .533cqw 1.6cqw rgb(31 23 49 / 7%);
+}
+
+.prototype-toast-flag img {
+  width: 6.933cqw;
+  height: 6.933cqw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.prototype-toast-check {
+  display: grid;
+  width: 6.4cqw;
+  height: 6.4cqw;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--prototype-primary) 10%, var(--prototype-surface));
   color: var(--prototype-primary);
+}
+
+.prototype-toast-check svg {
+  width: 3.467cqw;
+  height: 3.467cqw;
+  stroke-width: 2.25;
 }
 
 @media (orientation: landscape) and (max-height: 520px) {

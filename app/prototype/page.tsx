@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { PrototypeSection } from "@/components/sections/prototype-section";
 
 export const metadata: Metadata = {
@@ -8,9 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrototypePage() {
-  return (
-    <DashboardShell>
-      <PrototypeSection />
-    </DashboardShell>
-  );
+  return <PrototypeSection />;
 }
