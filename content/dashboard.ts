@@ -47,16 +47,16 @@ export const NAVIGATION_ITEMS = [
     icon: DASHBOARD_ICONS.showcaseNavigation,
   },
   {
-    id: "prototype",
-    label: "Prototype",
-    href: "/prototype",
-    icon: DASHBOARD_ICONS.prototypeNavigation,
-  },
-  {
     id: "brand",
     label: "Brand System",
     href: "/#brand",
     icon: DASHBOARD_ICONS.palette,
+  },
+  {
+    id: "prototype",
+    label: "Prototype",
+    href: "/prototype",
+    icon: DASHBOARD_ICONS.prototypeNavigation,
   },
 ] as const satisfies readonly NavigationItem[];
 

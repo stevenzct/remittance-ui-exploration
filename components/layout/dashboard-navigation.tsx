@@ -12,8 +12,9 @@ interface DashboardNavigationProps {
   readonly onNavigate?: () => void;
 }
 
-const firstSection = NAVIGATION_ITEMS[0].id;
-const lastSection = NAVIGATION_ITEMS[NAVIGATION_ITEMS.length - 1].id;
+const pageSectionItems = NAVIGATION_ITEMS.filter((item) => item.href.startsWith("/#"));
+const firstSection = pageSectionItems[0].id;
+const lastSection = pageSectionItems[pageSectionItems.length - 1].id;
 
 function sectionFromHash(): DashboardSectionId | null {
   const hash = window.location.hash.slice(1);
