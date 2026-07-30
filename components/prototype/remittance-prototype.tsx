@@ -16,6 +16,7 @@ import {
   useState,
 } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { CountryCurtainLoader } from "@/components/prototype/country-curtain-loader";
 import { FlagSwooshLoader } from "@/components/prototype/flag-swoosh-loader";
 import { PrototypeIcon } from "@/components/prototype/prototype-icon";
 import { WorkLocationWorldLoader } from "@/components/prototype/work-location-world-loader";
@@ -277,7 +278,7 @@ const WORK_LOCATION_ANIMATIONS = [
   {
     id: "animation-04",
     label: "Animation 4",
-    name: "Depth flyover",
+    name: "Editorial curtain",
     motion: {
       from: { x: "-16cqw", y: "9cqw", z: -180, rotationX: 15, rotationY: -10, rotationZ: -6 },
       cruise: { x: "-4cqw", y: "-2cqw", z: -45, rotationX: 5, rotationY: -3, rotationZ: -2 },
@@ -1051,6 +1052,7 @@ export function RemittancePrototype() {
                         workLocationAnimation.id === "animation-01"
                         || workLocationAnimation.id === "animation-02"
                         || workLocationAnimation.id === "animation-03"
+                        || workLocationAnimation.id === "animation-04"
                       ) {
                         setLoadingWorkLocation("Philippines");
                       } else {
@@ -1440,6 +1442,14 @@ export function RemittancePrototype() {
                       ? "/assets/prototype-figma/work-location-philippines-swoosh.png"
                       : "/assets/prototype-figma/work-location-hongkong-swoosh.png"}
                   />
+                ) : workLocationAnimation.id === "animation-04" ? (
+                  <CountryCurtainLoader
+                    selectedCountry={loadingWorkLocation}
+                    onComplete={finishWorkLocationLoading}
+                    assetSrc={loadingWorkLocation === "Philippines"
+                      ? "/assets/prototype-figma/work-location-philippines-curtain.png"
+                      : "/assets/prototype-figma/work-location-hongkong-curtain.png"}
+                  />
                 ) : (
                   <div
                     ref={workLocationLoadingRef}
@@ -1588,7 +1598,7 @@ export function RemittancePrototype() {
                 <legend className="sr-only">{t("Country or work region animation")}</legend>
                 <div className="prototype-motion-options" role="radiogroup" aria-label={t("Country or work region animation")}>
                   {WORK_LOCATION_ANIMATIONS.map((item, index) => {
-                    const isDisabled = item.id === "animation-04" || item.id === "animation-05";
+                    const isDisabled = item.id === "animation-05";
                     const isActive = !isDisabled && item.id === workLocationAnimationId;
                     return (
                       <button
