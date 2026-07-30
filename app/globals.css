@@ -938,7 +938,7 @@ a[href] {
   top: 1.6cqw;
   left: 2.133cqw;
   display: flex;
-  width: 26.4cqw;
+  width: 30.4cqw;
   height: 8.533cqw;
   align-items: center;
   gap: 1.067cqw;
@@ -960,13 +960,14 @@ a[href] {
 }
 
 .prototype-sticky-wallet-name strong {
+  min-width: 0;
   overflow: hidden;
   color: var(--prototype-ink);
   font-size: 3.2cqw;
   font-weight: 600;
   letter-spacing: -.032cqw;
   line-height: normal;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
 }
 
@@ -974,7 +975,7 @@ a[href] {
   position: absolute;
   top: 3.333cqw;
   left: 35.2cqw;
-  width: 23.2cqw;
+  width: 43.2cqw;
   height: 5.067cqw;
   overflow: hidden;
   color: var(--prototype-ink);
@@ -983,7 +984,7 @@ a[href] {
   font-weight: 700;
   letter-spacing: 0;
   line-height: normal;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
 }
 

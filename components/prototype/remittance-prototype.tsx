@@ -458,6 +458,7 @@ export function RemittancePrototype() {
     ?? WORK_LOCATION_ANIMATIONS[0];
   const wallet = WALLETS.find((item) => item.id === walletId) ?? WALLETS[0];
   const country = "Philippines";
+  const receivingAccountCountry = wallet.id === "hkd" ? "Hongkong" : country;
   const selectedWorkLocationOption = WORK_LOCATION_OPTIONS.find((option) => option.value === workLocation);
   const unopenedWalletCurrency = activeSelector === "work" ? UNOPENED_WALLET_CURRENCY[workLocation] ?? null : null;
   const showBalanceHeader = isBalanceHeader && !unopenedWalletCurrency;
@@ -1187,7 +1188,7 @@ export function RemittancePrototype() {
                         </button>
                       </div>
                       <p className="prototype-balance" aria-live="polite">{balanceVisible ? wallet.balance : "••••••••"}</p>
-                      <p className="prototype-account-label">{country} · Receiving Account</p>
+                      <p className="prototype-account-label">{receivingAccountCountry} · Receiving Account</p>
 
                       <div className="prototype-bank-card" aria-label={`Asia United Bank card ending in ${wallet.account.slice(-4)}`}>
                         <Image className="prototype-bank-card-art" src="/assets/prototype-figma/aub-card.png" alt="" width={308} height={117} />
@@ -1195,7 +1196,7 @@ export function RemittancePrototype() {
                           <strong>Asia United Bank</strong>
                           <span>{wallet.account}<button type="button" onClick={() => void copyAccountNumber()} aria-label="Copy receiving account number"><FigmaIcon name="copy" size={12} /></button></span>
                         </div>
-                        <p className="prototype-bank-card-currency">{country} · {wallet.currency}</p>
+                        <p className="prototype-bank-card-currency">{receivingAccountCountry} · {wallet.currency}</p>
                       </div>
 
                       <div className="prototype-carousel-dots" aria-label="Wallet card 1 of 3">
