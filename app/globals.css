@@ -2574,15 +2574,83 @@ a[href] {
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 1023px) {
   html { scroll-padding-top: 5.5rem; }
+
+  body.prototype-experience-fullscreen {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
+  body.prototype-experience-fullscreen .dashboard-main > header {
+    display: none;
+  }
+
+  .prototype-fullscreen-page {
+    overflow: visible;
+    backdrop-filter: none;
+  }
+
+  .prototype-device-stage {
+    min-height: 160dvh;
+    align-items: flex-start;
+  }
 
   .phone-shell {
     width: min(260px, 100%);
   }
 
   .phone-shell.prototype-phone-shell {
+    position: sticky;
+    z-index: 35;
+    top: 0;
     width: min(381px, 100%);
+    transition:
+      width 360ms cubic-bezier(.22, 1, .36, 1),
+      height 360ms cubic-bezier(.22, 1, .36, 1),
+      padding 360ms cubic-bezier(.22, 1, .36, 1),
+      border-color 220ms ease,
+      border-radius 360ms cubic-bezier(.22, 1, .36, 1),
+      box-shadow 360ms ease;
+  }
+
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    animation: prototype-mobile-fullscreen-in 360ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen::before,
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen::after {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen .prototype-screen,
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen.is-work-region-open .prototype-screen {
+    height: 100%;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  @keyframes prototype-mobile-fullscreen-in {
+    from {
+      transform: scale(.965);
+      opacity: .94;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
   .ui-surface { box-shadow: 0 16px 45px rgb(37 27 57 / 5%); }
@@ -2595,9 +2663,11 @@ a[href] {
 
   .prototype-utility-header,
   .prototype-announcement--sticky,
-  .prototype-sticky-wallet {
+  .prototype-sticky-wallet,
+  .phone-shell.prototype-phone-shell {
     transition-delay: 0s;
     transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
   }
 }
 
@@ -2618,5 +2688,12 @@ a[href] {
 
   .phone-presentation {
     min-height: 32rem;
+  }
+}
+
+@media (max-width: 900px) and (max-height: 520px) and (pointer: coarse) {
+  .phone-shell.prototype-phone-shell.is-mobile-fullscreen {
+    width: 100vw;
+    height: 100dvh;
   }
 }

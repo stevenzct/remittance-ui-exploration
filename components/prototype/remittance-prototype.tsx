@@ -424,9 +424,11 @@ export function RemittancePrototype() {
   const [activeNavigation, setActiveNavigation] = useState<BottomNavigationId>("home");
   const [isAnnouncementHeader, setIsAnnouncementHeader] = useState(false);
   const [isBalanceHeader, setIsBalanceHeader] = useState(false);
+  const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
   const [loadingWorkLocation, setLoadingWorkLocation] = useState<LoadingLocation | null>(null);
   const [toast, setToast] = useState<PrototypeToast | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const deviceStageRef = useRef<HTMLDivElement | null>(null);
   const phoneShellRef = useRef<HTMLDivElement | null>(null);
   const prototypeAppRef = useRef<HTMLDivElement | null>(null);
   const utilityHeaderRef = useRef<HTMLElement | null>(null);
@@ -467,6 +469,41 @@ export function RemittancePrototype() {
     : themeId === "theme-02"
       ? "/assets/prototype-figma/work-country-selected-pink.svg"
       : "/assets/prototype-figma/work-country-selected.svg";
+
+  useEffect(() => {
+    const mobileViewport = window.matchMedia("(max-width: 1023px)");
+
+    const updateMobileFullscreen = () => {
+      const stage = deviceStageRef.current;
+
+      if (!mobileViewport.matches || !stage) {
+        setIsMobileFullscreen(false);
+        return;
+      }
+
+      const bounds = stage.getBoundingClientRect();
+      setIsMobileFullscreen(bounds.top <= 1);
+    };
+
+    updateMobileFullscreen();
+    window.addEventListener("scroll", updateMobileFullscreen, { passive: true });
+    window.addEventListener("resize", updateMobileFullscreen);
+    mobileViewport.addEventListener("change", updateMobileFullscreen);
+
+    return () => {
+      window.removeEventListener("scroll", updateMobileFullscreen);
+      window.removeEventListener("resize", updateMobileFullscreen);
+      mobileViewport.removeEventListener("change", updateMobileFullscreen);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("prototype-experience-fullscreen", isMobileFullscreen);
+
+    return () => {
+      document.body.classList.remove("prototype-experience-fullscreen");
+    };
+  }, [isMobileFullscreen]);
 
   useEffect(() => () => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
@@ -1028,11 +1065,14 @@ export function RemittancePrototype() {
 
   return (
     <PrototypeThemeContext.Provider value={themeId}>
-    <div className="grid min-w-0 items-start gap-8 sm:gap-10 xl:grid-cols-[minmax(380px,.78fr)_minmax(0,1fr)] xl:gap-16 2xl:gap-20">
-      <div className="order-2 flex min-w-0 justify-center xl:order-1 xl:sticky xl:top-28">
+    <div className="prototype-layout grid min-w-0 items-start gap-8 sm:gap-10 xl:grid-cols-[minmax(380px,.78fr)_minmax(0,1fr)] xl:gap-16 2xl:gap-20">
+      <div
+        ref={deviceStageRef}
+        className={`prototype-device-stage order-2 flex min-w-0 justify-center xl:order-1 xl:sticky xl:top-28${isMobileFullscreen ? " is-mobile-fullscreen" : ""}`}
+      >
         <div
           ref={phoneShellRef}
-          className={`phone-shell prototype-phone-shell${openPanel ? " is-panel-open" : ""}${openPanel === "work" ? " is-work-region-open" : ""}`}
+          className={`phone-shell prototype-phone-shell${isMobileFullscreen ? " is-mobile-fullscreen" : ""}${openPanel ? " is-panel-open" : ""}${openPanel === "work" ? " is-work-region-open" : ""}`}
           style={themeVariables(theme)}
           aria-label={`${t(theme.label)} ${t("interactive mobile wallet prototype")}`}
         >
@@ -1498,7 +1538,7 @@ export function RemittancePrototype() {
         </div>
       </div>
 
-      <div className="order-1 min-w-0 xl:order-2 xl:pt-12">
+      <div className="prototype-controls order-1 min-w-0 xl:order-2 xl:pt-12">
         <span className="inline-flex items-center gap-2 rounded-full bg-[#f1edfb] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#381c8d]">
           <PrototypeIcon name="sparkles" size={16} />
           {t("Live prototype")}
