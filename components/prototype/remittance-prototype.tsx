@@ -464,6 +464,13 @@ export function RemittancePrototype() {
   const selectedWorkLocationOption = WORK_LOCATION_OPTIONS.find((option) => option.value === workLocation);
   const unopenedWalletCurrency = activeSelector === "work" ? UNOPENED_WALLET_CURRENCY[workLocation] ?? null : null;
   const showBalanceHeader = isBalanceHeader && !unopenedWalletCurrency;
+  const isFullBleedLoading = Boolean(
+    loadingWorkLocation
+    && (
+      workLocationAnimation.id === "animation-03"
+      || workLocationAnimation.id === "animation-04"
+    ),
+  );
   const selectedWorkRegionIndicator = themeId === "theme-01"
     ? "/assets/prototype-figma/work-country-selected-violet.svg"
     : themeId === "theme-02"
@@ -1072,7 +1079,7 @@ export function RemittancePrototype() {
       >
         <div
           ref={phoneShellRef}
-          className={`phone-shell prototype-phone-shell${isMobileFullscreen ? " is-mobile-fullscreen" : ""}${openPanel ? " is-panel-open" : ""}${openPanel === "work" ? " is-work-region-open" : ""}`}
+          className={`phone-shell prototype-phone-shell${isMobileFullscreen ? " is-mobile-fullscreen" : ""}${isFullBleedLoading ? " is-full-bleed-loading" : ""}${openPanel ? " is-panel-open" : ""}${openPanel === "work" ? " is-work-region-open" : ""}`}
           style={themeVariables(theme)}
           aria-label={`${t(theme.label)} ${t("interactive mobile wallet prototype")}`}
         >

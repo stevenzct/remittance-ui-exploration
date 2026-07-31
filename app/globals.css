@@ -476,6 +476,23 @@ a[href] {
   box-shadow: none;
 }
 
+.phone-shell.prototype-phone-shell.is-full-bleed-loading {
+  overflow: hidden;
+}
+
+.phone-shell.prototype-phone-shell.is-full-bleed-loading .prototype-screen,
+.phone-shell.prototype-phone-shell.is-full-bleed-loading .prototype-app {
+  overflow: visible;
+}
+
+.phone-shell.prototype-phone-shell.is-full-bleed-loading .prototype-screen {
+  contain: layout style inline-size;
+}
+
+.phone-shell.prototype-phone-shell.is-full-bleed-loading:not(.is-mobile-fullscreen) .prototype-work-location-loading {
+  top: -40px;
+}
+
 .prototype-app,
 .prototype-app button,
 .prototype-app input {
