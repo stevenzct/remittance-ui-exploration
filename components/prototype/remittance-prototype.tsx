@@ -713,6 +713,33 @@ export function RemittancePrototype() {
       .to(backdropTargets, { "--work-backdrop-opacity": 0, duration: duration * .8, ease: "power1.out" }, 0);
   }, [closePrototypePanel]);
 
+  const activateHomeCountry = useCallback(() => {
+    const beginHomeCountryTransition = () => {
+      setWalletId("php");
+
+      if (
+        workLocationAnimation.id === "animation-01"
+        || workLocationAnimation.id === "animation-02"
+        || workLocationAnimation.id === "animation-03"
+        || workLocationAnimation.id === "animation-04"
+      ) {
+        setLoadingWorkLocation("Philippines");
+      } else {
+        showCountrySelectionToast("Philippines");
+        requestAnimationFrame(() => countryTriggerRef.current?.focus({ preventScroll: true }));
+      }
+    };
+
+    setWorkLocation("Where you work");
+    setActiveSelector("country");
+
+    if (openPanel === "work") {
+      dismissWorkSheet(false, beginHomeCountryTransition);
+    } else {
+      beginHomeCountryTransition();
+    }
+  }, [dismissWorkSheet, openPanel, showCountrySelectionToast, workLocationAnimation.id]);
+
   useLayoutEffect(() => {
     if (openPanel !== "work") return;
 
@@ -1088,27 +1115,14 @@ export function RemittancePrototype() {
               <header
                 ref={utilityHeaderRef}
                 className={`prototype-utility-header${isAnnouncementHeader ? " is-announcement-sticky" : ""}${showBalanceHeader ? " is-balance-sticky" : ""}`}
-                inert={openPanel || loadingWorkLocation ? true : undefined}
+                inert={loadingWorkLocation || (openPanel && openPanel !== "work") ? true : undefined}
               >
                 <div ref={countrySelectorRef} className="prototype-selector-wrap">
                   <button
                     ref={countryTriggerRef}
                     type="button"
                     className={`prototype-pill prototype-country-pill${activeSelector === "work" ? " is-inactive" : ""}`}
-                    onClick={() => {
-                      if (
-                        workLocationAnimation.id === "animation-01"
-                        || workLocationAnimation.id === "animation-02"
-                        || workLocationAnimation.id === "animation-03"
-                        || workLocationAnimation.id === "animation-04"
-                      ) {
-                        setLoadingWorkLocation("Philippines");
-                      } else {
-                        setWalletId("php");
-                        setActiveSelector("country");
-                        showCountrySelectionToast("Philippines");
-                      }
-                    }}
+                    onClick={activateHomeCountry}
                     aria-pressed={activeSelector === "country"}
                   >
                     <span className="prototype-flag"><Image src="/assets/prototype-figma/flag-ph.svg" alt="" width={22} height={22} priority /></span>
@@ -1116,7 +1130,11 @@ export function RemittancePrototype() {
                   </button>
                 </div>
 
-                <div ref={workSelectorRef} className="prototype-selector-wrap">
+                <div
+                  ref={workSelectorRef}
+                  className="prototype-selector-wrap"
+                  inert={openPanel === "work" ? true : undefined}
+                >
                   <button
                     ref={workTriggerRef}
                     type="button"
@@ -1359,7 +1377,7 @@ export function RemittancePrototype() {
                     id={openPanel === "work" ? "prototype-work-region-sheet" : undefined}
                     className={`prototype-sheet${openPanel === "work" ? " prototype-work-region-sheet" : ""}`}
                     role="dialog"
-                    aria-modal="true"
+                    aria-modal={openPanel !== "work"}
                     aria-label={openPanel === "work" ? undefined : `${openPanel} panel`}
                     aria-labelledby={openPanel === "work" ? "prototype-work-region-title" : undefined}
                     aria-describedby={openPanel === "work" ? "prototype-work-region-description" : undefined}

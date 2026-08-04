@@ -595,6 +595,16 @@ a[href] {
   transition: background-color 220ms ease, height 280ms ease-in-out;
 }
 
+.phone-shell.prototype-phone-shell.is-work-region-open .prototype-utility-header {
+  z-index: 71;
+  pointer-events: none;
+}
+
+.phone-shell.prototype-phone-shell.is-work-region-open .prototype-utility-header > .prototype-selector-wrap:first-child {
+  z-index: 1;
+  pointer-events: auto;
+}
+
 .prototype-utility-header.is-announcement-sticky {
   height: 28cqw;
 }
