@@ -44,10 +44,10 @@ export function DashboardHeader() {
           <h1 className="truncate text-base font-bold tracking-[-0.02em] text-[#201b26] sm:text-lg">{t(pageTitle)}</h1>
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         <button
           type="button"
-          className="ui-tooltip inline-flex size-11 items-center justify-center rounded-2xl border border-[#e7e3eb] bg-white/90 text-[#4f4856] shadow-[0_6px_18px_rgba(37,27,57,.04)] transition hover:bg-[#f5f2fb] hover:text-[#381c8d] focus-visible:outline-2 focus-visible:outline-[#5b2bd1]"
+          className="ui-tooltip hidden size-11 items-center justify-center rounded-2xl border border-[#e7e3eb] bg-white/90 text-[#4f4856] shadow-[0_6px_18px_rgba(37,27,57,.04)] transition hover:bg-[#f5f2fb] hover:text-[#381c8d] focus-visible:outline-2 focus-visible:outline-[#5b2bd1] sm:inline-flex"
           onClick={toggleFullscreen}
           aria-pressed={isFullscreen}
           aria-label={fullscreenLabel}
@@ -65,7 +65,7 @@ export function DashboardHeader() {
             aria-pressed={language === "en"}
             data-tooltip-label={t("English")}
           >
-            <Icon icon="circle-flags:us" width="16" aria-hidden="true" /> EN
+            <Icon icon="circle-flags:us" width="16" aria-hidden="true" /> <span className="hidden sm:inline">EN</span>
           </button>
           <span className="px-1.5 text-[#c8c3cc]" aria-hidden="true">|</span>
           <button
@@ -76,7 +76,7 @@ export function DashboardHeader() {
             aria-pressed={language === "zh"}
             data-tooltip-label={t("Simplified Chinese")}
           >
-            <Icon icon="circle-flags:cn" width="16" aria-hidden="true" /> 中文
+            <Icon icon="circle-flags:cn" width="16" aria-hidden="true" /> <span className="hidden sm:inline">中文</span>
           </button>
         </div>
       </div>

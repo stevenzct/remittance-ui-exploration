@@ -20,7 +20,7 @@ export function OverviewSection() {
               <span className="lg:block">{t("experience")}</span>
           </h2>
           <p className="mt-6 max-w-xl text-base leading-7 text-[#77717f] sm:mt-7 sm:text-lg sm:leading-8">{t("Exploring layouts across three visual themes for review")}</p>
-          <div className="mt-8 grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:mt-10 sm:flex sm:flex-wrap">
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 sm:flex sm:flex-wrap">
             <a href="#showcase" className="ui-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#381c8d] px-5 text-sm font-bold text-white shadow-[0_14px_32px_rgba(56,28,141,.24)] sm:w-auto sm:px-6">
               {t("Explore samples")} <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="18" />
             </a>
