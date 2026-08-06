@@ -59,6 +59,127 @@ a[href] {
   backdrop-filter: blur(18px);
 }
 
+.revision-hero {
+  position: relative;
+  background:
+    radial-gradient(circle at 88% 8%, rgb(91 43 209 / 11%), transparent 25rem),
+    radial-gradient(circle at 10% 92%, rgb(186 50 69 / 6%), transparent 22rem),
+    rgb(255 255 255 / 92%);
+}
+
+.revision-hero::before {
+  content: "";
+  position: absolute;
+  top: -9rem;
+  right: -6rem;
+  width: 23rem;
+  aspect-ratio: 1;
+  border: 1px solid rgb(91 43 209 / 9%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3rem rgb(91 43 209 / 3%),
+    0 0 0 7rem rgb(91 43 209 / 2%);
+  pointer-events: none;
+}
+
+.revision-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(91 43 209 / 2.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(91 43 209 / 2.5%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, #000 40%, #000);
+  pointer-events: none;
+}
+
+.refinement-comparison {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 96%), rgb(250 249 252 / 94%)),
+    rgb(255 255 255 / 92%);
+}
+
+.revision-phone-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.revision-phone-stage::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 8%;
+  left: 50%;
+  width: min(76%, 34rem);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border: 1px solid rgb(91 43 209 / 7%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(91 43 209 / 9%), rgb(91 43 209 / 3%) 48%, transparent 70%);
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.revision-phone-stage::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 3%;
+  left: 50%;
+  width: min(48%, 20rem);
+  height: 2rem;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgb(37 27 57 / 16%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.revision-details summary {
+  cursor: pointer;
+}
+
+.revision-details-icon {
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.revision-details[open] .revision-details-icon {
+  transform: rotate(45deg);
+  background: #5b2bd1;
+  color: #fff;
+}
+
+.revision-image-trigger {
+  border-color: transparent;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 40%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 40%) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.revision-cta-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px),
+    radial-gradient(circle at 88% 18%, rgb(146 107 239 / 34%), transparent 24rem);
+  background-size: 28px 28px, 28px 28px, auto;
+  mask-image: linear-gradient(90deg, transparent, #000 38%, #000);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .revisions-page .ui-button:hover {
+    transform: none;
+  }
+
+  .revisions-page .ui-button:hover::after {
+    transform: translateX(-120%);
+  }
+}
+
 .ui-button {
   position: relative;
   isolation: isolate;
@@ -224,6 +345,12 @@ a[href] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+  .phone-shell.revision-phone-shell {
+    width: min(350px, 100%);
+  }
 }
 
 .image-preview-stage {

@@ -25,10 +25,14 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
   const { t } = useLanguage();
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<DashboardSectionId>(firstSection);
-  const visibleActiveSection = pathname === "/prototype" ? "prototype" : activeSection;
+  const visibleActiveSection = pathname === "/prototype"
+    ? "prototype"
+    : pathname === "/refinements" || pathname === "/revisions"
+      ? "refinements"
+      : activeSection;
 
   useEffect(() => {
-    if (pathname === "/prototype") return;
+    if (pathname !== "/") return;
 
     let animationFrame = 0;
 

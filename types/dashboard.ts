@@ -1,9 +1,10 @@
-export type DashboardSectionId = "overview" | "showcase" | "prototype" | "brand";
+export type DashboardSectionId = "overview" | "showcase" | "prototype" | "refinements" | "brand";
 export type DashboardStatisticId = "samples" | "colors" | "direction";
 
 export type DashboardIconName =
   | "solar:arrow-left-linear"
   | "solar:arrow-right-linear"
+  | "solar:clipboard-check-linear"
   | "solar:close-circle-linear"
   | "solar:hamburger-menu-linear"
   | "solar:layers-minimalistic-linear"
@@ -28,6 +29,7 @@ export type DashboardIconKey =
   | "palette"
   | "previousSample"
   | "prototypeNavigation"
+  | "revisionsNavigation"
   | "sampleStatistic"
   | "showcaseNavigation"
   | "themeSummary"

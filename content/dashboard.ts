@@ -20,6 +20,7 @@ export const DASHBOARD_ICONS = {
   palette: "solar:palette-linear",
   previousSample: "solar:arrow-left-linear",
   prototypeNavigation: "solar:smartphone-2-linear",
+  revisionsNavigation: "solar:clipboard-check-linear",
   sampleStatistic: "solar:smartphone-2-linear",
   showcaseNavigation: "solar:smartphone-linear",
   themeSummary: "solar:lightbulb-bolt-linear",
@@ -51,6 +52,12 @@ export const NAVIGATION_ITEMS = [
     label: "Brand System",
     href: "/#brand",
     icon: DASHBOARD_ICONS.palette,
+  },
+  {
+    id: "refinements",
+    label: "Refinements",
+    href: "/refinements",
+    icon: DASHBOARD_ICONS.revisionsNavigation,
   },
   {
     id: "prototype",

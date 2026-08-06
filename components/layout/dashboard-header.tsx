@@ -2,13 +2,20 @@
 
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { DASHBOARD_THEME } from "@/content/dashboard";
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { useLanguage } from "@/components/providers/language-provider";
 
 export function DashboardHeader() {
   const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const pageTitle = pathname === "/refinements" || pathname === "/revisions"
+    ? "Homepage Refinements"
+    : pathname === "/prototype"
+      ? "Interactive Prototype"
+      : "Homepage Design";
 
   useEffect(() => {
     const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
@@ -32,7 +39,7 @@ export function DashboardHeader() {
         <MobileNavigation />
         <div className="min-w-0">
           <p className="text-[11px] font-semibold text-[#99929f] sm:text-xs">{t("Remittance App")}</p>
-          <h1 className="truncate text-base font-bold tracking-[-0.02em] text-[#201b26] sm:text-lg">{t("Homepage Design")}</h1>
+          <h1 className="truncate text-base font-bold tracking-[-0.02em] text-[#201b26] sm:text-lg">{t(pageTitle)}</h1>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
