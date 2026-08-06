@@ -1,5 +1,11 @@
 @import "@fontsource-variable/inter";
 @import "tailwindcss";
+@import "lightgallery/css/lightgallery.css";
+@import "lightgallery/css/lg-autoplay.css";
+@import "lightgallery/css/lg-fullscreen.css";
+@import "lightgallery/css/lg-rotate.css";
+@import "lightgallery/css/lg-thumbnail.css";
+@import "lightgallery/css/lg-zoom.css";
 
 :root {
   --brand: #381c8d;
@@ -62,6 +68,7 @@ a[href] {
 .revision-hero {
   position: relative;
   background:
+    linear-gradient(180deg, transparent 68%, rgb(255 255 255 / 98%) 100%),
     radial-gradient(circle at 88% 8%, rgb(91 43 209 / 11%), transparent 25rem),
     radial-gradient(circle at 10% 92%, rgb(186 50 69 / 6%), transparent 22rem),
     rgb(255 255 255 / 92%);
@@ -114,9 +121,9 @@ a[href] {
   width: min(76%, 34rem);
   aspect-ratio: 1;
   transform: translateX(-50%);
-  border: 1px solid rgb(91 43 209 / 7%);
+  border: 1px solid rgb(40 83 187 / 7%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(91 43 209 / 9%), rgb(91 43 209 / 3%) 48%, transparent 70%);
+  background: radial-gradient(circle, rgb(40 83 187 / 9%), rgb(40 83 187 / 3%) 48%, transparent 70%);
   filter: blur(1px);
   pointer-events: none;
 }
@@ -168,6 +175,45 @@ a[href] {
   background-size: 28px 28px, 28px 28px, auto;
   mask-image: linear-gradient(90deg, transparent, #000 38%, #000);
   pointer-events: none;
+}
+
+.wireframes-hero {
+  background:
+    radial-gradient(circle at 84% 10%, rgb(91 43 209 / 11%), transparent 26rem),
+    radial-gradient(circle at 10% 94%, rgb(56 28 141 / 6%), transparent 24rem),
+    rgb(255 255 255 / 94%);
+}
+
+.wireframes-hero::before {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  right: -5rem;
+  width: 25rem;
+  aspect-ratio: 1;
+  border: 1px solid rgb(91 43 209 / 8%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3.5rem rgb(91 43 209 / 3%),
+    0 0 0 8rem rgb(91 43 209 / 2%);
+  pointer-events: none;
+}
+
+.wireframes-hero-grid {
+  background-image:
+    linear-gradient(rgb(91 43 209 / 2.4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(91 43 209 / 2.4%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, #000 42%, #000);
+  pointer-events: none;
+}
+
+.wireframe-image-stage {
+  background-image:
+    linear-gradient(rgb(91 43 209 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(91 43 209 / 3%) 1px, transparent 1px),
+    linear-gradient(145deg, #fbfafd, #f3effb);
+  background-size: 24px 24px, 24px 24px, auto;
 }
 
 @media (hover: hover) {
@@ -355,6 +401,52 @@ a[href] {
 
 .image-preview-stage {
   container-type: size;
+}
+
+.lg-backdrop,
+.lg-backdrop.in {
+  background-color: rgb(19 13 29 / 58%) !important;
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.lg-container,
+.lg-outer {
+  background-color: transparent !important;
+}
+
+.lg-container.payso-lightgallery .lg-outer .lg-img-wrap {
+  padding: 1.5rem 2rem max(3rem, env(safe-area-inset-bottom)) !important;
+}
+
+.lg-container.payso-lightgallery .lg-outer .lg-object {
+  max-width: calc(100vw - 4rem) !important;
+  max-height: calc(100dvh - 7.5rem) !important;
+}
+
+.lg-container.payso-lightgallery .lg-outer .lg-toolbar,
+.lg-container.payso-lightgallery .lg-outer .lg-prev,
+.lg-container.payso-lightgallery .lg-outer .lg-next {
+  background-color: rgb(19 13 29 / 28%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.lg-container.payso-lightgallery .lg-outer .lg-thumb-outer {
+  background-color: rgb(19 13 29 / 58%);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+@media (max-width: 639px) {
+  .lg-container.payso-lightgallery .lg-outer .lg-img-wrap {
+    padding: 1rem 0.75rem max(2rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  .lg-container.payso-lightgallery .lg-outer .lg-object {
+    max-width: calc(100vw - 1.5rem) !important;
+    max-height: calc(100dvh - 6rem) !important;
+  }
 }
 
 /* Interactive remittance prototype */

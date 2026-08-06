@@ -13,6 +13,8 @@ export function DashboardHeader() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const pageTitle = pathname === "/refinements" || pathname === "/revisions"
     ? "Homepage Refinements"
+    : pathname === "/wireframes"
+      ? "Homepage Wireframes"
     : pathname === "/prototype"
       ? "Interactive Prototype"
       : "Homepage Design";

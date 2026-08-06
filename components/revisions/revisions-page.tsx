@@ -6,38 +6,39 @@ import { RevisionOverview } from "@/components/revisions/revision-overview";
 export function RefinementsPage() {
   return (
     <div className="revisions-page space-y-4 sm:space-y-8 lg:space-y-10">
-      <section className="revision-hero ui-surface relative isolate overflow-hidden rounded-[26px] p-5 sm:rounded-[36px] sm:p-9 lg:p-12 xl:p-14">
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#f1edfb] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#381c8d]">
-            <DashboardIcon icon={DASHBOARD_ICONS.revisionsNavigation} width="16" />
-            UI review applied
-          </span>
-          <h2 className="mt-6 text-[2.45rem] font-bold leading-[.95] tracking-[-0.06em] text-[#1d1822] sm:mt-7 sm:text-6xl lg:text-7xl">
-            <span className="block">Homepage</span>
-            <span className="block bg-gradient-to-r from-[#381c8d] via-[#5b2bd1] to-[#864ee7] bg-clip-text text-transparent">Refinements</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-[#77717f] sm:mt-7 sm:text-lg sm:leading-8">
-            A focused before-and-after review of the homepage improvements shaped by feedback from Product Manager Ms. Yolanda.
-          </p>
-          <div className="mx-auto mt-8 grid max-w-md grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:mt-10 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center">
-            <Link
-              href="/prototype"
-              className="ui-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#381c8d] px-5 text-sm font-bold text-white shadow-[0_14px_32px_rgba(56,28,141,.24)] sm:w-auto sm:px-6"
-            >
-              View updated prototype
-              <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="18" />
-            </Link>
-            <a
-              href="#refinement-comparison"
-              className="ui-button inline-flex w-full items-center justify-center rounded-2xl border border-[#ded9e5] bg-white/90 px-5 text-sm font-bold text-[#4f4856] shadow-[0_8px_20px_rgba(37,27,57,.04)] sm:w-auto sm:px-6"
-            >
-              Compare before &amp; after
-            </a>
+      <section className="ui-surface overflow-hidden rounded-[26px] sm:rounded-[36px]">
+        <div className="revision-hero relative isolate p-5 sm:p-9 lg:p-12 xl:p-14">
+          <div className="relative z-10 mx-auto max-w-4xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#f1edfb] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#381c8d]">
+              <DashboardIcon icon={DASHBOARD_ICONS.revisionsNavigation} width="16" />
+              UI review applied
+            </span>
+            <h2 className="mt-6 text-[2.45rem] font-bold leading-[.95] tracking-[-0.06em] text-[#1d1822] sm:mt-7 sm:text-6xl lg:text-7xl">
+              <span className="block">Homepage</span>
+              <span className="block">Refinements</span>
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-[#77717f] sm:mt-7 sm:text-lg sm:leading-8">
+              A focused before-and-after review of the homepage improvements shaped by feedback from Product Manager Ms. Yolanda.
+            </p>
+            <div className="mx-auto mt-8 grid max-w-md grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:mt-10 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center">
+              <Link
+                href="/prototype"
+                className="ui-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#381c8d] px-5 text-sm font-bold text-white shadow-[0_14px_32px_rgba(56,28,141,.24)] sm:w-auto sm:px-6"
+              >
+                View updated prototype
+                <DashboardIcon icon={DASHBOARD_ICONS.ctaArrow} width="18" />
+              </Link>
+              <a
+                href="#refinement-comparison"
+                className="ui-button inline-flex w-full items-center justify-center rounded-2xl border border-[#ded9e5] bg-white/90 px-5 text-sm font-bold text-[#4f4856] shadow-[0_8px_20px_rgba(37,27,57,.04)] sm:w-auto sm:px-6"
+              >
+                Compare before &amp; after
+              </a>
+            </div>
           </div>
         </div>
+        <RevisionOverview />
       </section>
-
-      <RevisionOverview />
 
       <section className="revision-cta relative overflow-hidden rounded-[26px] bg-[#25105f] p-6 text-white shadow-[0_24px_64px_rgba(37,16,95,.24)] sm:rounded-[36px] sm:p-10 lg:p-12">
         <div className="revision-cta-grid" aria-hidden="true" />

@@ -24,6 +24,7 @@ export const DASHBOARD_ICONS = {
   sampleStatistic: "solar:smartphone-2-linear",
   showcaseNavigation: "solar:smartphone-linear",
   themeSummary: "solar:lightbulb-bolt-linear",
+  wireframesNavigation: "solar:layers-minimalistic-linear",
   zoomIn: "solar:magnifer-zoom-in-linear",
   zoomOut: "solar:magnifer-zoom-out-linear",
 } as const satisfies Readonly<Record<DashboardIconKey, DashboardIconName>>;
@@ -52,6 +53,12 @@ export const NAVIGATION_ITEMS = [
     label: "Brand System",
     href: "/#brand",
     icon: DASHBOARD_ICONS.palette,
+  },
+  {
+    id: "wireframes",
+    label: "Wireframes",
+    href: "/wireframes",
+    icon: DASHBOARD_ICONS.wireframesNavigation,
   },
   {
     id: "refinements",
