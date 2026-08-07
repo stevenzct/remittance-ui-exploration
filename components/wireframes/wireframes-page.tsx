@@ -43,7 +43,7 @@ export function WireframesPage() {
         <div className="relative px-5 py-11 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
           <div className="wireframes-hero-grid absolute inset-0" aria-hidden="true" />
           <div className="relative mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-2xl bg-[#f1edfb] px-3 py-2 text-[10px] font-bold uppercase leading-snug tracking-[0.08em] text-[#381c8d] sm:rounded-full sm:text-[11px] sm:tracking-[0.14em]">
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#f1edfb] px-2.5 py-1.5 text-[9px] font-bold uppercase leading-snug tracking-[0.04em] text-[#25105f] sm:gap-2 sm:px-3 sm:py-2 sm:text-[11px] sm:tracking-[0.14em]">
               <span className="shrink-0"><DashboardIcon icon={DASHBOARD_ICONS.wireframesNavigation} width="16" /></span>
               {t("Created by Product Manager Ms. Yolanda")}
             </span>

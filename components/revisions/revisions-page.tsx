@@ -13,7 +13,7 @@ export function RefinementsPage() {
       <section className="ui-surface overflow-hidden rounded-[26px] sm:rounded-[36px]">
         <div className="revision-hero relative isolate p-5 sm:p-9 lg:p-12 xl:p-14">
           <div className="relative z-10 mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#f1edfb] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#381c8d]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#f1edfb] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#25105f]">
               <DashboardIcon icon={DASHBOARD_ICONS.revisionsNavigation} width="16" />
               {t("UI review applied")}
             </span>
