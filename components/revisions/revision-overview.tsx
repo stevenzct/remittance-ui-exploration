@@ -90,6 +90,9 @@ export function RevisionOverview() {
               {t("Current design")}
             </span>
           </figcaption>
+          <p className="mb-6 text-left text-sm leading-6 text-[#77717f] sm:text-center sm:text-base sm:leading-7">
+            {t("This remittance app is continuously being improved, revised, and refined to enhance its UI and overall user experience. More updates are coming soon.")}
+          </p>
           <div className="revision-phone-stage flex min-w-0 items-center justify-center overflow-hidden py-6 sm:py-10">
             <a
               href="/assets/prototype-reference.png"

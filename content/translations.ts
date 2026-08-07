@@ -218,6 +218,7 @@ const chineseTranslations: Readonly<Record<string, string>> = {
   "Launch updated prototype": "启动更新后的原型",
   "UI review applied": "已应用 UI 评审",
   "A focused before-and-after review of the homepage improvements shaped by feedback from Product Manager Ms. Yolanda.": "针对首页改进的前后对比评审，依据产品经理 Yolanda 女士的反馈进行调整。",
+  "This remittance app is continuously being improved, revised, and refined to enhance its UI and overall user experience. More updates are coming soon.": "本汇款应用正在不断改进、修订和优化，以提升 UI 和整体用户体验。更多更新即将推出。",
   "Compare before & after": "对比前后效果",
   "See every refinement in action.": "查看每一项优化的实际效果。",
   "Open the interactive homepage to test the revised navigation, country switcher, wallet, and key actions.": "打开交互式首页，体验优化后的导航、国家/地区切换器、钱包及关键操作。",
