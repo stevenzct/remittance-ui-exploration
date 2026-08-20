@@ -18,6 +18,7 @@ A multi-route design-review workspace and interactive front-end prototype for a 
 - [Technology](#technology)
 - [Getting started](#getting-started)
 - [Available scripts](#available-scripts)
+- [Configuration](#configuration)
 - [Project structure](#project-structure)
 - [Architecture and data flow](#architecture-and-data-flow)
 - [Content and customization](#content-and-customization)
@@ -130,7 +131,7 @@ Defined locally in `components/prototype/remittance-prototype.tsx`:
 | Theme 2 | Soft Pink | `#B14261` | Rose surfaces and alternate exported icons/artwork. |
 | Theme 3 | Royal Blue | `#2853BB` | Blue surfaces and the default exported icon set. |
 
-Changing the prototype style updates CSS custom properties and theme-specific assets while preserving the current in-memory prototype state.
+Changing the prototype style updates CSS custom properties and theme-specific assets. Wallet, work-location, motion, and navigation selections remain in memory, while any open phone sheet is closed.
 
 ## Interactive prototype
 
@@ -224,8 +225,8 @@ The source modal is a standalone handoff representation, not a byte-for-byte imp
 ### Runtime sequence
 
 1. The country selector prepares the destination and loading state. Hong Kong leaves the current wallet active underneath the loader; the Philippines return path resets PHP state first.
-2. `TakeoffArcTransition` selects the matching destination artwork.
-3. The transition waits for the image `load` or `error` event before starting, preventing a blank first-run animation.
+2. `RemittancePrototype` selects the matching destination artwork and passes it to `TakeoffArcTransition` through `assetSrc`.
+3. The transition waits for the image `load` event before starting, so a valid image is not animated while it is still downloading. The `error` path also releases the flow instead of leaving the UI blocked.
 4. A GSAP timeline raises the overlay, moves the artwork through its arc, settles it, and fades the overlay.
 5. `onComplete` finalizes the post-transition state and removes the loader. It activates HKD for Hong Kong; the Philippines path has already reset PHP.
 6. Component cleanup kills the timeline and related tweens and clears the temporary GSAP properties.
@@ -243,6 +244,8 @@ The source modal is a standalone handoff representation, not a byte-for-byte imp
 With `prefers-reduced-motion: reduce`, the component shows a static destination state and completes after 400ms.
 
 The transition uses `cqw` values, so its parent must establish `container-type: inline-size`. The copy-ready Styles tab includes the required `.prototype-screen` query-container and sizing contract.
+
+The two source assets are `1448 x 1086` (Philippines) and `1450 x 1085` (Hong Kong). The component renders either asset into a `305 x 228` artwork box inside the phone query container.
 
 ## Technology
 
@@ -310,6 +313,16 @@ npm run start
 | `npm run verify` | lint + typecheck + build | Run the complete pre-merge verification gate. |
 
 There is currently no unit, integration, or end-to-end test command.
+
+## Configuration
+
+| File | Important settings |
+| --- | --- |
+| `next.config.ts` | Enables React Strict Mode. It does not define static export, remote image hosts, rewrites, custom headers, or configuration-level redirects. |
+| `tsconfig.json` | Targets ES2017, enables strict checking, disallows JavaScript, emits no files, uses bundler resolution and isolated modules, enables incremental checking, and maps `@/*` to the repository root. |
+| `eslint.config.mjs` | Uses the Next.js core-web-vitals and TypeScript flat configurations. |
+| `postcss.config.mjs` | Loads Tailwind CSS 4 through `@tailwindcss/postcss`. |
+| `app/globals.css` | Imports Inter, Tailwind, and LightGallery styles before the project's global CSS. |
 
 ## Project structure
 
@@ -521,7 +534,7 @@ The desktop dashboard is a 272px sidebar plus flexible content at `lg`. Wider tw
 - Theme controls use tab semantics.
 - The focused sample carousel responds to Left/Right Arrow.
 - Pointer and touch users can swipe horizontally with a 50px threshold.
-- Custom hero/carousel GSAP durations collapse when reduced motion is requested.
+- With reduced motion requested, the hero stays on a static first theme and does not create its rotation timeline; carousel transition durations become zero.
 - LightGallery supplies its own gallery keyboard, zoom, fullscreen, and media controls.
 
 ### Prototype
@@ -532,7 +545,7 @@ The desktop dashboard is a 272px sidebar plus flexible content at `lg`. Wider tw
 - Prototype toasts use polite live regions; motion loaders announce the pending destination.
 - The source modal is portalled to `document.body`, locks body scroll, traps focus, supports `Escape` and backdrop dismissal, and restores focus to the Source code button.
 - Source-code tabs support Left/Right Arrow, Home, and End; copy results use a separate polite live status.
-- Custom motion paths provide explicit reduced-motion handling and clean up timers, timelines, and tweens when unmounted.
+- Custom motion components provide explicit reduced-motion handling and clean up timers, timelines, and tweens when unmounted.
 
 Accessibility should still be manually verified after UI changes, particularly focus order, translated accessible names, 320px layouts, browser fullscreen behavior, and third-party gallery behavior.
 
