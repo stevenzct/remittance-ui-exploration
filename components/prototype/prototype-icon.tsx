@@ -9,6 +9,8 @@ export type PrototypeIconName =
   | "arrow-right"
   | "mail"
   | "check"
+  | "code"
+  | "copy"
   | "sparkles"
   | "close";
 
@@ -62,6 +64,18 @@ const icons: Record<PrototypeIconName, ReactNode> = {
     </>
   ),
   check: <path d="m5 12 4 4L19 6" />,
+  code: (
+    <>
+      <path d="m8 9-3 3 3 3M16 9l3 3-3 3" />
+      <path d="m14 5-4 14" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="8" y="8" width="11" height="11" rx="2" />
+      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+    </>
+  ),
   sparkles: (
     <>
       <path d="m12 3 1.3 3.7L17 8l-3.7 1.3L12 13l-1.3-3.7L7 8l3.7-1.3ZM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8ZM5 14l.8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8Z" />

@@ -16,9 +16,11 @@ import {
   useState,
 } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { AnimationSourceModal } from "@/components/prototype/animation-source-modal";
 import { CountryCurtainLoader } from "@/components/prototype/country-curtain-loader";
 import { FlagSwooshLoader } from "@/components/prototype/flag-swoosh-loader";
 import { PrototypeIcon } from "@/components/prototype/prototype-icon";
+import { TakeoffArcTransition } from "@/components/prototype/takeoff-arc-transition";
 import { WorkLocationWorldLoader } from "@/components/prototype/work-location-world-loader";
 
 gsap.registerPlugin(Draggable);
@@ -249,51 +251,26 @@ const WORK_LOCATION_ANIMATIONS = [
     id: "animation-01",
     label: "Animation 1",
     name: "Takeoff arc",
-    motion: {
-      from: { x: "-26cqw", y: "11cqw", z: 0, rotationX: 3, rotationY: -8, rotationZ: -7 },
-      cruise: { x: "-6cqw", y: "-3cqw", z: 0, rotationX: 1, rotationY: -2, rotationZ: -3 },
-      approach: { x: "2cqw", y: "-1.1cqw", z: 0, rotationX: 0, rotationY: 0, rotationZ: -1 },
-    },
   },
   {
     id: "animation-02",
     label: "Animation 2",
     name: "World route",
-    motion: {
-      from: { x: "-34cqw", y: "2cqw", z: 0, rotationX: 0, rotationY: -5, rotationZ: 0 },
-      cruise: { x: "-8cqw", y: 0, z: 0, rotationX: 0, rotationY: -1, rotationZ: 0 },
-      approach: { x: "2.4cqw", y: 0, z: 0, rotationX: 0, rotationY: 0, rotationZ: 0 },
-    },
   },
   {
     id: "animation-03",
     label: "Animation 3",
     name: "Flag swoosh",
-    motion: {
-      from: { x: "-22cqw", y: "-10cqw", z: 0, rotationX: -2, rotationY: -7, rotationZ: 4 },
-      cruise: { x: "-5cqw", y: "2.5cqw", z: 0, rotationX: 0, rotationY: -2, rotationZ: 2 },
-      approach: { x: "1.4cqw", y: ".7cqw", z: 0, rotationX: 0, rotationY: 0, rotationZ: .5 },
-    },
   },
   {
     id: "animation-04",
     label: "Animation 4",
     name: "Editorial curtain",
-    motion: {
-      from: { x: "-16cqw", y: "9cqw", z: -180, rotationX: 15, rotationY: -10, rotationZ: -6 },
-      cruise: { x: "-4cqw", y: "-2cqw", z: -45, rotationX: 5, rotationY: -3, rotationZ: -2 },
-      approach: { x: "1.5cqw", y: "-.8cqw", z: 0, rotationX: 0, rotationY: 0, rotationZ: -.5 },
-    },
   },
   {
     id: "animation-05",
     label: "Animation 5",
     name: "Soft landing",
-    motion: {
-      from: { x: "-30cqw", y: "-5cqw", z: 0, rotationX: -2, rotationY: -8, rotationZ: 5 },
-      cruise: { x: "-8cqw", y: "3cqw", z: 0, rotationX: 1, rotationY: -2, rotationZ: 2 },
-      approach: { x: "2cqw", y: ".8cqw", z: 0, rotationX: 0, rotationY: 0, rotationZ: .5 },
-    },
   },
 ] as const;
 
@@ -445,8 +422,6 @@ export function RemittancePrototype() {
   const panelReturnFocusRef = useRef<HTMLElement | null>(null);
   const selectedWorkOptionRef = useRef<HTMLInputElement | null>(null);
   const workRegionHandleRef = useRef<HTMLButtonElement | null>(null);
-  const workLocationLoadingRef = useRef<HTMLDivElement | null>(null);
-  const workLocationLoadingArtworkRef = useRef<HTMLDivElement | null>(null);
   const workSheetClosingRef = useRef(false);
   const workSheetDidDragRef = useRef(false);
   const workSheetCloseTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -889,91 +864,6 @@ export function RemittancePrototype() {
       phoneShell.style.removeProperty("--work-backdrop-opacity");
     };
   }, [dismissWorkSheet, openPanel]);
-
-  useLayoutEffect(() => {
-    if (
-      !loadingWorkLocation
-      || workLocationAnimation.id === "animation-02"
-      || workLocationAnimation.id === "animation-03"
-    ) return;
-
-    const overlay = workLocationLoadingRef.current;
-    const artwork = workLocationLoadingArtworkRef.current;
-    if (!overlay || !artwork) return;
-    const loadingTargets = [overlay, artwork];
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion) {
-      gsap.set(overlay, { autoAlpha: 1, yPercent: 0 });
-      gsap.set(artwork, { autoAlpha: 1, x: 0, y: 0, rotation: 0 });
-      const finishTimer = window.setTimeout(finishWorkLocationLoading, 400);
-
-      return () => {
-        window.clearTimeout(finishTimer);
-        gsap.set(loadingTargets, { clearProps: "all" });
-      };
-    }
-
-    gsap.set(artwork, {
-      transformPerspective: 900,
-      transformStyle: "preserve-3d",
-      willChange: "transform,opacity",
-    });
-
-    const loadingTimeline = gsap.timeline({
-      defaults: { overwrite: "auto" },
-      onComplete: () => {
-        gsap.set(artwork, { clearProps: "willChange" });
-        finishWorkLocationLoading();
-      },
-    });
-
-    loadingTimeline
-      .fromTo(
-        overlay,
-        { autoAlpha: 0, yPercent: 100 },
-        { autoAlpha: 1, yPercent: 0, duration: .18, ease: "power3.out" },
-        0,
-      )
-      .fromTo(
-        artwork,
-        {
-          autoAlpha: 0,
-          ...workLocationAnimation.motion.from,
-          transformOrigin: "64% 52%",
-          force3D: true,
-        },
-        {
-          autoAlpha: 1,
-          ...workLocationAnimation.motion.cruise,
-          duration: .42,
-          ease: "power3.out",
-        },
-        .04,
-      )
-      .to(artwork, {
-        ...workLocationAnimation.motion.approach,
-        duration: .24,
-        ease: "sine.out",
-      }, .46)
-      .to(artwork, {
-        x: 0,
-        y: 0,
-        z: 0,
-        rotationX: 0,
-        rotationY: 0,
-        rotationZ: 0,
-        duration: .18,
-        ease: "sine.out",
-      }, .7)
-      .to(overlay, { autoAlpha: 0, duration: .14, ease: "power1.in" }, 1.02);
-
-    return () => {
-      loadingTimeline.kill();
-      gsap.set(loadingTargets, { clearProps: "all" });
-    };
-  }, [finishWorkLocationLoading, loadingWorkLocation, workLocationAnimation]);
 
   useEffect(() => {
     if (!openPanel) return;
@@ -1517,25 +1407,13 @@ export function RemittancePrototype() {
                       : "/assets/prototype-figma/work-location-hongkong-curtain.png"}
                   />
                 ) : (
-                  <div
-                    ref={workLocationLoadingRef}
-                    className="prototype-work-location-loading"
-                    role="status"
-                    aria-live="assertive"
-                    aria-label={`Loading ${loadingWorkLocation}`}
-                  >
-                    <div ref={workLocationLoadingArtworkRef} className="prototype-work-location-loading-artwork">
-                      <Image
-                        src={loadingWorkLocation === "Philippines"
-                          ? "/assets/prototype-figma/work-location-philippines-loading.png"
-                          : "/assets/prototype-figma/work-location-hongkong-loading.png"}
-                        alt=""
-                        width={305}
-                        height={228}
-                        priority
-                      />
-                    </div>
-                  </div>
+                  <TakeoffArcTransition
+                    destination={loadingWorkLocation}
+                    onComplete={finishWorkLocationLoading}
+                    assetSrc={loadingWorkLocation === "Philippines"
+                      ? "/assets/prototype-figma/work-location-philippines-loading.png"
+                      : "/assets/prototype-figma/work-location-hongkong-loading.png"}
+                  />
                 )
               )}
 
@@ -1684,6 +1562,21 @@ export function RemittancePrototype() {
                   })}
                 </div>
               </fieldset>
+
+              {workLocationAnimation.id === "animation-01" && (
+                <div className="prototype-motion-source-card">
+                  <div className="prototype-motion-source-summary">
+                    <span className="prototype-motion-source-icon" aria-hidden="true">
+                      <PrototypeIcon name="code" size={17} />
+                    </span>
+                    <span>
+                      <strong>{t("Takeoff arc")}</strong>
+                      <span>{t("Animation 1")} <span aria-hidden="true">·</span> React + GSAP <span aria-hidden="true">·</span> 1.16s</span>
+                    </span>
+                  </div>
+                  <AnimationSourceModal />
+                </div>
+              )}
             </div>
           )}
         </div>
