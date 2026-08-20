@@ -2,20 +2,25 @@
 
 ![Payso logo](public/payso-logo.svg)
 
-A responsive design-review dashboard for comparing Payso remittance homepage concepts. The project presents three visual themes, 18 mobile interface samples, a live three-theme mobile wallet prototype, and the supporting brand system in a single Next.js page.
+A multi-route design-review workspace and interactive front-end prototype for a Payso remittance app. It brings the early wireframes, three visual directions, 18 high-fidelity mobile samples, refinement history, live wallet interactions, and country-transition motion studies into one Next.js project.
 
-This repository is a front-end presentation prototype. It does not process remittances and does not include authentication, API routes, a database, or persistent user data.
+> This repository is a presentation prototype. It does not process money and does not include authentication, API routes, a database, persistent user data, or real remittance transactions.
 
 ## Table of contents
 
-- [Overview](#overview)
-- [Features](#features)
+- [Project at a glance](#project-at-a-glance)
+- [Route map](#route-map)
+- [Core experiences](#core-experiences)
+- [Design and prototype themes](#design-and-prototype-themes)
+- [Interactive prototype](#interactive-prototype)
+- [Country-transition motion](#country-transition-motion)
+- [Animation 1 developer handoff](#animation-1-developer-handoff)
 - [Technology](#technology)
 - [Getting started](#getting-started)
 - [Available scripts](#available-scripts)
 - [Project structure](#project-structure)
 - [Architecture and data flow](#architecture-and-data-flow)
-- [Editing themes and samples](#editing-themes-and-samples)
+- [Content and customization](#content-and-customization)
 - [Localization](#localization)
 - [Assets and styling](#assets-and-styling)
 - [Interaction and accessibility](#interaction-and-accessibility)
@@ -23,56 +28,240 @@ This repository is a front-end presentation prototype. It does not process remit
 - [Deployment](#deployment)
 - [Current boundaries](#current-boundaries)
 
-## Overview
+## Project at a glance
 
-The application has one route, `/`, composed of four anchor sections:
+| Area | Current implementation |
+| --- | --- |
+| Framework | Next.js 16 App Router with React 19 and strict TypeScript |
+| Review content | 3 showcase themes and 18 mobile UI samples |
+| Prototype styles | Violet, Soft Pink, and Royal Blue |
+| Motion studies | 4 selectable country transitions; a fifth option is marked Coming soon |
+| Localization | English plus partial Simplified Chinese UI translation |
+| Data | Local TypeScript constants and local image assets |
+| State | In-memory React state that resets on reload |
+| Backend | None |
+| Required environment variables | None |
 
-| Section | Anchor | Purpose |
+The repository supports two related activities:
+
+1. Reviewing how the homepage evolved from wireframes through themed concepts and refinements.
+2. Testing a responsive remittance-wallet prototype, including its country-transition motion and the copy-ready developer handoff for Animation 1.
+
+## Route map
+
+Every route is wrapped by the shared dashboard shell, language provider, desktop sidebar, sticky header, and mobile navigation.
+
+| Route | Source | Purpose |
 | --- | --- | --- |
-| Overview | `#overview` | Introduces the exploration and automatically previews one screen from each theme. |
-| UI Showcase | `#showcase` | Compares every mobile sample with theme tabs, descriptions, tags, and image controls. |
-| Prototype | `#prototype` | Provides a live mobile wallet with three switchable themes and working interface controls. |
-| Brand System | `#brand` | Documents the Blue Gem and Brick Red colors and the Philippine flag inspiration. |
+| `/` | `app/page.tsx` | Overview, rotating theme preview, 18-sample UI showcase, and brand system. |
+| `/wireframes` | `app/wireframes/page.tsx` | Three low-fidelity boards covering homepage structure, work-country selection, and navigation on scroll. |
+| `/refinements` | `app/refinements/page.tsx` | Before-and-after review of the old annotated homepage and the updated prototype reference. |
+| `/prototype` | `app/prototype/page.tsx` | Standalone interactive wallet, style configurator, motion selector, and Animation 1 source-code modal. |
+| `/revisions` | `app/revisions/page.tsx` | Legacy route that redirects to `/refinements`. |
 
-The current theme catalog is:
+The home route also supports direct section links:
+
+- `/#overview`
+- `/#showcase`
+- `/#brand`
+
+Navigation highlighting is route-aware. On `/`, it also follows the active section while the page scrolls.
+
+## Core experiences
+
+### Shared dashboard shell
+
+- Sticky route title and language controls.
+- Desktop sidebar from the `lg` breakpoint and a mobile navigation drawer below it.
+- Fullscreen API control on supported browsers at the `sm` breakpoint and wider.
+- Route-aware active navigation and scroll-aware home-section highlighting.
+- Shared English/Simplified Chinese language state for the active page session.
+
+### Home design review
+
+- GSAP-powered hero rotation through a representative screen from each showcase theme.
+- Pause/resume control and page-visibility handling for the hero rotation.
+- A three-theme carousel covering all 18 interface directions.
+- Previous/Next navigation that crosses theme boundaries.
+- Pointer/touch swipe navigation and Left/Right Arrow keyboard navigation.
+- LightGallery previews with zoom, rotate, fullscreen, autoplay, thumbnails, counter, and download controls.
+- Brand guidance for Blue Gem `#381C8D`, Brick Red `#BA3245`, and the Philippine-flag inspiration.
+
+### Wireframes
+
+The `/wireframes` page presents three early design boards:
+
+1. Homepage structure
+2. Work-country selection
+3. Top navigation on scroll
+
+Each board can be opened in LightGallery. The page also links directly to the current interactive prototype.
+
+### Refinements
+
+The `/refinements` page compares:
+
+- the annotated old homepage review; and
+- the current prototype reference.
+
+Both artifacts use the shared LightGallery configuration, and the page includes calls to action for testing the live prototype.
+
+## Design and prototype themes
+
+The showcase and live prototype use two related but independent theme collections. Do not assume their IDs or names are interchangeable.
+
+### Showcase catalog
+
+Defined in `content/dashboard.ts`:
 
 | Theme | Name | Samples | Direction |
 | --- | --- | ---: | --- |
-| Theme 01 | Blue Gem | 5 | Blue-led interface treatments. |
-| Theme 02 | Brick Red | 8 | Rose and brick-red interface treatments. |
+| Theme 01 | Blue Gem | 5 | Blue-led homepage treatments. |
+| Theme 02 | Brick Red | 8 | Rose and brick-red homepage treatments. |
 | Theme 03 | Country Card Theme | 5 | Country-card concepts inspired by the Philippine flag. |
 
-The live prototype has three independent visual choices: Theme 1 Classic, Theme 2 Fresh, and Theme 3 Midnight. Changing the prototype theme updates its palette while keeping the current wallet and other phone state available for continued interaction.
+### Live prototype styles
 
-All showcase copy, theme metadata, sample records, image paths, navigation items, and brand colors are local constants in `content/dashboard.ts`.
+Defined locally in `components/prototype/remittance-prototype.tsx`:
 
-## Features
+| Style | Name | Primary color | Notes |
+| --- | --- | --- | --- |
+| Theme 1 | Violet | `#38168D` | Violet surfaces and the theme-specific asset set. |
+| Theme 2 | Soft Pink | `#B14261` | Rose surfaces and alternate exported icons/artwork. |
+| Theme 3 | Royal Blue | `#2853BB` | Blue surfaces and the default exported icon set. |
 
-- Responsive dashboard shell with a desktop sidebar, sticky header, and mobile navigation drawer.
-- Scroll-aware navigation that follows the current section and supports direct URL hashes.
-- GSAP-powered hero rotation across all three themes with pause and resume controls.
-- Theme tabs and sample navigation that continue across theme boundaries.
-- Mouse, touch, and keyboard carousel controls, including horizontal swipe gestures.
-- Full-screen image preview with previous/next navigation, zoom from 100% to 250%, and constrained pan controls.
-- Live remittance phone with Classic, Fresh, and Midnight theme choices.
-- Working country and workplace selectors, balance visibility, wallet selection, account copying, action sheets, bottom navigation, and status feedback.
-- English and Simplified Chinese UI copy through a small client-side translation provider.
-- Reduced-motion handling, focus restoration, body-scroll locking, semantic labels, and keyboard dismissal.
-- Local image delivery through `next/image`; no remote asset host is required.
+Changing the prototype style updates CSS custom properties and theme-specific assets while preserving the current in-memory prototype state.
+
+## Interactive prototype
+
+The primary implementation is `components/prototype/remittance-prototype.tsx`. It owns the phone state, theme and motion controls, selectors, feedback, sheets, and responsive prototype behavior.
+
+### Active interactions
+
+- Switch among Violet, Soft Pink, and Royal Blue from the accessible Style tab.
+- Choose one of four available transition styles from the Motion tab.
+- Open the work-region sheet and select Hong Kong, Singapore, or Saudi Arabia.
+- Return to the Philippines with the home-country control.
+- Switch between PHP and HKD wallet experiences when moving between the Philippines and Hong Kong.
+- Show or hide the active balance.
+- Copy the safe demo receiving-account value.
+- Open the SGD or SAR wallet placeholder and receive a Coming soon status message.
+- Select message rows, quick actions, and bottom-navigation destinations to receive demo feedback.
+- Scroll the simulated phone to see the announcement and wallet summary move into sticky header states.
+- Dismiss the work-region sheet with its handle, backdrop, `Escape`, or a downward drag gesture.
+
+Country behavior is intentionally specific:
+
+- Hong Kong uses the selected transition and activates the HKD wallet after the loader completes.
+- Returning to the Philippines resets the PHP state before its transition starts; completion then clears the loader, reports status, and restores focus.
+- Singapore and Saudi Arabia currently bypass the animated transition and show unopened SGD or SAR wallet states.
+
+Several controls are intentionally visual-only in the shipped prototype. `All Wallets`, `Transfer`, `Exchange`, `View All`, the wallet action buttons, and `Send now` are disabled. Supporting panel markup and USD demo data remain in the source but are not reachable through the current interface.
+
+### Responsive behavior
+
+- At `xl`, the phone is sticky on the left and the configurator sits on the right.
+- At narrower widths, the configurator appears before the phone.
+- Below the desktop layout, the phone experience can become a fixed `100vw` by `100dvh` view as its stage reaches the top of the viewport.
+- The phone is designed around a 381px inline-size query container, allowing internal dimensions and motion offsets to use `cqw` units consistently.
+
+## Country-transition motion
+
+The Motion tab controls the transition used when switching between the Philippines and Hong Kong.
+
+| Choice | Name | Production component | Status |
+| --- | --- | --- | --- |
+| Animation 1 | Takeoff arc | `components/prototype/takeoff-arc-transition.tsx` | Available; includes source-code handoff. |
+| Animation 2 | World route | `components/prototype/work-location-world-loader.tsx` | Available; uses GSAP `MotionPathPlugin`. |
+| Animation 3 | Flag swoosh | `components/prototype/flag-swoosh-loader.tsx` | Available; masked flag reveal with scale and flash. |
+| Animation 4 | Editorial curtain | `components/prototype/country-curtain-loader.tsx` | Available; clip-path curtain with blur, settle, and sheen. |
+| Animation 5 | Soft landing | No active component | Disabled and labelled Coming soon. |
+
+Animation artwork is stored in `public/assets/prototype-figma/`:
+
+- Animation 1 uses the Philippines and Hong Kong `work-location-*-loading.png` composites.
+- Animation 2 composes `work-location-globe.png` and `work-location-airplane.png`.
+- Animation 3 uses the `work-location-*-swoosh.png` variants.
+- Animation 4 uses the `work-location-*-curtain.png` variants.
+
+The loaders announce their pending destination and include reduced-motion behavior. Their `onComplete` callbacks end the loading state and finalize post-transition behavior. Hong Kong defers HKD wallet activation until completion, while the Philippines return path resets PHP state before its loader starts.
+
+`components/prototype/globe-landing-loader.tsx` is an unreferenced experiment. It is not the shipped implementation of Animation 5.
+
+## Animation 1 developer handoff
+
+The in-app source documentation is specifically for **Animation 1 - Takeoff arc**. It does not describe Animations 2, 3, or 4.
+
+To open it:
+
+1. Visit `/prototype`.
+2. Select the **Motion** tab.
+3. Select **01**.
+4. Choose **Source code**.
+
+The modal provides:
+
+- an implementation overview and five-stage timeline;
+- runtime, duration, and reduced-motion metadata;
+- setup, asset, and accessibility notes;
+- Component, Styles, and Integration source tabs;
+- line numbers and lightweight token highlighting;
+- per-tab clipboard copying with success/error feedback; and
+- keyboard tab navigation with Left/Right Arrow, Home, and End.
+
+### Canonical files
+
+| Concern | File |
+| --- | --- |
+| Live transition | `components/prototype/takeoff-arc-transition.tsx` |
+| Modal UI and behavior | `components/prototype/animation-source-modal.tsx` |
+| Copy-ready code strings and timeline | `content/animation-source.ts` |
+| Production styles | `app/globals.css` under the `.prototype-work-location-loading*` selectors |
+| Destination artwork | `public/assets/prototype-figma/work-location-philippines-loading.png` and `work-location-hongkong-loading.png` |
+
+The source modal is a standalone handoff representation, not a byte-for-byte import of the production files. When Animation 1 changes, update the live component, production CSS, and the duplicated Component/Styles/Integration examples in `content/animation-source.ts` together.
+
+### Runtime sequence
+
+1. The country selector prepares the destination and loading state. Hong Kong leaves the current wallet active underneath the loader; the Philippines return path resets PHP state first.
+2. `TakeoffArcTransition` selects the matching destination artwork.
+3. The transition waits for the image `load` or `error` event before starting, preventing a blank first-run animation.
+4. A GSAP timeline raises the overlay, moves the artwork through its arc, settles it, and fades the overlay.
+5. `onComplete` finalizes the post-transition state and removes the loader. It activates HKD for Hong Kong; the Philippines path has already reset PHP.
+6. Component cleanup kills the timeline and related tweens and clears the temporary GSAP properties.
+
+### Timeline
+
+| Time | Stage | Behavior |
+| --- | --- | --- |
+| `0.00-0.18s` | Enter | The white overlay rises into the phone viewport. |
+| `0.04-0.46s` | Cruise | Country artwork accelerates along a shallow tilted 3D arc. |
+| `0.46-0.70s` | Approach | A small overshoot adds arrival energy and direction. |
+| `0.70-0.88s` | Settle | Position and rotation resolve to their final values. |
+| `1.02-1.16s` | Reveal | The overlay fades and control returns to the updated wallet. |
+
+With `prefers-reduced-motion: reduce`, the component shows a static destination state and completes after 400ms.
+
+The transition uses `cqw` values, so its parent must establish `container-type: inline-size`. The copy-ready Styles tab includes the required `.prototype-screen` query-container and sizing contract.
 
 ## Technology
 
-| Tool | Role |
-| --- | --- |
-| Next.js 16 | App Router, page composition, metadata, and image optimization. |
-| React 19 | Component rendering, context, and local interaction state. |
-| TypeScript | Strict types for navigation, theme content, samples, icons, and colors. |
-| Tailwind CSS 4 | Utility-first responsive styling through PostCSS. |
-| GSAP | Hero, carousel, and image-preview transitions. |
-| Iconify | Solar interface icons and language flag icons. |
-| Fontsource | Self-hosted Inter variable font used by the dashboard and live prototype. |
+Versions below reflect `package.json`.
 
-Swiper is installed in `package.json`, but the current showcase carousel does not use it. Carousel behavior is implemented with React state, pointer events, and GSAP.
+| Tool | Version | Role |
+| --- | --- | --- |
+| Next.js | `^16.2.10` | App Router, metadata, prerendering, and local image optimization. |
+| React / React DOM | `^19.2.7` | Component rendering, context, refs, effects, and in-memory interaction state. |
+| TypeScript | `^6.0.3` | Strict types with no emitted output during checking. |
+| Tailwind CSS | `^4.3.2` | Responsive utility styling through PostCSS. |
+| GSAP | `^3.15.0` | Hero/carousel motion, prototype transitions, draggable sheets, and motion paths. |
+| LightGallery | `^2.9.0` | Showcase, wireframe, and refinement image viewing. |
+| Iconify React | `^6.0.2` | Solar dashboard icons, MDI fullscreen icons, and circle-flag language icons. |
+| Fontsource Inter | `^5.3.0` | Self-hosted Inter variable font. |
+
+GSAP uses core plus `Draggable` and `MotionPathPlugin`; no paid GSAP plugin is required.
+
+`swiper`, `three`, and `@types/three` are installed but are not imported by the current source. The carousel is implemented with React pointer state and GSAP instead of Swiper.
 
 ## Getting started
 
@@ -81,7 +270,7 @@ Swiper is installed in `package.json`, but the current showcase carousel does no
 - Node.js `20.9.0` or newer
 - npm
 
-No environment variables are currently required.
+No `.env` file or environment variables are required.
 
 ### Install and run
 
@@ -90,9 +279,14 @@ npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). The most direct feature-review URLs are:
 
-Use `npm install` instead of `npm ci` when intentionally changing dependencies. Commit the resulting `package-lock.json` update with the dependency change.
+- [http://localhost:3000/](http://localhost:3000/)
+- [http://localhost:3000/wireframes](http://localhost:3000/wireframes)
+- [http://localhost:3000/refinements](http://localhost:3000/refinements)
+- [http://localhost:3000/prototype](http://localhost:3000/prototype)
+
+Use `npm install` instead of `npm ci` only when intentionally changing dependencies. Commit the resulting `package-lock.json` change with the dependency update.
 
 ### Production mode
 
@@ -101,45 +295,71 @@ npm run build
 npm run start
 ```
 
-`npm run start` serves an existing production build and must be run after `npm run build`.
+`npm run start` serves an existing `.next` build and must follow `npm run build`.
 
 ## Available scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Starts the Next.js development server. |
-| `npm run build` | Creates an optimized production build. |
-| `npm run start` | Serves the production build. |
-| `npm run lint` | Runs ESLint across the repository. |
-| `npm run lint:fix` | Runs ESLint and applies supported fixes. |
-| `npm run typecheck` | Runs TypeScript without emitting files. |
-| `npm run verify` | Runs lint, type checking, and the production build in sequence. |
+| Command | Underlying command | Purpose |
+| --- | --- | --- |
+| `npm run dev` | `next dev` | Start the development server. |
+| `npm run build` | `next build` | Create an optimized production build. |
+| `npm run start` | `next start` | Serve an existing production build. |
+| `npm run lint` | `eslint .` | Lint the repository. |
+| `npm run lint:fix` | `eslint . --fix` | Apply supported ESLint fixes. |
+| `npm run typecheck` | `tsc --noEmit` | Run strict TypeScript checking without writing output. |
+| `npm run verify` | lint + typecheck + build | Run the complete pre-merge verification gate. |
+
+There is currently no unit, integration, or end-to-end test command.
 
 ## Project structure
 
 ```text
 app/
-  globals.css                 Global tokens, showcase phone shell, and live prototype styling
-  layout.tsx                  Metadata and LanguageProvider boundary
-  page.tsx                    Single-page section composition
+  globals.css                         Tailwind, Inter, LightGallery, global UI, prototype, and modal styles
+  layout.tsx                          Root metadata, LanguageProvider, and DashboardShell
+  page.tsx                            Home overview, showcase, and brand sections
+  prototype/page.tsx                  Interactive prototype route
+  refinements/page.tsx                Refinement review route
+  revisions/page.tsx                  Legacy redirect to /refinements
+  wireframes/page.tsx                 Wireframe review route
+
 components/
-  layout/                     Header, sidebar, mobile drawer, and navigation
-  prototype/                  Live wallet state, controls, and inline SVG icons
-  providers/                  Client-side language context
-  sections/                   Overview, showcase, prototype, brand, and optional stats UI
-  showcase/                   Hero rotator, carousel, phone, and image preview
-  ui/                         Shared Iconify renderer
+  layout/                             Header, sidebar, shared navigation, and mobile drawer
+  providers/language-provider.tsx     Session-only language context and translation helper
+  sections/                           Home sections and the prototype route wrapper
+  showcase/                           Hero rotator, carousel, phone mockup, and LightGallery configuration
+  wireframes/                         Wireframe gallery page
+  revisions/                          Before/after refinement page and gallery
+  prototype/
+    remittance-prototype.tsx          Main phone state, configurator, interactions, and orchestration
+    takeoff-arc-transition.tsx        Animation 1 production implementation
+    work-location-world-loader.tsx    Animation 2 production implementation
+    flag-swoosh-loader.tsx            Animation 3 production implementation
+    country-curtain-loader.tsx        Animation 4 production implementation
+    globe-landing-loader.tsx          Unreferenced motion experiment
+    animation-source-modal.tsx        Animation 1 documentation dialog
+    prototype-icon.tsx                Reusable inline SVG prototype controls
+  ui/dashboard-icon.tsx               Shared Iconify renderer
+
 content/
-  dashboard.ts                Primary UI content and theme catalog
-  translations.ts             English-to-Chinese exact-string dictionary
-public/
-  assets/                     Runtime screenshots, prototype artwork, and brand references
-  payso-logo.svg              Shared Payso logo
+  dashboard.ts                        Navigation, showcase themes, samples, statistics, and brand colors
+  translations.ts                     Exact-string Simplified Chinese translation dictionary
+  animation-source.ts                 Animation 1 timeline and copy-ready source tabs
+  revisions.ts                        Unused legacy refinement feedback content
+
 types/
-  dashboard.ts                Content and component domain types
+  dashboard.ts                        Dashboard content and icon domain types
+
+public/
+  payso-logo.svg                       Navigation logo
+  assets/                              URL-addressed screenshots, wireframes, brand art, and prototype exports
+
+assets/
+  revisionsold-ui-review-enhanced.png  Statically imported old-UI review image
+  ...                                  Source/duplicate images not used by the current runtime
 ```
 
-Imports use the `@/` alias for the repository root, for example:
+Imports use `@/` as an alias for the repository root:
 
 ```ts
 import { SHOWCASE_THEMES } from "@/content/dashboard";
@@ -149,63 +369,54 @@ import { SHOWCASE_THEMES } from "@/content/dashboard";
 
 ```text
 RootLayout
-`-- LanguageProvider
-    `-- HomePage
-        `-- DashboardShell
-            |-- DashboardSidebar
-            |   `-- DashboardNavigation
-            `-- Main content
-                |-- DashboardHeader
-                |   `-- MobileNavigation
-                |       `-- DashboardNavigation
-                |-- OverviewSection
-                |   `-- HeroThemeRotator
-                |       `-- ImagePreview
-                |-- ShowcaseSection
-                |   `-- SampleCarousel
-                |       |-- PhoneMockup
-                |       |   `-- ImagePreview
-                |       `-- CarouselControls
-                |-- PrototypeSection
-                |   `-- RemittancePrototype
-                |       `-- PrototypeIcon
-                `-- BrandSection
+└─ LanguageProvider
+   └─ DashboardShell
+      ├─ DashboardSidebar
+      ├─ DashboardHeader
+      │  └─ MobileNavigation
+      └─ Active route page
+         ├─ HomePage
+         │  ├─ OverviewSection -> HeroThemeRotator
+         │  ├─ ShowcaseSection -> SampleCarousel -> LightGallery
+         │  └─ BrandSection
+         ├─ WireframesPage -> LightGallery
+         ├─ RefinementsPage -> RevisionOverview -> LightGallery
+         └─ PrototypePage -> PrototypeSection -> RemittancePrototype
+            ├─ country-transition loaders
+            └─ AnimationSourceModal
 ```
 
-The main flow is deliberately simple:
+The application has no remote business-data layer. Its main flow is:
 
-1. `content/dashboard.ts` defines the navigation, themes, samples, icons, and brand colors.
-2. `app/page.tsx` composes the four visible sections inside `DashboardShell`.
-3. `ShowcaseSection` passes `SHOWCASE_THEMES` into `SampleCarousel`.
-4. `PrototypeSection` renders `RemittancePrototype`, which owns its demo themes, wallets, selectors, panels, bottom navigation, and feedback state locally.
-5. Interactive client components keep temporary state locally for language, section tracking, selected theme/sample, modal state, zoom, pan, and the live phone controls.
-6. Images resolve from `public/assets` through paths such as `/assets/sample-01.png` and `/assets/prototype-figma/aub-card.png`.
+1. `content/dashboard.ts` supplies navigation, showcase records, and brand colors.
+2. The active App Router page selects the relevant experience.
+3. Client components translate visible copy and hold temporary interaction state.
+4. Showcase/wireframe/refinement images resolve from local assets and open through LightGallery.
+5. `RemittancePrototype` coordinates prototype themes, wallet/country state, selectors, feedback, and motion loaders.
+6. A loader calls `onComplete` to end loading and finalize direction-specific state; Hong Kong activates HKD at this point, while the Philippines path has already reset PHP.
 
-`app/page.tsx` and `DashboardShell` are server components. Components that use browser APIs, context, effects, animation, or local interaction state explicitly use the client boundary.
+Route pages and `DashboardShell` can remain server components. Components that use context, browser APIs, local state, effects, or animation declare the client boundary with `"use client"`.
 
-## Editing themes and samples
+## Content and customization
 
-### Update existing content
+### Update navigation, showcase content, or brand colors
 
 Edit `content/dashboard.ts` for:
 
-- navigation labels and icons;
-- dashboard summary copy;
-- theme names and summaries;
-- sample titles, descriptions, tags, and image paths;
+- navigation labels, paths, and icons;
+- showcase theme names and summaries;
+- sample titles, descriptions, tags, and image paths; and
 - brand color names and values.
 
-Keep shared content in this file rather than duplicating it inside rendering components. Collections use `as const satisfies` so TypeScript can validate their shape without discarding literal types.
+Collections use `as const satisfies` so TypeScript validates their shape while preserving useful literal types.
 
-### Add a sample
+### Add a showcase sample
 
-1. Add the screenshot under `public/assets` or an existing theme subdirectory.
-2. Add a unique sample object to the appropriate sample collection in `content/dashboard.ts`.
+1. Add the screenshot to `public/assets/` or the appropriate theme subdirectory.
+2. Add a unique record to the matching sample collection in `content/dashboard.ts`.
 3. Use a browser path beginning with `/assets/`; `ShowcaseImagePath` enforces this convention.
-4. Add Simplified Chinese entries for any new user-facing strings in `content/translations.ts`.
-5. Run `npm run verify` and manually inspect the theme on narrow and wide screens.
-
-Example record:
+4. Add exact-string Chinese translations for new visible text.
+5. Run `npm run verify` and manually review the carousel and LightGallery preview.
 
 ```ts
 {
@@ -218,104 +429,142 @@ Example record:
 }
 ```
 
-### Add a theme
+### Add a showcase theme
 
-Adding a fourth theme affects more than the content list. Update and review:
+Adding a fourth showcase theme requires coordinated changes to:
 
-- `ShowcaseTheme` in `types/dashboard.ts`, whose theme IDs and labels are currently a three-item union;
-- `SHOWCASE_THEMES` in `content/dashboard.ts`;
-- the representative hero data in `components/showcase/hero-theme-rotator.tsx`;
-- the fixed three-column theme tab layout in `components/showcase/sample-carousel.tsx`;
-- new translation keys and responsive behavior.
+- the `ShowcaseTheme` ID/label unions in `types/dashboard.ts`;
+- the sample collection and `SHOWCASE_THEMES` in `content/dashboard.ts`;
+- the representative hero list in `components/showcase/hero-theme-rotator.tsx`;
+- the fixed three-column theme selector in `components/showcase/sample-carousel.tsx`;
+- translations, assets, accent styling, and responsive review.
+
+### Modify a live prototype style
+
+Update `PROTOTYPE_THEMES` and, when needed, the theme-specific asset maps near the top of `components/prototype/remittance-prototype.tsx`. The `themeVariables()` helper turns the selected theme into CSS custom properties consumed throughout `app/globals.css`.
+
+Keep showcase themes and live prototype styles separate unless the product decision explicitly requires them to match.
+
+### Add or change a country transition
+
+1. Create or update a focused loader component under `components/prototype/`.
+2. Add its label to `WORK_LOCATION_ANIMATIONS`.
+3. Wire it into the conditional loader render in `remittance-prototype.tsx`.
+4. Use `onComplete` to end loading and finalize the direction-specific post-transition state.
+5. Add asset loading/error handling, cleanup, destination announcements, and a reduced-motion path.
+6. Add translations for its visible name and status.
+7. Verify both Philippines and Hong Kong directions at phone and desktop sizes.
+
+If changing Animation 1, also update all duplicated developer-handoff content in `content/animation-source.ts`.
 
 ## Localization
 
-`LanguageProvider` exposes the current language, a setter, and the `t()` translation helper. English source strings act as translation keys. `content/translations.ts` maps those exact strings to Simplified Chinese.
+`components/providers/language-provider.tsx` exposes:
 
-When adding visible copy:
+- `language` (`en` or `zh`);
+- `setLanguage()`; and
+- `t()`, the translation helper.
 
-1. Write the English source string in the content or component.
+English source strings are translation keys. `content/translations.ts` maps exact matches to Simplified Chinese, and missing keys fall back to the original English string.
+
+When adding translated UI copy:
+
+1. Add the English text to the component or content record.
 2. Add the exact same key to `chineseTranslations`.
-3. Render it through `t()`.
+3. Render the source string through `t()`.
 
-Missing keys fall back to the English input. The selected language starts in English on every page load and is not stored in cookies or local storage.
+The provider updates the root document language to `en` or `zh-CN`. Language selection is not persisted and resets to English after a reload.
+
+Localization is intentionally partial. Dashboard chrome, the review pages, showcase metadata, prototype configurator, and Animation 1 source modal are translated; substantial copy inside the simulated phone and its toast messages remains English.
 
 ## Assets and styling
 
-- Put runtime images in `public/assets`; this is the canonical asset directory used by the application.
-- Reference public files from the site root, such as `/assets/theme-03/1.png`.
-- Mobile screenshots are designed around a `750 / 1624` aspect ratio.
-- `public/assets/prototype-figma/` contains the exact bank card, flag fabric, and interface icon exports from the linked Figma frame.
-- `public/assets/ph-flag.png` is used by the brand section; the live phone uses the exact exported Figma flag and fabric artwork.
-- `public/payso-logo.svg` is used by both desktop and mobile navigation.
-- `components/prototype/prototype-icon.tsx` keeps supplementary prototype controls local as reusable inline SVG paths.
-- `app/globals.css` defines the core color variables, base styles, shared showcase/prototype phone frame, prototype theme variables, and short-landscape adjustments.
-- Tailwind responsive utilities handle most component layout and spacing.
-- The desktop sidebar appears at `lg`; the showcase and other wide splits wait until `xl` so the 272px sidebar does not crowd the content.
+### Asset conventions
 
-The tracked root-level `assets/` directory is not referenced by the current runtime. New web assets should go in `public/assets`.
+- Put URL-addressed runtime files in `public/assets/` and reference them as `/assets/...`.
+- `public/assets/prototype-figma/` contains the exported cards, flags, icons, banners, wallet states, and transition artwork used by the phone.
+- Most local images render through `next/image`; `next.config.ts` does not configure remote image hosts.
+- `assets/revisionsold-ui-review-enhanced.png` is an intentional exception imported statically by `components/revisions/revision-overview.tsx`.
+- Other root-level `assets/` images are legacy/source duplicates and are not referenced by the current UI.
+- `public/payso-logo.svg` is shared by desktop and mobile navigation.
+
+Inter is bundled locally with Fontsource. Dashboard icons are referenced by Iconify string IDs; depending on cache and bundling behavior, those icons can require access to Iconify's API at runtime. Do not assume the complete interface is offline-ready without testing and, if necessary, bundling those icon data locally.
+
+### Styling model
+
+`app/globals.css` imports:
+
+1. the Inter variable font;
+2. Tailwind CSS; and
+3. LightGallery core/plugin styles.
+
+The project intentionally mixes:
+
+- Tailwind utilities for component layout, spacing, responsive states, and common surfaces;
+- global CSS classes for the phone, prototype configurator, motion loaders, LightGallery adjustments, and source-code modal; and
+- CSS custom properties for prototype theme colors.
+
+The desktop dashboard is a 272px sidebar plus flexible content at `lg`. Wider two-column showcase/prototype layouts wait until `xl` to preserve space for the phone and documentation.
 
 ## Interaction and accessibility
 
-### Navigation
+### Dashboard navigation
 
-- Desktop and mobile surfaces share `DashboardNavigation`.
-- Active navigation follows clicks, URL hashes, scrolling, resizing, and the bottom of the document.
-- The mobile drawer closes on link selection, overlay click, close-button click, or `Escape`.
-- Opening the drawer locks body scrolling; closing it restores focus to the menu trigger.
+- Desktop and mobile views share `DashboardNavigation`.
+- Home-section state follows clicks, hash changes, scrolling, resizing, and the bottom of the document.
+- The mobile drawer closes on navigation, backdrop click, close-button click, or `Escape`.
+- Opening the drawer locks body scrolling; closing restores focus to the menu trigger.
+- The language control updates `<html lang>`.
 
-### Hero and carousel
+### Showcase and galleries
 
-- The hero rotates automatically through a representative sample from each theme.
-- The rotation can be paused manually and pauses while the browser tab is hidden.
-- Carousel tabs jump to the first sample in a theme.
-- Previous and Next continue into adjacent themes at collection boundaries.
-- The focused carousel responds to Left Arrow and Right Arrow.
-- Touch and pointer users can swipe horizontally across the phone presentation.
+- Theme controls use tab semantics.
+- The focused sample carousel responds to Left/Right Arrow.
+- Pointer and touch users can swipe horizontally with a 50px threshold.
+- Custom hero/carousel GSAP durations collapse when reduced motion is requested.
+- LightGallery supplies its own gallery keyboard, zoom, fullscreen, and media controls.
 
-### Live prototype
+### Prototype
 
-- Theme 1 Classic, Theme 2 Fresh, and Theme 3 Midnight can be selected from the controls beside the phone on wide screens or above it on narrower screens.
-- Country account and workplace buttons open selectable menus, while the eye control hides or reveals the active balance.
-- All Wallets switches between PHP, USD, and HKD balances, and the receiving-account hit area copies a safe demo account value.
-- Transfer, Exchange, and View All open modal sheets with demo inputs and actions; the backdrop and close button dismiss them.
-- The announcement, message rows, action confirmations, and non-Home navigation items provide temporary status feedback.
-- Theme choices use radio semantics, selector options use listbox semantics, modal sheets identify themselves as dialogs, and status messages are announced through a live region.
+- Style/Motion controls use tabs with roving focus and Left/Right Arrow switching.
+- Theme and animation options use radio/radiogroup semantics.
+- The work-region selector is a labelled non-modal dialog with focus management, a Tab loop, `Escape`/backdrop dismissal, and trigger-focus restoration. The phone scroll area and bottom navigation become inert while it is open; the home-country control remains available.
+- Prototype toasts use polite live regions; motion loaders announce the pending destination.
+- The source modal is portalled to `document.body`, locks body scroll, traps focus, supports `Escape` and backdrop dismissal, and restores focus to the Source code button.
+- Source-code tabs support Left/Right Arrow, Home, and End; copy results use a separate polite live status.
+- Custom motion paths provide explicit reduced-motion handling and clean up timers, timelines, and tweens when unmounted.
 
-### Image preview
-
-- Selecting a phone opens a modal preview rendered through a React portal.
-- Left Arrow and Right Arrow navigate within the preview's sample collection.
-- `Escape`, the close button, or the backdrop closes the preview.
-- Zoom controls move in 25% steps from 100% to 250%.
-- A zoomed image can be dragged within calculated bounds.
-- Closing restores focus to the phone that opened the preview.
-
-Motion durations collapse when the operating system requests reduced motion.
+Accessibility should still be manually verified after UI changes, particularly focus order, translated accessible names, 320px layouts, browser fullscreen behavior, and third-party gallery behavior.
 
 ## Verification
 
-Run the full repository check before merging:
+Run the repository gate before merging:
 
 ```bash
 npm run verify
 ```
 
-This runs ESLint, strict TypeScript checking, and a production build. There is currently no unit, integration, or browser-test suite, so complete a focused manual pass as well:
+It runs ESLint, strict TypeScript checking, and a production build in sequence. There is no automated UI test suite, so complete a focused manual pass as well.
 
-- Load `/` and follow each section link.
-- Check the desktop sidebar and mobile drawer.
-- Switch between English and Simplified Chinese.
-- Traverse all 18 samples, including the boundaries between themes.
-- Open the image preview, navigate, zoom, pan, and close it with the keyboard.
-- Follow `#prototype`, switch among all three prototype themes, and confirm the phone remains usable at each palette.
-- Exercise the country and workplace menus, balance toggle, account copy control, wallet picker, message rows, and bottom navigation.
-- Open the Transfer, Exchange, and All Messages sheets; test their inputs and actions, then dismiss each by its close button and backdrop.
-- Confirm prototype toasts and selection states update without navigating or reloading the page.
-- Check reduced-motion behavior.
-- Review the layout and live phone at approximately 320px, tablet width, and desktop width.
+### Manual checklist
 
-For a quick formatting check on changed files, run:
+- Load `/` and test `/#overview`, `/#showcase`, and `/#brand` navigation highlighting.
+- Visit `/wireframes`, `/refinements`, and `/prototype` directly.
+- Confirm `/revisions` redirects to `/refinements`.
+- Open showcase, wireframe, and refinement assets in LightGallery and exercise the relevant controls.
+- Traverse all 18 showcase samples, including transitions between theme boundaries.
+- Pause/resume the hero rotator and check its hidden-tab behavior.
+- Switch English/Simplified Chinese and confirm the document language changes.
+- Test the mobile drawer, desktop sidebar, and supported fullscreen control.
+- On `/prototype`, test all three styles and all four enabled motion choices.
+- Switch Philippines -> Hong Kong -> Philippines for every enabled transition.
+- Confirm Singapore and Saudi Arabia show unopened wallet states without claiming a completed wallet switch.
+- Test the balance toggle, account copy, work-region sheet, drag-to-dismiss, message rows, quick actions, bottom navigation, and status feedback.
+- With Animation 1 selected, open Source code; test Component/Styles/Integration tabs, keyboard navigation, code scrolling, copying, `Escape`, backdrop close, focus trap, and focus restoration.
+- Check `prefers-reduced-motion: reduce` behavior.
+- Review at approximately 320px, tablet width, desktop width, and short landscape height.
+
+Check patch whitespace separately:
 
 ```bash
 git diff --check
@@ -323,9 +572,9 @@ git diff --check
 
 ## Deployment
 
-The repository does not include provider-specific deployment configuration. It can be deployed to a platform that supports Next.js 16 and Node.js `20.9.0` or newer.
+The repository has no provider-specific deployment configuration and is not configured with `output: "export"`.
 
-Use the repository-defined production flow:
+For a generic Node host:
 
 ```bash
 npm ci
@@ -333,18 +582,27 @@ npm run build
 npm run start
 ```
 
-For Vercel, import the repository and use the detected Next.js defaults. No environment variables are currently needed.
+The default port is `3000`. Forward Next.js CLI arguments to choose another port:
 
-This project is not configured with `output: "export"`, so do not treat the current build as a static HTML export.
+```bash
+npm run start -- -p 8080
+```
+
+Vercel can use its detected Next.js defaults. No environment variables are currently required.
+
+The current routes are prerendered by `next build`, but this is not the same as a configured static HTML export. Use the documented Next.js server flow unless static-export support is deliberately added and verified.
 
 ## Current boundaries
 
-- Only the `/` page exists.
-- Content and images are bundled locally; there is no CMS or remote data source.
-- There are no API routes, server actions, network requests, authentication flows, database clients, or remittance transactions.
-- The live phone is an in-memory UI simulation; wallet changes, transfers, exchange quotes, copied account values, and messages are not persisted or submitted.
-- Language selection is session-only React state and resets after a reload.
-- `StatsSection` and `DASHBOARD_STATISTICS` remain in the source tree but are not rendered by the current page.
-- Swiper is installed but unused by the current source.
-- Automated tests and continuous-integration workflows are not configured.
-- No `LICENSE` file is included; confirm distribution terms before reusing the project outside its intended context.
+- The app is a front-end design prototype, not a financial product.
+- There are no API routes, server actions, remote business-data requests, authentication flows, database clients, or persisted transactions.
+- Prototype, language, wallet, country, and navigation state resets after reload.
+- Several phone controls are intentionally disabled, and their existing panel code is not reachable from the current UI.
+- Simplified Chinese coverage is partial; much of the simulated phone remains English.
+- Animation 5 is disabled and has no active production component.
+- The in-app developer handoff documents only Animation 1.
+- `StatsSection`, `DASHBOARD_STATISTICS`, `RevisionImage`, `REVISION_FEEDBACK_SOURCE`, and `GlobeLandingLoader` remain in the source tree but are not rendered.
+- Swiper, Three.js, and `@types/three` are installed but unused.
+- No unit, integration, browser-test suite, or CI workflow is configured.
+- No Docker configuration, static-export configuration, or provider-specific hosting file is included.
+- No `LICENSE` file is included; confirm distribution terms before using this project outside its intended context.
