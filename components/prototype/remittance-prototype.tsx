@@ -625,9 +625,8 @@ export function RemittancePrototype() {
     }
 
     setLoadingWorkLocation(null);
-    showCountrySelectionToast(loadingWorkLocation);
     requestAnimationFrame(() => focusTarget?.focus({ preventScroll: true }));
-  }, [loadingWorkLocation, setWalletId, showCountrySelectionToast]);
+  }, [loadingWorkLocation, setWalletId]);
 
   const openPrototypePanel = useCallback((panel: Exclude<PhonePanel, null>, trigger?: HTMLElement | null) => {
     panelReturnFocusRef.current = trigger
