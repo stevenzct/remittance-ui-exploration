@@ -1,0 +1,18 @@
+$ErrorActionPreference = 'Stop'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/21d3a854-7688-4581-bd1d-ba67736db844.svg' -OutFile 'public/assets/prototype-v1/profile-arrow.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/a2e121d2-b7b2-4a41-a2af-0d8f6cf513c9.svg' -OutFile 'public/assets/prototype-v1/profile-settings.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/1b0cf1b3-ffd6-46a2-af5b-cf2cd27b9e3f.svg' -OutFile 'public/assets/prototype-v1/profile-avatar.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/f21614fc-3805-427b-9fc4-00316cc22f99.svg' -OutFile 'public/assets/prototype-v1/profile-unverified.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/316348c2-7d32-4a0c-845f-d03d2ed1ee79.svg' -OutFile 'public/assets/prototype-v1/profile-nav-active.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/a80e4497-bc1f-4a9a-ae00-24aa40f503c1.svg' -OutFile 'public/assets/prototype-v1/profile-home-inactive.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/0044e0eb-c3de-4283-9eb8-feb909500022.svg' -OutFile 'public/assets/prototype-v1/profile-wallets.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/4e6ee65a-126a-4df4-893b-4e4b5438f5bd.svg' -OutFile 'public/assets/prototype-v1/profile-orders.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/64a0066b-f2af-4b0d-94b6-37c552759ea2.svg' -OutFile 'public/assets/prototype-v1/profile-activity.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/da53d24a-2d7c-47a5-8ee0-568ab932dc16.svg' -OutFile 'public/assets/prototype-v1/profile-receiving-circle.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/38e9e637-9024-431e-aba5-f51dad72bb0e.svg' -OutFile 'public/assets/prototype-v1/profile-receiving.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/5aafce60-c1fe-4c50-a849-905ba8a9013c.svg' -OutFile 'public/assets/prototype-v1/profile-help-circle.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/726723f4-e243-4808-ab83-ffbdfe6a7f30.svg' -OutFile 'public/assets/prototype-v1/profile-help.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/0153c08e-0ef2-43f2-93f8-d85ec10ad373.svg' -OutFile 'public/assets/prototype-v1/profile-legal-circle.svg'
+Invoke-WebRequest -UseBasicParsing -Uri 'https://www.figma.com/api/mcp/asset/f82ea8de-8242-4a00-b9c5-decf9a9307a1.svg' -OutFile 'public/assets/prototype-v1/profile-legal.svg'
+Get-ChildItem -LiteralPath 'public/assets/prototype-v1' -Filter 'profile-*.svg' | Select-Object Name, Length
+

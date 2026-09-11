@@ -12,6 +12,7 @@ const chineseTranslations: Readonly<Record<string, string>> = {
   Overview: "概览",
   "UI Showcase": "UI 展示",
   Prototype: "交互原型",
+  "Prototype V1": "原型 V1",
   "Brand System": "品牌系统",
   "Interface samples": "界面示例",
   "Brand colors": "品牌颜色",

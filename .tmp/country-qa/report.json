@@ -1,0 +1,169 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "country": "Singapore",
+      "currency": "SGD",
+      "walletText": "SGD Wallet\nAll Wallets\nAvailable Balance\n\nS$3,000.00\n\nSingapore · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSingapore Dollar\nSGD\nAmount in SGD\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSAR · Saudi Arabia\nSGD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 1440,
+      "country": "Saudi Arabia",
+      "currency": "SAR",
+      "walletText": "SAR Wallet\nAll Wallets\nAvailable Balance\n\n$3,000.00\n\nSaudi Arabia · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSaudi Riyal\nSAR\nAmount in SAR\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSGD · Singapore\nSAR → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SGD"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 1440,
+      "country": "Hong Kong",
+      "currency": "HKD",
+      "walletText": "HKD Wallet\nAll Wallets\nAvailable Balance\n\nHK$3,000.00\n\nHong Kong · Receiving Account\n\nDBS Black Card\n\n735-****-1234\nAction required\nHong Kong · HKD\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nHong Kong Dollar\nHKD\nAmount in HKD\nExchange to\nPHP · Philippines\nSGD · Singapore\nSAR · Saudi Arabia\nHKD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "SGD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 390,
+      "country": "Singapore",
+      "currency": "SGD",
+      "walletText": "SGD Wallet\nAll Wallets\nAvailable Balance\n\nS$3,000.00\n\nSingapore · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSingapore Dollar\nSGD\nAmount in SGD\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSAR · Saudi Arabia\nSGD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 390,
+      "country": "Saudi Arabia",
+      "currency": "SAR",
+      "walletText": "SAR Wallet\nAll Wallets\nAvailable Balance\n\n$3,000.00\n\nSaudi Arabia · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSaudi Riyal\nSAR\nAmount in SAR\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSGD · Singapore\nSAR → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SGD"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 390,
+      "country": "Hong Kong",
+      "currency": "HKD",
+      "walletText": "HKD Wallet\nAll Wallets\nAvailable Balance\n\nHK$3,000.00\n\nHong Kong · Receiving Account\n\nDBS Black Card\n\n735-****-1234\nAction required\nHong Kong · HKD\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nHong Kong Dollar\nHKD\nAmount in HKD\nExchange to\nPHP · Philippines\nSGD · Singapore\nSAR · Saudi Arabia\nHKD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "SGD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 320,
+      "country": "Singapore",
+      "currency": "SGD",
+      "walletText": "SGD Wallet\nAll Wallets\nAvailable Balance\n\nS$3,000.00\n\nSingapore · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSingapore Dollar\nSGD\nAmount in SGD\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSAR · Saudi Arabia\nSGD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 320,
+      "country": "Saudi Arabia",
+      "currency": "SAR",
+      "walletText": "SAR Wallet\nAll Wallets\nAvailable Balance\n\n$3,000.00\n\nSaudi Arabia · Receiving Account\n\nOpen your receiving account\nAdd your VA account to start receiving payments securely.\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nSaudi Riyal\nSAR\nAmount in SAR\nExchange to\nPHP · Philippines\nHKD · Hong Kong\nSGD · Singapore\nSAR → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "HKD",
+          "SGD"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    },
+    {
+      "width": 320,
+      "country": "Hong Kong",
+      "currency": "HKD",
+      "walletText": "HKD Wallet\nAll Wallets\nAvailable Balance\n\nHK$3,000.00\n\nHong Kong · Receiving Account\n\nDBS Black Card\n\n735-****-1234\nAction required\nHong Kong · HKD\nTransfer\nSend money easily\nExchange\nConvert currencies",
+      "exchange": {
+        "text": "Exchange money\n\nChoose a currency to preview the exchange setup.\n\nFrom wallet\nHong Kong Dollar\nHKD\nAmount in HKD\nExchange to\nPHP · Philippines\nSGD · Singapore\nSAR · Saudi Arabia\nHKD → PHP\n\nA live exchange quote is not connected to this prototype.\n\nExplore interactive prototype",
+        "options": [
+          "PHP",
+          "SGD",
+          "SAR"
+        ],
+        "value": "PHP"
+      },
+      "reselected": true,
+      "returnedToPHP": true,
+      "missingImages": []
+    }
+  ],
+  "reducedMotion": true,
+  "errors": [],
+  "failedResponses": []
+}

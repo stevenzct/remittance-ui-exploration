@@ -1,4 +1,4 @@
-export type DashboardSectionId = "overview" | "showcase" | "prototype" | "refinements" | "brand" | "wireframes";
+export type DashboardSectionId = "overview" | "showcase" | "prototype" | "prototype-v1" | "refinements" | "brand" | "wireframes";
 export type DashboardStatisticId = "samples" | "colors" | "direction";
 
 export type DashboardIconName =

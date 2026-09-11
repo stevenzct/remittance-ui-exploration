@@ -34,22 +34,26 @@ const TAKEOFF_ARC_MOTION = {
 interface TakeoffArcTransitionProps {
   readonly destination: string;
   readonly assetSrc: string;
+  readonly onCovered?: () => void;
   readonly onComplete: () => void;
 }
 
 export function TakeoffArcTransition({
   destination,
   assetSrc,
+  onCovered,
   onComplete,
 }: TakeoffArcTransitionProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const artworkRef = useRef<HTMLDivElement | null>(null);
   const onCompleteRef = useRef(onComplete);
+  const onCoveredRef = useRef(onCovered);
   const [readyAssetSrc, setReadyAssetSrc] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     onCompleteRef.current = onComplete;
-  }, [onComplete]);
+    onCoveredRef.current = onCovered;
+  }, [onComplete, onCovered]);
 
   useLayoutEffect(() => {
     if (readyAssetSrc !== assetSrc) return;
@@ -63,6 +67,7 @@ export function TakeoffArcTransition({
 
     if (prefersReducedMotion) {
       gsap.set(overlay, { autoAlpha: 1, yPercent: 0 });
+      onCoveredRef.current?.();
       gsap.set(artwork, {
         autoAlpha: 1,
         x: 0,
@@ -102,6 +107,7 @@ export function TakeoffArcTransition({
         { autoAlpha: 1, yPercent: 0, duration: .18, ease: "power3.out" },
         0,
       )
+      .call(() => onCoveredRef.current?.(), [], .18)
       .fromTo(
         artwork,
         {

@@ -72,6 +72,12 @@ export const NAVIGATION_ITEMS = [
     href: "/prototype",
     icon: DASHBOARD_ICONS.prototypeNavigation,
   },
+  {
+    id: "prototype-v1",
+    label: "Prototype V1",
+    href: "/prototype-v1",
+    icon: DASHBOARD_ICONS.prototypeNavigation,
+  },
 ] as const satisfies readonly NavigationItem[];
 
 export const DASHBOARD_STATISTICS = [

@@ -15,6 +15,8 @@ export function DashboardHeader() {
     ? "Homepage Refinements"
     : pathname === "/wireframes"
       ? "Homepage Wireframes"
+    : pathname === "/prototype-v1"
+      ? "Prototype V1"
     : pathname === "/prototype"
       ? "Interactive Prototype"
       : "Homepage Design";

@@ -58,6 +58,7 @@ Every route is wrapped by the shared dashboard shell, language provider, desktop
 | `/wireframes` | `app/wireframes/page.tsx` | Three low-fidelity boards covering homepage structure, work-country selection, and navigation on scroll. |
 | `/refinements` | `app/refinements/page.tsx` | Before-and-after review of the old annotated homepage and the updated prototype reference. |
 | `/prototype` | `app/prototype/page.tsx` | Standalone interactive wallet, style configurator, motion selector, and Animation 1 source-code modal. |
+| `/prototype-v1` | `app/prototype-v1/page.tsx` | First-launch Payso app experience with PHP, HKD, SGD, and SAR wallets and country transitions. |
 | `/revisions` | `app/revisions/page.tsx` | Legacy route that redirects to `/refinements`. |
 
 The home route also supports direct section links:
@@ -167,6 +168,8 @@ Several controls are intentionally visual-only in the shipped prototype. `All Wa
 - The phone is designed around a 381px inline-size query container, allowing internal dimensions and motion offsets to use `cqw` units consistently.
 
 ## Country-transition motion
+
+Prototype V1 (`/prototype-v1`) uses the Takeoff arc transition for Hong Kong, Singapore, Saudi Arabia, and returning to the Philippines. Selecting a country reveals its wallet after the transition covers the screen and returns the wallet scroll position to the top. Singapore and Saudi Arabia match their supplied Figma screens, including country flags, balance prefixes, and the receiving-account setup card. Account setup currently displays a Coming soon message; wallet, transfer, and exchange sheets use the active currency. The Philippines tab uses the same Animation 1 artwork and motion as `/prototype`, then reveals the PHP wallet and resets the country selector to “Where you work.” The new Figma artwork is stored locally in `public/assets/prototype-v1/`.
 
 The Motion tab controls the transition used when switching between the Philippines and Hong Kong.
 
@@ -288,6 +291,7 @@ Open [http://localhost:3000](http://localhost:3000). The most direct feature-rev
 - [http://localhost:3000/wireframes](http://localhost:3000/wireframes)
 - [http://localhost:3000/refinements](http://localhost:3000/refinements)
 - [http://localhost:3000/prototype](http://localhost:3000/prototype)
+- [http://localhost:3000/prototype-v1](http://localhost:3000/prototype-v1)
 
 Use `npm install` instead of `npm ci` only when intentionally changing dependencies. Commit the resulting `package-lock.json` change with the dependency update.
 
@@ -332,6 +336,7 @@ app/
   layout.tsx                          Root metadata, LanguageProvider, and DashboardShell
   page.tsx                            Home overview, showcase, and brand sections
   prototype/page.tsx                  Interactive prototype route
+  prototype-v1/page.tsx               First-launch mobile app prototype route
   refinements/page.tsx                Refinement review route
   revisions/page.tsx                  Legacy redirect to /refinements
   wireframes/page.tsx                 Wireframe review route

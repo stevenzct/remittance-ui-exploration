@@ -27,6 +27,8 @@ export function DashboardNavigation({ onNavigate }: DashboardNavigationProps) {
   const [activeSection, setActiveSection] = useState<DashboardSectionId>(firstSection);
   const visibleActiveSection = pathname === "/prototype"
     ? "prototype"
+    : pathname === "/prototype-v1"
+      ? "prototype-v1"
     : pathname === "/wireframes"
       ? "wireframes"
     : pathname === "/refinements" || pathname === "/revisions"

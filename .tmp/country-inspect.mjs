@@ -1,0 +1,11 @@
+﻿import fs from 'node:fs/promises';
+const targets=await fetch('http://127.0.0.1:9332/json/list').then(r=>r.json());
+const ws=new WebSocket(targets.find(t=>t.type==='page').webSocketDebuggerUrl);
+await new Promise(r=>ws.onopen=r);
+let id=0; const pending=new Map();
+ws.onmessage=({data})=>{const m=JSON.parse(data);if(m.id){pending.get(m.id)?.(m.result);pending.delete(m.id)}};
+const cdp=(method,params={})=>new Promise(r=>{pending.set(++id,r);ws.send(JSON.stringify({id,method,params}))});
+console.log(JSON.stringify(await cdp('Runtime.evaluate',{expression:`({url:location.href,body:document.body.innerText,viewport:{w:innerWidth,h:innerHeight},buttons:[...document.querySelectorAll('button')].map(e=>({label:e.getAttribute('aria-label'),text:e.innerText,rect:e.getBoundingClientRect().toJSON()}))})`,returnByValue:true})));
+const shot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('.tmp/country-qa/inspect.png',Buffer.from(shot.data,'base64'));
+ws.close();
+

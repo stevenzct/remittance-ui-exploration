@@ -1,0 +1,70 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  color: #1d2a42;
+  text-align: left;
+}
+
+.backdrop { position: absolute; inset: 0; background: rgb(13 27 54 / 40%); }
+.sheet { position: relative; width: 100%; max-height: 85%; display: flex; flex-direction: column; overflow: hidden; border-radius: 26px 26px 0 0; background: #fff; box-shadow: 0 -8px 36px rgb(17 37 76 / 12%); outline: none; }
+.workOverlay { background: rgb(0 0 0 / 60%); animation: work-backdrop-in 180ms ease-out; }
+.workOverlay .backdrop { background: transparent; }
+.workSheet { display: block; height: 301px; max-height: none; flex: 0 0 100%; border-radius: 25px 25px 0 0; box-shadow: none; color: #000; animation: work-sheet-in 240ms cubic-bezier(.22, 1, .36, 1); }
+.workHandleButton { position: absolute; z-index: 2; top: 0; left: 50%; display: grid; width: 71px; height: 32px; transform: translateX(-50%); place-items: start center; padding-top: 12px; border: 0; background: transparent; }
+.workHandle { display: block; width: 47px; height: 5px; border-radius: 2px; background: #d6d6d6; }
+.workTitle { position: absolute; top: 33px; left: 20px; width: 280px; margin: 0; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; }
+.workDescription { position: absolute; top: 55px; left: 20px; width: 280px; height: 30px; margin: 0; font-size: 12px; font-weight: 400; line-height: normal; letter-spacing: -.12px; }
+.workCountries { position: absolute; top: 101px; left: 20px; display: grid; width: 335px; gap: 8px; margin: 0; padding: 0; border: 0; }
+.workCountry { position: relative; display: block; width: 335px; height: 48px; overflow: hidden; border-radius: 12px; background: #fff; box-shadow: 0 1px 8px rgb(0 0 0 / 7%); color: #000; }
+.workCountrySelected { background: #ebf1fd; box-shadow: 0 0 11px -4px rgb(0 0 0 / 7%); color: #2853bb; }
+.workCountry input { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.workCountry:has(input:focus-visible) { outline: 3px solid rgb(40 83 187 / 30%); outline-offset: -3px; }
+.workCountry > img:first-of-type { position: absolute; top: 8px; left: 14px; width: 32px; height: 32px; border-radius: 50%; }
+.singaporeFlag { box-shadow: 0 2px 5px rgb(0 0 0 / 5%); }
+.workCountry > span { position: absolute; top: 15px; left: 54px; height: 18px; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; white-space: nowrap; }
+.workIndicator { position: absolute; top: 14px; right: 14px; width: 21px; height: 21px; }
+.workCountrySelected .workIndicator { top: 12px; width: 24px; height: 24px; }
+@keyframes work-backdrop-in { from { background: rgb(0 0 0 / 0%); } }
+@keyframes work-sheet-in { from { transform: translateY(100%); } }
+.handle { flex-shrink: 0; width: 36px; height: 4px; margin: 10px auto 4px; border-radius: 10px; background: #d5dde8; }
+.header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 20px 12px; }
+.header h2 { margin: 0; font-size: 20px; line-height: 27px; font-weight: 700; letter-spacing: -.6px; }
+.close { display: grid; width: 36px; height: 36px; flex-shrink: 0; place-items: center; border: 0; border-radius: 50%; color: #52637a; background: #f0f4f9; cursor: pointer; }
+.content { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 0 20px 34px; }
+.description { margin: 0 0 20px; color: #66758a; font-size: 13px; line-height: 21px; }
+.primaryLink { display: flex; min-height: 46px; width: 100%; align-items: center; justify-content: center; gap: 8px; padding: 12px 15px; border: 0; border-radius: 12px; background: #2853bb; color: #fff; font: inherit; font-size: 13px; line-height: 20px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.primaryLink:hover { background: #21469e; }
+.close:focus-visible, .primaryLink:focus-visible, .field input:focus-visible, .field select:focus-visible { outline: 2px solid #2853bb; outline-offset: 3px; }
+.wallet { display: flex; flex-direction: column; gap: 7px; padding: 18px; border-radius: 18px; background: #2853bb; color: #fff; }
+.walletCountry { display: flex; align-items: center; gap: 7px; margin-bottom: 18px; font-size: 12px; font-weight: 600; }
+.walletCountry span { margin-left: auto; opacity: .75; font-size: 11px; }
+.wallet small { font-size: 11px; opacity: .8; }
+.wallet strong { font-size: 30px; font-weight: 650; line-height: 37px; letter-spacing: -.8px; }
+.details { display: grid; gap: 15px; margin: 22px 0; }
+.details > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 12px; line-height: 19px; }
+.details dt { color: #758299; }
+.details dd { margin: 0; color: #24334b; text-align: right; font-weight: 600; }
+.field { display: grid; gap: 7px; margin-bottom: 15px; font-size: 12px; font-weight: 600; color: #586982; }
+.field input, .field select, .readOnly { box-sizing: border-box; width: 100%; min-height: 47px; padding: 12px 13px; border: 1px solid #e0e7f0; border-radius: 11px; background: #f6f9fe; font: inherit; font-size: 14px; color: #24334b; }
+.readOnly { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.readOnly strong { color: #2853bb; font-size: 12px; }
+.preview { margin: 19px 0; padding: 13px; border-radius: 11px; background: #f6f9fe; }
+.preview strong { display: block; overflow-wrap: anywhere; color: #2853bb; font-size: 13px; }
+.preview p, .previewNote { margin: 6px 0 0; font-size: 11px; line-height: 18px; color: #758299; }
+.profile { padding: 10px 0 4px; text-align: center; }
+.profile > span, .featureIcon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 15px; border-radius: 20px; background: #edf3ff; color: #2853bb; }
+.profile h3 { margin: 0; font-size: 17px; font-weight: 650; }
+.profile p { margin: 5px 0 0; font-size: 12px; color: #758299; }
+.information { padding: 12px 5px 17px; text-align: center; }
+.information h3 { max-width: 270px; margin: 0 auto 12px; font-size: 21px; line-height: 28px; letter-spacing: -.6px; font-weight: 650; }
+.information p { margin: 0; font-size: 13px; line-height: 22px; color: #66758a; }
+.previewNote { margin: 0 0 17px; text-align: center; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .workOverlay,
+  .workSheet { animation: none; }
+}
