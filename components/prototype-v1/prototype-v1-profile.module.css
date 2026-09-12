@@ -1,0 +1,217 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  color: #000;
+  font-family: "Inter Variable", Inter, sans-serif;
+}
+
+.header {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 66px;
+}
+
+.header h2 {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: center;
+}
+
+.settings {
+  position: absolute;
+  top: 15px;
+  right: 16px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+}
+
+.identityCard,
+.menuCard {
+  position: absolute;
+  left: 16px;
+  width: 343px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 12px #0000000a;
+}
+
+.identityCard {
+  top: 56px;
+  height: 186px;
+}
+
+.identityRow {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  width: 315px;
+  height: 60px;
+  text-align: left;
+}
+
+.identityCopy {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.identityCopy strong {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -.24px;
+  line-height: 29px;
+}
+
+.identityCopy > span {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.rowChevron {
+  position: absolute;
+  right: 14px;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+}
+
+.verification {
+  position: absolute;
+  top: 92px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  width: 315px;
+  height: 78px;
+  padding: 0 13px;
+  border: 1px solid #fff3de;
+  border-radius: 14px;
+  background: #fff7ea;
+  text-align: left;
+}
+
+.verificationIcon {
+  display: grid;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.verificationCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.verificationCopy strong {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -.14px;
+  line-height: 18px;
+}
+
+.verificationCopy > span {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: -.1px;
+  line-height: 12px;
+}
+
+.verification .rowChevron {
+  right: 13px;
+}
+
+.menus {
+  position: absolute;
+  top: 256px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menuCard {
+  position: relative;
+  top: auto;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  height: 112px;
+  overflow: hidden;
+}
+
+.menuRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px 0 15px;
+  text-align: left;
+}
+
+.menuRow + .menuRow::before {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  left: 14px;
+  height: 1px;
+  background: #f1f1f1;
+  content: "";
+}
+
+.menuIcon {
+  position: relative;
+  display: grid;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+}
+
+.menuGlyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.menuLabel {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.menuChevron {
+  position: absolute;
+  right: 14px;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+}
+
+.screen button:focus-visible {
+  outline: 2px solid #2853bb;
+  outline-offset: 2px;
+}

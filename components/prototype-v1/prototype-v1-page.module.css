@@ -9,10 +9,16 @@
 }
 
 .phone {
-  position: relative !important;
+  padding-top: 34px;
+}
+
+.phone[data-screen="profile"] {
+  background: #f6f9fe;
+  background-clip: padding-box;
 }
 
 .viewport {
+  margin-top: 0;
   background: #f6f9fe;
 }
 
@@ -22,7 +28,7 @@
   top: 0;
   right: 0;
   left: 0;
-  height: 40px;
+  height: 34px;
   border-radius: 48px 48px 0 0;
   pointer-events: none;
 }
@@ -33,6 +39,17 @@
 
 .phone[data-panel="work"] .statusBackdrop {
   background: rgb(0 0 0 / 60%);
+}
+
+.phone.mobileFullscreen .statusBackdrop {
+  display: none;
+}
+
+.phone.mobileFullscreen .viewport {
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+  border-radius: 0;
 }
 
 .phone[data-panel] .viewport {
@@ -71,6 +88,23 @@
 .home {
   position: absolute;
   inset: 0;
+}
+
+.screenLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-origin: center center;
+}
+
+.profileScreenLayer {
+  pointer-events: none;
+}
+
+.profileScreenLayer [data-screen-content] {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .header {
@@ -715,39 +749,85 @@
 .navigation {
   position: absolute;
   z-index: 4;
-  left: 105px;
+  left: 109px;
   bottom: 16px;
-  display: flex;
-  align-items: center;
   width: 157px;
   height: 56px;
-  padding: 10px 12px;
-  gap: 8px;
   border-radius: 30px;
   background: #fff;
   box-shadow: 0 8px 22px -6px rgb(24 39 75 / 12%), 0 14px 64px -4px rgb(24 39 75 / 12%);
 }
 
-.homeButton {
-  display: flex;
-  flex: 0 0 89px;
-  align-items: center;
+.navPill {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 12px;
+  width: 89px;
   height: 36px;
-  padding: 6px 12px;
-  gap: 4px;
   border-radius: 20px;
   background: #f6f9fe;
+}
+
+.navButton {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 36px;
+  gap: 4px;
+  border-radius: 20px;
   color: #2853bb;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -.12px;
+  white-space: nowrap;
+}
+
+.homeButton {
+  left: 12px;
+  width: 89px;
+  padding-left: 12px;
 }
 
 .profileButton {
+  left: 109px;
+  width: 24px;
+  padding-left: 0;
+}
+
+.navIcon {
+  position: relative;
   display: grid;
   flex: 0 0 24px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   place-items: center;
+}
+
+.navIconActive,
+.navIconInactive {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.navIconInactive,
+.profileNavLabel {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.navLabel {
+  flex: 0 0 auto;
+}
+
+.navigation button:focus-visible {
+  outline: 2px solid #2853bb;
+  outline-offset: -2px;
 }
 
 .transition {

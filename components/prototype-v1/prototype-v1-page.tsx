@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import { PrototypeIcon } from "@/components/prototype/prototype-icon";
 import { TakeoffArcTransition } from "@/components/prototype/takeoff-arc-transition";
 import { PrototypeV1Sheet, type V1Panel } from "./prototype-v1-sheet";
+import { PrototypeV1Profile } from "./prototype-v1-profile";
 import { V1_WALLETS, V1_WORK_ARTWORK, V1_WORK_WALLETS, type V1WalletId, type V1WorkCountry } from "./prototype-v1-wallets";
 import styles from "./prototype-v1-page.module.css";
 
@@ -54,9 +56,23 @@ function Asset({ name, width, height = width, className, priority = false }: {
 }
 
 export function PrototypeV1Page() {
+  const stageRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const homeScreenRef = useRef<HTMLDivElement>(null);
+  const profileScreenRef = useRef<HTMLDivElement>(null);
+  const navPillRef = useRef<HTMLSpanElement>(null);
+  const homeNavRef = useRef<HTMLButtonElement>(null);
+  const profileNavRef = useRef<HTMLButtonElement>(null);
+  const homeNavLabelRef = useRef<HTMLSpanElement>(null);
+  const profileNavLabelRef = useRef<HTMLSpanElement>(null);
+  const homeActiveIconRef = useRef<HTMLSpanElement>(null);
+  const homeInactiveIconRef = useRef<HTMLSpanElement>(null);
+  const profileActiveIconRef = useRef<HTMLSpanElement>(null);
+  const profileInactiveIconRef = useRef<HTMLSpanElement>(null);
+  const activeScreenRef = useRef<"home" | "profile">("home");
+  const screenTransitionRef = useRef<gsap.core.Timeline | null>(null);
   const panelTriggerRef = useRef<HTMLElement | null>(null);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [panel, setPanel] = useState<V1Panel | null>(null);
@@ -64,6 +80,8 @@ export function PrototypeV1Page() {
   const [activeWallet, setActiveWallet] = useState<V1WalletId>("php");
   const [loadingCountry, setLoadingCountry] = useState<V1WorkCountry | "Philippines" | null>(null);
   const [toast, setToast] = useState("");
+  const [activeScreen, setActiveScreen] = useState<"home" | "profile">("home");
+  const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
   const isHongKong = activeWallet === "hkd";
   const isWorkWallet = activeWallet !== "php";
   const wallet = V1_WALLETS[activeWallet];
@@ -113,11 +131,65 @@ export function PrototypeV1Page() {
     const viewport = viewportRef.current;
     const canvas = canvasRef.current;
     if (!viewport || !canvas) return;
-    const resize = () => canvas.style.setProperty("--phone-scale", String(viewport.clientWidth / 375));
+    const resize = () => {
+      const scale = viewport.clientWidth / 375;
+      canvas.style.setProperty("--phone-scale", String(scale));
+      canvas.style.height = `${viewport.clientHeight / scale}px`;
+    };
     resize();
     const observer = new ResizeObserver(resize);
     observer.observe(viewport);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const mobileViewport = window.matchMedia("(max-width: 1023px)");
+
+    const updateMobileFullscreen = () => {
+      const stage = stageRef.current;
+
+      if (!mobileViewport.matches || !stage) {
+        setIsMobileFullscreen(false);
+        return;
+      }
+
+      setIsMobileFullscreen(stage.getBoundingClientRect().top <= 1);
+    };
+
+    updateMobileFullscreen();
+    window.addEventListener("scroll", updateMobileFullscreen, { passive: true });
+    window.addEventListener("resize", updateMobileFullscreen);
+    mobileViewport.addEventListener("change", updateMobileFullscreen);
+
+    return () => {
+      window.removeEventListener("scroll", updateMobileFullscreen);
+      window.removeEventListener("resize", updateMobileFullscreen);
+      mobileViewport.removeEventListener("change", updateMobileFullscreen);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("prototype-experience-fullscreen", isMobileFullscreen);
+
+    return () => document.body.classList.remove("prototype-experience-fullscreen");
+  }, [isMobileFullscreen]);
+
+  useLayoutEffect(() => {
+    const homeScreen = homeScreenRef.current;
+    const profileScreen = profileScreenRef.current;
+    if (!homeScreen || !profileScreen) return;
+
+    const homeContent = homeScreen.querySelectorAll<HTMLElement>("[data-screen-content]");
+    const profileContent = profileScreen.querySelectorAll<HTMLElement>("[data-screen-content]");
+    gsap.set(homeScreen, { pointerEvents: "auto" });
+    gsap.set(profileScreen, { pointerEvents: "none" });
+    gsap.set(homeContent, { autoAlpha: 1, x: 0, y: 0 });
+    gsap.set(profileContent, { autoAlpha: 0, x: 0, y: 10 });
+
+    return () => {
+      screenTransitionRef.current?.kill();
+      gsap.killTweensOf([...homeContent, ...profileContent]);
+    };
   }, []);
 
   useEffect(() => {
@@ -135,9 +207,103 @@ export function PrototypeV1Page() {
     }
   }
 
+  const changeScreen = useCallback((nextScreen: "home" | "profile") => {
+    const currentScreen = activeScreenRef.current;
+    if (nextScreen === currentScreen) return;
+
+    const homeScreen = homeScreenRef.current;
+    const profileScreen = profileScreenRef.current;
+    if (!homeScreen || !profileScreen) return;
+
+    const outgoing = [...(currentScreen === "home" ? homeScreen : profileScreen).querySelectorAll<HTMLElement>("[data-screen-content]")];
+    const incoming = [...(nextScreen === "home" ? homeScreen : profileScreen).querySelectorAll<HTMLElement>("[data-screen-content]")];
+    const direction = nextScreen === "profile" ? 1 : -1;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const navPill = navPillRef.current;
+    const homeNav = homeNavRef.current;
+    const profileNav = profileNavRef.current;
+    const homeNavLabel = homeNavLabelRef.current;
+    const profileNavLabel = profileNavLabelRef.current;
+    const homeActiveIcon = homeActiveIconRef.current;
+    const homeInactiveIcon = homeInactiveIconRef.current;
+    const profileActiveIcon = profileActiveIconRef.current;
+    const profileInactiveIcon = profileInactiveIconRef.current;
+    if (!navPill || !homeNav || !profileNav || !homeNavLabel || !profileNavLabel
+      || !homeActiveIcon || !homeInactiveIcon || !profileActiveIcon || !profileInactiveIcon) return;
+
+    activeScreenRef.current = nextScreen;
+    setActiveScreen(nextScreen);
+    if (nextScreen === "home") scrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
+
+    const isReversing = Boolean(screenTransitionRef.current);
+    screenTransitionRef.current?.kill();
+    gsap.killTweensOf([...outgoing, ...incoming, navPill, homeNav, profileNav,
+      homeNavLabel, profileNavLabel, homeActiveIcon, homeInactiveIcon, profileActiveIcon, profileInactiveIcon]);
+
+    const navState = nextScreen === "home"
+      ? { pillLeft: 12, homeLeft: 12, homeWidth: 89, homePadding: 12, profileLeft: 109, profileWidth: 24, profilePadding: 0 }
+      : { pillLeft: 56, homeLeft: 24, homeWidth: 24, homePadding: 0, profileLeft: 56, profileWidth: 89, profilePadding: 12 };
+
+    if (prefersReducedMotion) {
+      gsap.set(currentScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "none" });
+      gsap.set(nextScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "auto" });
+      gsap.set(outgoing, { autoAlpha: 0, x: 0, y: 0 });
+      gsap.set(incoming, { autoAlpha: 1, x: 0, y: 0 });
+      gsap.set(navPill, { left: navState.pillLeft });
+      gsap.set(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding });
+      gsap.set(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding });
+      gsap.set([homeNavLabel, homeActiveIcon, profileInactiveIcon], { autoAlpha: nextScreen === "home" ? 1 : 0 });
+      gsap.set([profileNavLabel, profileActiveIcon, homeInactiveIcon], { autoAlpha: nextScreen === "profile" ? 1 : 0 });
+      return;
+    }
+
+    gsap.set(currentScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "none" });
+    gsap.set(nextScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "auto" });
+    gsap.set([...outgoing, ...incoming], { willChange: "transform,opacity" });
+    if (!isReversing) gsap.set(incoming, { autoAlpha: 0, x: direction * 18, y: 8 });
+
+    screenTransitionRef.current = gsap.timeline({
+      defaults: { overwrite: "auto" },
+      onComplete: () => {
+        gsap.set(outgoing, { autoAlpha: 0, x: 0, y: 0, clearProps: "willChange" });
+        gsap.set(incoming, { autoAlpha: 1, x: 0, y: 0, clearProps: "willChange" });
+        screenTransitionRef.current = null;
+      },
+    })
+      .to(outgoing, {
+        autoAlpha: 0,
+        x: direction * -12,
+        duration: .18,
+        ease: "power2.inOut",
+      }, 0)
+      .to(incoming, {
+        autoAlpha: 1,
+        x: 0,
+        y: 0,
+        duration: .38,
+        ease: "power3.out",
+        stagger: .035,
+      }, .14)
+      .to(navPill, { left: navState.pillLeft, duration: .42, ease: "power3.inOut" }, 0)
+      .to(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding, duration: .42, ease: "power3.inOut" }, 0)
+      .to(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding, duration: .42, ease: "power3.inOut" }, 0)
+      .to([homeNavLabel, homeActiveIcon, profileInactiveIcon], {
+        autoAlpha: nextScreen === "home" ? 1 : 0,
+        duration: .2,
+      }, 0)
+      .to([profileNavLabel, profileActiveIcon, homeInactiveIcon], {
+        autoAlpha: nextScreen === "profile" ? 1 : 0,
+        duration: .2,
+      }, .12);
+  }, []);
+
   function goHome() {
     setPanel(null);
-    scrollRef.current?.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    if (activeScreenRef.current === "home") {
+      scrollRef.current?.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+      return;
+    }
+    changeScreen("home");
   }
 
   function selectHomeCountry(trigger: HTMLButtonElement) {
@@ -152,14 +318,14 @@ export function PrototypeV1Page() {
   }
 
   return (
-    <section className={`ui-surface rounded-[26px] p-3 sm:rounded-[36px] sm:p-9 lg:p-12 xl:p-14 ${styles.page}`} aria-label="Prototype V1 — first app launch">
-      <div className={styles.stage}>
-        <div className={`phone-shell prototype-phone-shell ${styles.phone}`} data-panel={panel ?? undefined} aria-label="Payso first-launch phone prototype">
+    <section className={`prototype-fullscreen-page ui-surface rounded-[26px] p-3 sm:rounded-[36px] sm:p-9 lg:p-12 xl:p-14 ${styles.page}`} aria-label="Prototype V1 — first app launch">
+      <div ref={stageRef} className={`prototype-device-stage ${styles.stage}${isMobileFullscreen ? " is-mobile-fullscreen" : ""}`}>
+        <div className={`phone-shell prototype-phone-shell ${styles.phone}${isMobileFullscreen ? ` is-mobile-fullscreen ${styles.mobileFullscreen}` : ""}`} data-panel={panel ?? undefined} data-screen={activeScreen} aria-label="Payso first-launch phone prototype">
           <div className={styles.statusBackdrop} aria-hidden="true" />
           <div ref={viewportRef} className={`phone-screen-viewport ${styles.viewport}`}>
             <div ref={canvasRef} className={styles.canvas}>
-              <div className={styles.home} inert={panel !== null || loadingCountry !== null}>
-                <header className={styles.header}>
+              <div ref={homeScreenRef} className={`${styles.home} ${styles.screenLayer}`} aria-hidden={activeScreen !== "home"} inert={panel !== null || loadingCountry !== null || activeScreen !== "home"}>
+                <header className={styles.header} data-screen-content>
                   <button className={styles.country} type="button" onClick={(event) => selectHomeCountry(event.currentTarget)} aria-label="Philippines home wallet" aria-pressed={!isWorkWallet}>
                     {isWorkWallet ? <Asset name="country-pill-ph-unselected.svg" width={101} height={30} className={styles.countryInactiveBackground} /> : <Asset name="country-pill.svg" width={129} height={58} className={styles.countryBackground} priority />}
                     <Asset name="flag-ph.svg" width={22} className={styles.flag} priority />
@@ -173,7 +339,7 @@ export function PrototypeV1Page() {
                   </button>
                 </header>
 
-                <div className={styles.scroll} ref={scrollRef} tabIndex={0} aria-label="Wallet and offers">
+                <div className={styles.scroll} ref={scrollRef} tabIndex={0} aria-label="Wallet and offers" data-screen-content>
                   <section className={styles.wallet} data-currency={activeWallet} data-needs-account={needsReceivingAccount || undefined} aria-label={`${wallet.currency} wallet`}>
                     {needsReceivingAccount ? <div className={styles.workWatermark} aria-hidden="true">
                       <Asset name={activeWallet === "sgd" ? "flag-watermark-sg.png" : "flag-watermark-sa.png"} width={200} height={150} priority />
@@ -231,15 +397,27 @@ export function PrototypeV1Page() {
                   </div>
                 </div>
 
-                <nav className={styles.navigation} aria-label="App navigation">
-                  <button type="button" className={styles.homeButton} aria-current="page" onClick={goHome}>
-                    <Asset name="icon-home.svg" width={24} /><span>Home</span>
-                  </button>
-                  <button type="button" className={styles.profileButton} aria-label="Profile">
-                    <Asset name="icon-profile.svg" width={22} />
-                  </button>
-                </nav>
               </div>
+              <div ref={profileScreenRef} className={`${styles.screenLayer} ${styles.profileScreenLayer}`} aria-hidden={activeScreen !== "profile"} inert={activeScreen !== "profile"}>
+                <PrototypeV1Profile onPreview={(label) => setToast(`${label} coming soon`)} />
+              </div>
+              <nav className={styles.navigation} aria-label="App navigation" inert={panel !== null || loadingCountry !== null}>
+                <span ref={navPillRef} className={styles.navPill} aria-hidden="true" />
+                <button ref={homeNavRef} type="button" className={`${styles.navButton} ${styles.homeButton}`} aria-label="Home" aria-current={activeScreen === "home" ? "page" : undefined} onClick={goHome}>
+                  <span className={styles.navIcon} aria-hidden="true">
+                    <span ref={homeActiveIconRef} className={styles.navIconActive}><Asset name="icon-home.svg" width={24} height={24} /></span>
+                    <span ref={homeInactiveIconRef} className={styles.navIconInactive}><Image src="/assets/prototype-v1/profile/nav-home.svg" alt="" width={24} height={24} unoptimized /></span>
+                  </span>
+                  <span ref={homeNavLabelRef} className={`${styles.navLabel} ${styles.homeNavLabel}`}>Home</span>
+                </button>
+                <button ref={profileNavRef} type="button" className={`${styles.navButton} ${styles.profileButton}`} aria-label="Profile" aria-current={activeScreen === "profile" ? "page" : undefined} onClick={() => changeScreen("profile")}>
+                  <span className={styles.navIcon} aria-hidden="true">
+                    <span ref={profileActiveIconRef} className={styles.navIconInactive}><Image src="/assets/prototype-v1/profile/nav-profile.svg" alt="" width={22} height={22} unoptimized /></span>
+                    <span ref={profileInactiveIconRef} className={styles.navIconActive}><Asset name="icon-profile.svg" width={22} height={22} /></span>
+                  </span>
+                  <span ref={profileNavLabelRef} className={`${styles.navLabel} ${styles.profileNavLabel}`}>Profile</span>
+                </button>
+              </nav>
               <PrototypeV1Sheet panel={panel} onClose={closePanel} workCountry={workCountry} activeWallet={activeWallet} onWorkCountryChange={selectWorkCountry} />
               {loadingCountry && (
                 <div ref={focusTransition} className={styles.transition} tabIndex={-1}>
