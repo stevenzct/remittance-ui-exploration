@@ -38,7 +38,11 @@
 }
 
 .phone[data-panel="work"] .statusBackdrop {
-  background: rgb(0 0 0 / 60%);
+  background: rgb(0 0 0 / var(--v1-sheet-backdrop-opacity, .6));
+}
+
+.phone[data-panel="wallets"] .statusBackdrop {
+  background: rgb(0 0 0 / var(--v1-sheet-backdrop-opacity, .6));
 }
 
 .phone.mobileFullscreen .statusBackdrop {
@@ -288,6 +292,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(264.496deg, rgb(255 255 255 / 0%) 5.8672%, rgb(255 255 255 / 89.2%) 83.156%, rgb(255 255 255 / 91.4%) 87.309%, #fff 93.432%);
+  box-shadow: inset 2px 0 0 #fff, inset 0 -2px 0 #fff;
 }
 
 .wallet[data-currency="sar"] .workWatermark {
@@ -840,6 +845,9 @@
 .toast {
   position: absolute;
   z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   right: 24px;
   bottom: 84px;
   left: 24px;
@@ -849,13 +857,29 @@
   color: #fff;
   font-size: 12px;
   text-align: center;
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 150ms ease;
+  transform-origin: center;
 }
 
-.toast[data-visible="true"] { opacity: 1; }
+.toast[data-kind="copy"] {
+  top: 66px;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  width: 206px;
+  height: 34px;
+  margin-left: -103px;
+  padding: 0;
+  border-radius: 14px;
+  background: #333;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: -.12px;
+  transform-origin: center top;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .toast { transition: none; }
+  .toast { transform: none; }
 }

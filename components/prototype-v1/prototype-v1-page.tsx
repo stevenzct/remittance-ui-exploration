@@ -44,6 +44,12 @@ const promotions = [
   },
 ] as const;
 
+type V1Toast = {
+  readonly id: number;
+  readonly kind: "copy" | "info";
+  readonly message: string;
+};
+
 function Asset({ name, width, height = width, className, priority = false }: {
   readonly name: string;
   readonly width: number;
@@ -73,13 +79,16 @@ export function PrototypeV1Page() {
   const profileInactiveIconRef = useRef<HTMLSpanElement>(null);
   const activeScreenRef = useRef<"home" | "profile">("home");
   const screenTransitionRef = useRef<gsap.core.Timeline | null>(null);
+  const toastRef = useRef<HTMLDivElement>(null);
+  const toastTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const toastSequenceRef = useRef(0);
   const panelTriggerRef = useRef<HTMLElement | null>(null);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [panel, setPanel] = useState<V1Panel | null>(null);
   const [workCountry, setWorkCountry] = useState<V1WorkCountry | null>(null);
   const [activeWallet, setActiveWallet] = useState<V1WalletId>("php");
   const [loadingCountry, setLoadingCountry] = useState<V1WorkCountry | "Philippines" | null>(null);
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState<V1Toast | null>(null);
   const [activeScreen, setActiveScreen] = useState<"home" | "profile">("home");
   const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
   const isHongKong = activeWallet === "hkd";
@@ -88,6 +97,11 @@ export function PrototypeV1Page() {
   const needsReceivingAccount = wallet.receivingBank === null;
   const workWallet = V1_WORK_WALLETS.find((item) => item.country === workCountry);
   const workArtwork = workCountry ? V1_WORK_ARTWORK[workCountry] : null;
+
+  const showToast = useCallback((message: string, kind: V1Toast["kind"] = "info") => {
+    toastSequenceRef.current += 1;
+    setToast({ id: toastSequenceRef.current, kind, message });
+  }, []);
 
   const focusTransition = useCallback((node: HTMLDivElement | null) => {
     node?.focus({ preventScroll: true });
@@ -105,7 +119,7 @@ export function PrototypeV1Page() {
 
   const selectWorkCountry = useCallback((country: V1WorkCountry) => {
     setPanel(null);
-    setToast("");
+    setToast(null);
     setLoadingCountry(country);
   }, []);
 
@@ -192,19 +206,43 @@ export function PrototypeV1Page() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!toast) return;
-    const timeout = window.setTimeout(() => setToast(""), 2600);
-    return () => window.clearTimeout(timeout);
+  useLayoutEffect(() => {
+    const toastNode = toastRef.current;
+    if (!toast || !toastNode) return;
+
+    toastTimelineRef.current?.kill();
+    gsap.killTweensOf(toastNode);
+
+    const hideToast = () => {
+      setToast((currentToast) => currentToast?.id === toast.id ? null : currentToast);
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(toastNode, { autoAlpha: 1, scale: 1, y: 0 });
+      const timeout = window.setTimeout(hideToast, 2200);
+      return () => window.clearTimeout(timeout);
+    }
+
+    toastTimelineRef.current = gsap.timeline({ onComplete: hideToast })
+      .fromTo(toastNode,
+        { autoAlpha: 0, scale: .96, y: -8 },
+        { autoAlpha: 1, scale: 1, y: 0, duration: .3, ease: "power3.out" })
+      .to(toastNode, { autoAlpha: 0, scale: .98, y: -6, duration: .2, ease: "power2.in" }, "+=1.7");
+
+    return () => {
+      toastTimelineRef.current?.kill();
+      gsap.killTweensOf(toastNode);
+    };
   }, [toast]);
 
   async function copyAccount() {
     try {
       await navigator.clipboard.writeText("735-****-1234");
-      setToast("Account reference copied");
     } catch {
-      setToast("Account reference: 735-****-1234");
+      // Clipboard access can be unavailable in an embedded prototype. The tap
+      // still receives the same confirmation feedback as the Figma flow.
     }
+    showToast("Account reference copied", "copy");
   }
 
   const changeScreen = useCallback((nextScreen: "home" | "profile") => {
@@ -313,7 +351,7 @@ export function PrototypeV1Page() {
     }
     panelTriggerRef.current = trigger;
     setPanel(null);
-    setToast("");
+    setToast(null);
     setLoadingCountry("Philippines");
   }
 
@@ -350,7 +388,7 @@ export function PrototypeV1Page() {
                       <span className={styles.walletIcon}><Asset name="icon-wallet.svg" width={22} /></span>
                       <h2>{wallet.currency} Wallet</h2>
                     </div>
-                    <button type="button" className={styles.allWallets}>All Wallets</button>
+                    <button type="button" className={styles.allWallets} onClick={() => openPanel("wallets")} aria-haspopup="dialog" aria-expanded={panel === "wallets"}>All Wallets</button>
                     <div className={styles.balanceLabel}>
                       <span>Available Balance</span>
                       <button type="button" className={styles.eyeButton} onClick={() => setBalanceVisible(!balanceVisible)} aria-label={balanceVisible ? "Hide balance" : "Show balance"} aria-pressed={!balanceVisible}>
@@ -359,7 +397,7 @@ export function PrototypeV1Page() {
                     </div>
                     <p className={styles.balance} aria-live="polite">{wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}</p>
                     <p className={styles.receivingLabel}>{wallet.country} · Receiving Account</p>
-                    {needsReceivingAccount ? <button className={styles.openReceivingAccount} type="button" onClick={() => setToast(`${wallet.currency} receiving account setup coming soon`)}>
+                    {needsReceivingAccount ? <button className={styles.openReceivingAccount} type="button" onClick={() => showToast(`${wallet.currency} receiving account setup coming soon`)}>
                       <span className={styles.addAccountIcon}><Asset name="icon-add-account.png" width={36} /></span>
                       <span className={styles.addAccountCopy}><strong>Open your receiving account</strong><span>Add your VA account to start receiving payments securely.</span></span>
                     </button> : <><div className={styles.bankCard}>
@@ -367,7 +405,7 @@ export function PrototypeV1Page() {
                       <span className={styles.bankLogo}><Asset name={isHongKong ? "bank-logo-hk.png" : "bank-logo.png"} width={isHongKong ? 26 : 32} height={isHongKong ? 9 : 24} /></span>
                       <p className={styles.bankName}>{isHongKong ? "DBS Black Card" : "Asia United Bank"}</p>
                       <button type="button" className={styles.account} onClick={copyAccount} aria-label="Copy account reference 735-****-1234">
-                        <span>735-****-1234</span>{!isHongKong && <Asset name="icon-copy.svg" width={12} />}
+                        <span>735-****-1234</span><Asset name="icon-copy.svg" width={12} />
                       </button>
                       {isHongKong && <span className={styles.actionRequired}><Asset name="icon-action-info.svg" width={12} /><span>Action required</span></span>}
                       <span className={styles.bankCountry}>{isHongKong ? "Hong Kong · HKD" : "Philippines · PHP"}</span>
@@ -399,7 +437,7 @@ export function PrototypeV1Page() {
 
               </div>
               <div ref={profileScreenRef} className={`${styles.screenLayer} ${styles.profileScreenLayer}`} aria-hidden={activeScreen !== "profile"} inert={activeScreen !== "profile"}>
-                <PrototypeV1Profile onPreview={(label) => setToast(`${label} coming soon`)} />
+                <PrototypeV1Profile onPreview={(label) => showToast(`${label} coming soon`)} />
               </div>
               <nav className={styles.navigation} aria-label="App navigation" inert={panel !== null || loadingCountry !== null}>
                 <span ref={navPillRef} className={styles.navPill} aria-hidden="true" />
@@ -431,7 +469,7 @@ export function PrototypeV1Page() {
                   />
                 </div>
               )}
-              <div className={styles.toast} role="status" data-visible={Boolean(toast)}>{toast}</div>
+              {toast && <div ref={toastRef} className={styles.toast} role="status" aria-live="polite" aria-atomic="true" data-kind={toast.kind}>{toast.message}</div>}
             </div>
           </div>
         </div>

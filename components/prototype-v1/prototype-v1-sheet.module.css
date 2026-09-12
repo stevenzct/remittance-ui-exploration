@@ -10,10 +10,13 @@
 
 .backdrop { position: absolute; inset: 0; background: rgb(13 27 54 / 40%); }
 .sheet { position: relative; width: 100%; max-height: 85%; display: flex; flex-direction: column; overflow: hidden; border-radius: 26px 26px 0 0; background: #fff; box-shadow: 0 -8px 36px rgb(17 37 76 / 12%); outline: none; }
-.workOverlay { background: rgb(0 0 0 / 60%); animation: work-backdrop-in 180ms ease-out; }
+.workOverlay,
+.walletsOverlay { --v1-sheet-backdrop-opacity: .6; background: rgb(0 0 0 / var(--v1-sheet-backdrop-opacity)); }
 .workOverlay .backdrop { background: transparent; }
-.workSheet { display: block; height: 301px; max-height: none; flex: 0 0 100%; border-radius: 25px 25px 0 0; box-shadow: none; color: #000; animation: work-sheet-in 240ms cubic-bezier(.22, 1, .36, 1); }
-.workHandleButton { position: absolute; z-index: 2; top: 0; left: 50%; display: grid; width: 71px; height: 32px; transform: translateX(-50%); place-items: start center; padding-top: 12px; border: 0; background: transparent; }
+.walletsOverlay .backdrop { background: transparent; }
+.workSheet { display: block; height: 301px; max-height: none; flex: 0 0 100%; border-radius: 25px 25px 0 0; box-shadow: none; color: #000; }
+.workHandleButton { position: absolute; z-index: 2; top: 0; left: 50%; display: grid; width: 71px; height: 32px; transform: translateX(-50%); place-items: start center; padding-top: 12px; border: 0; background: transparent; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.workHandleButton.dragging { cursor: grabbing; }
 .workHandle { display: block; width: 47px; height: 5px; border-radius: 2px; background: #d6d6d6; }
 .workTitle { position: absolute; top: 33px; left: 20px; width: 280px; margin: 0; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; }
 .workDescription { position: absolute; top: 55px; left: 20px; width: 280px; height: 30px; margin: 0; font-size: 12px; font-weight: 400; line-height: normal; letter-spacing: -.12px; }
@@ -27,8 +30,22 @@
 .workCountry > span { position: absolute; top: 15px; left: 54px; height: 18px; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; white-space: nowrap; }
 .workIndicator { position: absolute; top: 14px; right: 14px; width: 21px; height: 21px; }
 .workCountrySelected .workIndicator { top: 12px; width: 24px; height: 24px; }
-@keyframes work-backdrop-in { from { background: rgb(0 0 0 / 0%); } }
-@keyframes work-sheet-in { from { transform: translateY(100%); } }
+.walletsSheet { display: block; width: 100%; height: 420px; max-height: none; flex: 0 0 100%; overflow: hidden; border-radius: 25px 25px 0 0; background: #fff; box-shadow: none; color: #000; }
+.walletsHandleButton { position: absolute; z-index: 2; top: 0; left: 50%; display: grid; width: 71px; height: 32px; transform: translateX(-50%); place-items: start center; padding-top: 12px; border: 0; background: transparent; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.walletsHandleButton.dragging { cursor: grabbing; }
+.walletsTitle { position: absolute; top: 33px; left: 0; width: 100%; margin: 0; color: #000; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; text-align: center; }
+.walletsDescription { position: absolute; top: 57px; left: 0; width: 100%; margin: 0; color: #000; font-size: 12px; font-weight: 400; line-height: 15px; letter-spacing: -.12px; text-align: center; }
+.walletRows { position: absolute; top: 86px; left: 20px; display: flex; width: 335px; flex-direction: column; gap: 8px; }
+.walletRow { position: relative; display: block; width: 335px; height: 61px; padding: 0; border: 0; border-radius: 16px; background: #fff; box-shadow: 0 1px 8px rgb(0 0 0 / 7%); color: #000; text-align: left; }
+.walletRow:focus-visible { outline: 3px solid rgb(40 83 187 / 30%); outline-offset: -3px; }
+.walletFlag { position: absolute; top: 14px; left: 14px; width: 32px; height: 32px; overflow: hidden; border-radius: 50%; object-fit: cover; }
+.singaporeWalletFlag { filter: drop-shadow(0 2px 2.5px rgb(0 0 0 / 5%)); }
+.walletRowCopy { position: absolute; top: 14px; left: 54px; display: flex; flex-direction: column; gap: 4px; line-height: normal; }
+.walletRowCopy strong { font-size: 14px; font-weight: 600; }
+.walletRowCopy small { font-size: 10px; font-weight: 400; }
+.walletChevron { position: absolute; top: 22px; right: 14px; width: 16px; height: 16px; }
+.openWallet { position: absolute; top: 14px; right: 14px; display: grid; width: 64px; height: 35px; place-items: center; border: 1px solid #eff5ff; border-radius: 14px; background: #f5f8fd; color: #1a73e8; font-size: 12px; font-weight: 500; }
+.manageWallets { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); border: 0; background: transparent; color: #000; font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -.14px; white-space: nowrap; }
 .handle { flex-shrink: 0; width: 36px; height: 4px; margin: 10px auto 4px; border-radius: 10px; background: #d5dde8; }
 .header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 20px 12px; }
 .header h2 { margin: 0; font-size: 20px; line-height: 27px; font-weight: 700; letter-spacing: -.6px; }
@@ -66,5 +83,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .workOverlay,
-  .workSheet { animation: none; }
+  .workSheet { scroll-behavior: auto; }
 }
