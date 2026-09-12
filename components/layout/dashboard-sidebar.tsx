@@ -20,12 +20,14 @@ export function DashboardSidebar() {
       <p className="px-3 pb-2 pt-7 text-[10px] font-bold uppercase tracking-[0.18em] text-[#aaa4b1]">{t("Workspace")}</p>
       <DashboardNavigation />
 
-      <div className="mt-auto rounded-3xl border border-[#e9e4ef] bg-[linear-gradient(145deg,#fbfafd,#f4f0f9)] p-4 shadow-[0_14px_32px_rgba(37,27,57,.045)]">
-        <div className="mb-3 grid size-10 place-items-center rounded-2xl bg-[#381c8d] text-white">
-          <DashboardIcon icon={DASHBOARD_ICONS.themeSummary} width="22" />
+      <div className="mt-auto shrink-0 pt-4">
+        <div className="rounded-3xl border border-[#e9e4ef] bg-[linear-gradient(145deg,#fbfafd,#f4f0f9)] p-4 shadow-[0_14px_32px_rgba(37,27,57,.045)]">
+          <div className="mb-3 grid size-10 place-items-center rounded-2xl bg-[#381c8d] text-white">
+            <DashboardIcon icon={DASHBOARD_ICONS.themeSummary} width="22" />
+          </div>
+          <p className="text-sm font-bold text-[#24202a]">{t(DASHBOARD_THEME.name)}</p>
+          <p className="mt-1 text-xs leading-5 text-[#837d89]">{t(DASHBOARD_THEME.summary)}</p>
         </div>
-        <p className="text-sm font-bold text-[#24202a]">{t(DASHBOARD_THEME.name)}</p>
-        <p className="mt-1 text-xs leading-5 text-[#837d89]">{t(DASHBOARD_THEME.summary)}</p>
       </div>
     </aside>
   );
