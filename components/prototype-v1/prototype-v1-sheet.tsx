@@ -358,7 +358,7 @@ function SheetContent({ panel, onClose, workCountry, activeWallet, onWorkCountry
                     onClick={() => { if (selected) selectCountry(country.country); }}
                   />
                   <Image className={country.id === "sgd" ? styles.singaporeFlag : undefined} src={`/assets/prototype-figma/${country.flag}`} width={32} height={32} alt="" />
-                  <span>{selected && country.country === "Hong Kong" ? "Hongkong" : country.country}</span>
+                  <span>{country.country}</span>
                   <Image
                     className={styles.workIndicator}
                     src={`/assets/prototype-figma/${indicator}`}
