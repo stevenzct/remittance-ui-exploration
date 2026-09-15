@@ -7,6 +7,7 @@ import { PrototypeIcon } from "@/components/prototype/prototype-icon";
 import { TakeoffArcTransition } from "@/components/prototype/takeoff-arc-transition";
 import { PrototypeV1Sheet, type V1Panel } from "./prototype-v1-sheet";
 import { PrototypeV1Profile } from "./prototype-v1-profile";
+import { PrototypeV1Transfer } from "./prototype-v1-transfer";
 import { V1_WALLETS, V1_WORK_ARTWORK, V1_WORK_WALLETS, type V1WalletId, type V1WorkCountry } from "./prototype-v1-wallets";
 import styles from "./prototype-v1-page.module.css";
 
@@ -50,6 +51,8 @@ type V1Toast = {
   readonly message: string;
 };
 
+type V1Screen = "home" | "profile" | "exchange";
+
 function Asset({ name, width, height = width, className, priority = false }: {
   readonly name: string;
   readonly width: number;
@@ -68,6 +71,8 @@ export function PrototypeV1Page() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const homeScreenRef = useRef<HTMLDivElement>(null);
   const profileScreenRef = useRef<HTMLDivElement>(null);
+  const transferScreenRef = useRef<HTMLDivElement>(null);
+  const navigationRef = useRef<HTMLElement>(null);
   const navPillRef = useRef<HTMLSpanElement>(null);
   const homeNavRef = useRef<HTMLButtonElement>(null);
   const profileNavRef = useRef<HTMLButtonElement>(null);
@@ -77,7 +82,7 @@ export function PrototypeV1Page() {
   const homeInactiveIconRef = useRef<HTMLSpanElement>(null);
   const profileActiveIconRef = useRef<HTMLSpanElement>(null);
   const profileInactiveIconRef = useRef<HTMLSpanElement>(null);
-  const activeScreenRef = useRef<"home" | "profile">("home");
+  const activeScreenRef = useRef<V1Screen>("home");
   const screenTransitionRef = useRef<gsap.core.Timeline | null>(null);
   const toastRef = useRef<HTMLDivElement>(null);
   const toastTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -89,7 +94,8 @@ export function PrototypeV1Page() {
   const [activeWallet, setActiveWallet] = useState<V1WalletId>("php");
   const [loadingCountry, setLoadingCountry] = useState<V1WorkCountry | "Philippines" | null>(null);
   const [toast, setToast] = useState<V1Toast | null>(null);
-  const [activeScreen, setActiveScreen] = useState<"home" | "profile">("home");
+  const [activeScreen, setActiveScreen] = useState<V1Screen>("home");
+  const [transferSheetOpen, setTransferSheetOpen] = useState(false);
   const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
   const isHongKong = activeWallet === "hkd";
   const isWorkWallet = activeWallet !== "php";
@@ -191,18 +197,20 @@ export function PrototypeV1Page() {
   useLayoutEffect(() => {
     const homeScreen = homeScreenRef.current;
     const profileScreen = profileScreenRef.current;
-    if (!homeScreen || !profileScreen) return;
+    const transferScreen = transferScreenRef.current;
+    if (!homeScreen || !profileScreen || !transferScreen) return;
 
     const homeContent = homeScreen.querySelectorAll<HTMLElement>("[data-screen-content]");
     const profileContent = profileScreen.querySelectorAll<HTMLElement>("[data-screen-content]");
+    const transferContent = transferScreen.querySelectorAll<HTMLElement>("[data-exchange-content]");
     gsap.set(homeScreen, { pointerEvents: "auto" });
-    gsap.set(profileScreen, { pointerEvents: "none" });
+    gsap.set([profileScreen, transferScreen], { pointerEvents: "none" });
     gsap.set(homeContent, { autoAlpha: 1, x: 0, y: 0 });
-    gsap.set(profileContent, { autoAlpha: 0, x: 0, y: 10 });
+    gsap.set([...profileContent, ...transferContent], { autoAlpha: 0, x: 0, y: 10 });
 
     return () => {
       screenTransitionRef.current?.kill();
-      gsap.killTweensOf([...homeContent, ...profileContent]);
+      gsap.killTweensOf([...homeContent, ...profileContent, ...transferContent]);
     };
   }, []);
 
@@ -245,17 +253,24 @@ export function PrototypeV1Page() {
     showToast("Account reference copied", "copy");
   }
 
-  const changeScreen = useCallback((nextScreen: "home" | "profile") => {
+  const changeScreen = useCallback((nextScreen: V1Screen) => {
     const currentScreen = activeScreenRef.current;
     if (nextScreen === currentScreen) return;
 
     const homeScreen = homeScreenRef.current;
     const profileScreen = profileScreenRef.current;
-    if (!homeScreen || !profileScreen) return;
+    const transferScreen = transferScreenRef.current;
+    const navigation = navigationRef.current;
+    if (!homeScreen || !profileScreen || !transferScreen || !navigation) return;
 
-    const outgoing = [...(currentScreen === "home" ? homeScreen : profileScreen).querySelectorAll<HTMLElement>("[data-screen-content]")];
-    const incoming = [...(nextScreen === "home" ? homeScreen : profileScreen).querySelectorAll<HTMLElement>("[data-screen-content]")];
-    const direction = nextScreen === "profile" ? 1 : -1;
+    const screenFor = (screen: V1Screen) => screen === "home" ? homeScreen : screen === "profile" ? profileScreen : transferScreen;
+    const contentFor = (screen: V1Screen) => [...screenFor(screen).querySelectorAll<HTMLElement>(screen === "exchange" ? "[data-exchange-content]" : "[data-screen-content]")];
+    const currentLayer = screenFor(currentScreen);
+    const nextLayer = screenFor(nextScreen);
+    const outgoing = contentFor(currentScreen);
+    const incoming = contentFor(nextScreen);
+    const direction = nextScreen === "home" ? -1 : 1;
+    const involvesExchange = currentScreen === "exchange" || nextScreen === "exchange";
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const navPill = navPillRef.current;
     const homeNav = homeNavRef.current;
@@ -271,11 +286,13 @@ export function PrototypeV1Page() {
 
     activeScreenRef.current = nextScreen;
     setActiveScreen(nextScreen);
+    if (currentScreen === "exchange") setTransferSheetOpen(false);
     if (nextScreen === "home") scrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
 
     const isReversing = Boolean(screenTransitionRef.current);
     screenTransitionRef.current?.kill();
-    gsap.killTweensOf([...outgoing, ...incoming, navPill, homeNav, profileNav,
+    screenTransitionRef.current = null;
+    gsap.killTweensOf([...outgoing, ...incoming, navigation, navPill, homeNav, profileNav,
       homeNavLabel, profileNavLabel, homeActiveIcon, homeInactiveIcon, profileActiveIcon, profileInactiveIcon]);
 
     const navState = nextScreen === "home"
@@ -283,24 +300,27 @@ export function PrototypeV1Page() {
       : { pillLeft: 56, homeLeft: 24, homeWidth: 24, homePadding: 0, profileLeft: 56, profileWidth: 89, profilePadding: 12 };
 
     if (prefersReducedMotion) {
-      gsap.set(currentScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "none" });
-      gsap.set(nextScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "auto" });
+      gsap.set(currentLayer, { pointerEvents: "none" });
+      gsap.set(nextLayer, { pointerEvents: "auto" });
       gsap.set(outgoing, { autoAlpha: 0, x: 0, y: 0 });
       gsap.set(incoming, { autoAlpha: 1, x: 0, y: 0 });
-      gsap.set(navPill, { left: navState.pillLeft });
-      gsap.set(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding });
-      gsap.set(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding });
-      gsap.set([homeNavLabel, homeActiveIcon, profileInactiveIcon], { autoAlpha: nextScreen === "home" ? 1 : 0 });
-      gsap.set([profileNavLabel, profileActiveIcon, homeInactiveIcon], { autoAlpha: nextScreen === "profile" ? 1 : 0 });
+      gsap.set(navigation, { autoAlpha: nextScreen === "exchange" ? 0 : 1 });
+      if (!involvesExchange) {
+        gsap.set(navPill, { left: navState.pillLeft });
+        gsap.set(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding });
+        gsap.set(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding });
+        gsap.set([homeNavLabel, homeActiveIcon, profileInactiveIcon], { autoAlpha: nextScreen === "home" ? 1 : 0 });
+        gsap.set([profileNavLabel, profileActiveIcon, homeInactiveIcon], { autoAlpha: nextScreen === "profile" ? 1 : 0 });
+      }
       return;
     }
 
-    gsap.set(currentScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "none" });
-    gsap.set(nextScreen === "home" ? homeScreen : profileScreen, { pointerEvents: "auto" });
+    gsap.set(currentLayer, { pointerEvents: "none" });
+    gsap.set(nextLayer, { pointerEvents: "auto" });
     gsap.set([...outgoing, ...incoming], { willChange: "transform,opacity" });
     if (!isReversing) gsap.set(incoming, { autoAlpha: 0, x: direction * 18, y: 8 });
 
-    screenTransitionRef.current = gsap.timeline({
+    const timeline = gsap.timeline({
       defaults: { overwrite: "auto" },
       onComplete: () => {
         gsap.set(outgoing, { autoAlpha: 0, x: 0, y: 0, clearProps: "willChange" });
@@ -321,18 +341,30 @@ export function PrototypeV1Page() {
         duration: .38,
         ease: "power3.out",
         stagger: .035,
-      }, .14)
-      .to(navPill, { left: navState.pillLeft, duration: .42, ease: "power3.inOut" }, 0)
-      .to(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding, duration: .42, ease: "power3.inOut" }, 0)
-      .to(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding, duration: .42, ease: "power3.inOut" }, 0)
-      .to([homeNavLabel, homeActiveIcon, profileInactiveIcon], {
-        autoAlpha: nextScreen === "home" ? 1 : 0,
-        duration: .2,
-      }, 0)
-      .to([profileNavLabel, profileActiveIcon, homeInactiveIcon], {
-        autoAlpha: nextScreen === "profile" ? 1 : 0,
-        duration: .2,
-      }, .12);
+      }, .14);
+
+    if (involvesExchange) {
+      timeline.to(navigation, {
+        autoAlpha: nextScreen === "exchange" ? 0 : 1,
+        duration: nextScreen === "exchange" ? .18 : .38,
+        ease: nextScreen === "exchange" ? "power2.inOut" : "power3.out",
+      }, nextScreen === "exchange" ? 0 : .14);
+    } else {
+      timeline
+        .to(navPill, { left: navState.pillLeft, duration: .42, ease: "power3.inOut" }, 0)
+        .to(homeNav, { left: navState.homeLeft, width: navState.homeWidth, paddingLeft: navState.homePadding, duration: .42, ease: "power3.inOut" }, 0)
+        .to(profileNav, { left: navState.profileLeft, width: navState.profileWidth, paddingLeft: navState.profilePadding, duration: .42, ease: "power3.inOut" }, 0)
+        .to([homeNavLabel, homeActiveIcon, profileInactiveIcon], {
+          autoAlpha: nextScreen === "home" ? 1 : 0,
+          duration: .2,
+        }, 0)
+        .to([profileNavLabel, profileActiveIcon, homeInactiveIcon], {
+          autoAlpha: nextScreen === "profile" ? 1 : 0,
+          duration: .2,
+        }, .12);
+    }
+
+    screenTransitionRef.current = timeline;
   }, []);
 
   function goHome() {
@@ -358,7 +390,7 @@ export function PrototypeV1Page() {
   return (
     <section className={`prototype-fullscreen-page ui-surface rounded-[26px] p-3 sm:rounded-[36px] sm:p-9 lg:p-12 xl:p-14 ${styles.page}`} aria-label="Prototype V1 — first app launch">
       <div ref={stageRef} className={`prototype-device-stage ${styles.stage}${isMobileFullscreen ? " is-mobile-fullscreen" : ""}`}>
-        <div className={`phone-shell prototype-phone-shell ${styles.phone}${isMobileFullscreen ? ` is-mobile-fullscreen ${styles.mobileFullscreen}` : ""}`} data-panel={panel ?? undefined} data-screen={activeScreen} aria-label="Payso first-launch phone prototype">
+        <div className={`phone-shell prototype-phone-shell ${styles.phone}${isMobileFullscreen ? ` is-mobile-fullscreen ${styles.mobileFullscreen}` : ""}`} data-panel={panel ?? undefined} data-screen={activeScreen} data-transfer-sheet={transferSheetOpen || undefined} aria-label="Payso first-launch phone prototype">
           <div className={styles.statusBackdrop} aria-hidden="true" />
           <div ref={viewportRef} className={`phone-screen-viewport ${styles.viewport}`}>
             <div ref={canvasRef} className={styles.canvas}>
@@ -416,7 +448,7 @@ export function PrototypeV1Page() {
                         <Asset name="icon-send.svg" width={24} />
                         <span><strong>Transfer</strong><small>Send money easily</small></span>
                       </button>
-                      <button type="button">
+                      <button type="button" onClick={() => changeScreen("exchange")}>
                         <Asset name="icon-exchange.svg" width={24} />
                         <span><strong>Exchange</strong><small>Convert currencies</small></span>
                       </button>
@@ -439,7 +471,7 @@ export function PrototypeV1Page() {
               <div ref={profileScreenRef} className={`${styles.screenLayer} ${styles.profileScreenLayer}`} aria-hidden={activeScreen !== "profile"} inert={activeScreen !== "profile"}>
                 <PrototypeV1Profile onPreview={(label) => showToast(`${label} coming soon`)} />
               </div>
-              <nav className={styles.navigation} aria-label="App navigation" inert={panel !== null || loadingCountry !== null}>
+              <nav ref={navigationRef} className={styles.navigation} aria-label="App navigation" aria-hidden={activeScreen === "exchange"} inert={panel !== null || loadingCountry !== null || activeScreen === "exchange"}>
                 <span ref={navPillRef} className={styles.navPill} aria-hidden="true" />
                 <button ref={homeNavRef} type="button" className={`${styles.navButton} ${styles.homeButton}`} aria-label="Home" aria-current={activeScreen === "home" ? "page" : undefined} onClick={goHome}>
                   <span className={styles.navIcon} aria-hidden="true">
@@ -456,6 +488,12 @@ export function PrototypeV1Page() {
                   <span ref={profileNavLabelRef} className={`${styles.navLabel} ${styles.profileNavLabel}`}>Profile</span>
                 </button>
               </nav>
+              <PrototypeV1Transfer
+                active={activeScreen === "exchange"}
+                rootRef={transferScreenRef}
+                onBack={() => changeScreen("home")}
+                onSheetOpenChange={setTransferSheetOpen}
+              />
               <PrototypeV1Sheet panel={panel} onClose={closePanel} workCountry={workCountry} activeWallet={activeWallet} onWorkCountryChange={selectWorkCountry} />
               {loadingCountry && (
                 <div ref={focusTransition} className={styles.transition} tabIndex={-1}>
