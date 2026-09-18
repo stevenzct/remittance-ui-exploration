@@ -148,7 +148,7 @@ export function PrototypeV1Transfer({ active, rootRef, onBack, onSheetOpenChange
         </div>
       </section>
 
-      <button className={styles.next} type="button" data-exchange-content>Next</button>
+      <button className={styles.next} type="button" disabled={!hasValidAmount} data-exchange-content>Next</button>
       {currencySheet && (
         <CurrencyBottomSheet
           kind={currencySheet}

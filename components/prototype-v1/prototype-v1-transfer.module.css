@@ -274,6 +274,11 @@
   letter-spacing: .2px;
 }
 
+.next:disabled {
+  background: #cfcfcf;
+  cursor: not-allowed;
+}
+
 .screen button:focus-visible {
   outline: 2px solid #2853bb;
   outline-offset: 2px;
