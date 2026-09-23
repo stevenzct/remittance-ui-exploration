@@ -1,12 +1,358 @@
 .page {
+  --v1-experience-accent: #4d25aa;
+
   min-width: 0;
+}
+
+.experienceIntro {
+  width: 100%;
+  margin: 0 0 32px;
+}
+
+.experienceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: #f1edfb;
+  padding: 8px 12px;
+  color: #381c8d;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.experienceIntro h1 {
+  max-width: 540px;
+  margin: 22px 0 0;
+  color: #1d1822;
+  font-size: clamp(2.5rem, 4.4vw, 3.5rem);
+  font-weight: 750;
+  letter-spacing: -.055em;
+  line-height: .98;
+}
+
+.experienceIntro p {
+  max-width: 500px;
+  margin: 18px 0 0;
+  color: #77717f;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.experienceLayout {
+  display: grid;
+  width: min(1080px, 100%);
+  grid-template-columns: minmax(381px, 430px) minmax(400px, 520px);
+  align-items: start;
+  justify-content: center;
+  gap: clamp(44px, 7vw, 88px);
+  margin: 0 auto;
+}
+
+.experienceControls {
+  position: sticky;
+  top: 112px;
+  min-width: 0;
+  padding-top: 48px;
 }
 
 .stage {
   position: relative;
   display: flex;
+  min-width: 0;
   justify-content: center;
-  padding: 8px 0 12px;
+  padding: 0 0 12px;
+}
+
+.experiencePanel {
+  position: relative;
+  top: auto;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ebe7f0;
+  border-radius: 26px;
+  background: rgb(255 255 255 / 88%);
+  padding: 8px;
+  box-shadow: 0 18px 48px rgb(42 29 66 / 8%);
+  backdrop-filter: blur(16px);
+}
+
+.experienceTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  border: 1px solid #eeeaf2;
+  border-radius: 19px;
+  background: #f6f4f8;
+  padding: 5px;
+}
+
+.experienceTabs button {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #746e7a;
+  font-size: .875rem;
+  font-weight: 750;
+  transition: background-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.experienceTabs button.experienceTabActive {
+  background: #fff;
+  color: var(--v1-experience-accent);
+  box-shadow: 0 4px 14px rgb(38 26 55 / 8%);
+}
+
+.experienceTabs button:focus-visible {
+  outline: 3px solid rgb(77 37 170 / 22%);
+  outline-offset: 2px;
+}
+
+.experiencePanelBody {
+  min-height: 246px;
+  padding: 24px 16px 16px;
+  animation: experiencePanelIn 170ms ease both;
+}
+
+.experiencePanelHeading {
+  display: flex;
+  min-height: 58px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.experiencePanelHeading h2 {
+  margin: 0;
+  color: #241f29;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.experiencePanelHeading p {
+  max-width: 340px;
+  margin: 5px 0 0;
+  color: #817a86;
+  font-size: .8125rem;
+  line-height: 1.5;
+}
+
+.experiencePanelHeading > span {
+  flex: none;
+  border-radius: 999px;
+  background: #f1edfb;
+  padding: 7px 10px;
+  color: var(--v1-experience-accent);
+  font-size: .6875rem;
+  font-weight: 800;
+}
+
+.journeyList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journeyList li {
+  display: grid;
+  min-height: 62px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #ebe6ef;
+  border-radius: 13px;
+  background: #fbfafc;
+  padding: 9px;
+}
+
+.journeyIcon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 11px;
+  background: #f3eefb;
+  color: var(--v1-experience-accent);
+}
+
+.journeyCopy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.journeyCopy strong {
+  color: #332d38;
+  font-size: .75rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.journeyCopy > span {
+  color: #817a86;
+  font-size: .75rem;
+  line-height: 1.45;
+}
+
+.journeyIndex {
+  color: #a098a5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: .65625rem;
+  font-weight: 650;
+}
+
+.experienceHint {
+  margin: 16px 0 0;
+  color: #8b838f;
+  font-size: .71875rem;
+  line-height: 1.55;
+}
+
+.motionTopics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 22px;
+}
+
+.motionTopics span {
+  border: 1px solid #e8e1ed;
+  border-radius: 999px;
+  background: #faf8fb;
+  padding: 6px 9px;
+  color: #6f6675;
+  font-size: .6875rem;
+  font-weight: 650;
+}
+
+.motionSource :global(.prototype-v1-source-trigger) {
+  width: 100%;
+  margin-top: 22px;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .experienceTabs button:hover {
+    color: var(--v1-experience-accent);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes experiencePanelIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1023px) {
+  .experienceControls,
+  .experienceLayout {
+    width: min(620px, 100%);
+  }
+
+  .experienceIntro {
+    margin-bottom: 28px;
+  }
+
+  .experienceLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .experiencePanel {
+    position: relative;
+    top: auto;
+  }
+
+  .experienceControls {
+    position: relative;
+    top: auto;
+    order: -1;
+    padding-top: 0;
+  }
+
+  .stage {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 639px) {
+  .experienceIntro {
+    margin-bottom: 24px;
+    padding: 8px 4px 0;
+  }
+
+  .experienceIntro h1 {
+    margin-top: 18px;
+    font-size: clamp(2.25rem, 11vw, 3rem);
+  }
+
+  .experienceIntro p {
+    margin-top: 13px;
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  .experienceLayout {
+    gap: 22px;
+  }
+
+  .experiencePanel {
+    border-radius: 22px;
+    padding: 7px;
+  }
+
+  .experiencePanelBody {
+    min-height: 0;
+    padding: 21px 12px 13px;
+  }
+
+  .experiencePanelHeading {
+    gap: 12px;
+  }
+
+  .experiencePanelHeading > span {
+    padding: 6px 8px;
+  }
+
+  .journeyList {
+    margin-top: 14px;
+  }
+
+  .journeyList li {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .journeyIcon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experienceTabs button {
+    transition: none;
+  }
+
+  .experiencePanelBody {
+    animation: none;
+  }
 }
 
 .phone {

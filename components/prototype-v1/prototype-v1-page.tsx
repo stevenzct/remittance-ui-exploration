@@ -5,7 +5,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { gsap } from "gsap";
 import { PrototypeIcon } from "@/components/prototype/prototype-icon";
 import { TakeoffArcTransition } from "@/components/prototype/takeoff-arc-transition";
-import { PrototypeV1AnimationSource } from "./prototype-v1-animation-source";
+import { PrototypeV1ExperiencePanel } from "./prototype-v1-experience-panel";
 import { PrototypeV1Sheet, type V1Panel } from "./prototype-v1-sheet";
 import { PrototypeV1Profile } from "./prototype-v1-profile";
 import { PrototypeV1Transfer } from "./prototype-v1-transfer";
@@ -390,10 +390,8 @@ export function PrototypeV1Page() {
 
   return (
     <section className={`prototype-fullscreen-page ui-surface rounded-[26px] p-3 sm:rounded-[36px] sm:p-9 lg:p-12 xl:p-14 ${styles.page}`} aria-label="Prototype V1 — first app launch">
-      <div ref={stageRef} className={`prototype-device-stage ${styles.stage}${isMobileFullscreen ? " is-mobile-fullscreen" : ""}`}>
-        <div className="prototype-v1-source-dock">
-          <PrototypeV1AnimationSource />
-        </div>
+      <div className={styles.experienceLayout}>
+        <div ref={stageRef} className={`prototype-device-stage ${styles.stage}${isMobileFullscreen ? " is-mobile-fullscreen" : ""}`}>
         <div className={`phone-shell prototype-phone-shell ${styles.phone}${isMobileFullscreen ? ` is-mobile-fullscreen ${styles.mobileFullscreen}` : ""}`} data-panel={panel ?? undefined} data-screen={activeScreen} data-transfer-sheet={transferSheetOpen || undefined} aria-label="Payso first-launch phone prototype">
           <div className={styles.statusBackdrop} aria-hidden="true" />
           <div ref={viewportRef} className={`phone-screen-viewport ${styles.viewport}`}>
@@ -514,6 +512,18 @@ export function PrototypeV1Page() {
               {toast && <div ref={toastRef} className={styles.toast} role="status" aria-live="polite" aria-atomic="true" data-kind={toast.kind}>{toast.message}</div>}
             </div>
           </div>
+        </div>
+        </div>
+        <div className={styles.experienceControls}>
+          <header className={styles.experienceIntro}>
+            <span className={styles.experienceBadge}>
+              <PrototypeIcon name="sparkles" size={16} />
+              Live prototype
+            </span>
+            <h1>Explore Prototype V1</h1>
+            <p>Switch regions, explore wallets, and try the exchange flow.</p>
+          </header>
+          <PrototypeV1ExperiencePanel />
         </div>
       </div>
     </section>
