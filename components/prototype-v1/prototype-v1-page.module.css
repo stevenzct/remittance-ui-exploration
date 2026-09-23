@@ -3,6 +3,7 @@
 }
 
 .stage {
+  position: relative;
   display: flex;
   justify-content: center;
   padding: 8px 0 12px;

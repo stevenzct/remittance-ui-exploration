@@ -71,13 +71,11 @@ export function PrototypeV1Transfer({ active, rootRef, onBack, onSheetOpenChange
       setReceiveCurrency(sendCurrency);
     }
     setSendCurrency(currency);
-    setCurrencySheet(null);
   }
 
   function selectReceiveCurrency(currency: CurrencyCode) {
     if (currency === sendCurrency) return;
     setReceiveCurrency(currency);
-    setCurrencySheet(null);
   }
 
   function swapCurrencies() {
@@ -188,25 +186,33 @@ function CurrencyBottomSheet({ kind, selected, disabledCurrency, onClose, onSele
   const sheetRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const dragRef = useRef({ pointerId: -1, startY: 0, delta: 0 });
+  const pendingSelectionRef = useRef<CurrencyCode | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const currencies: readonly CurrencyCode[] = kind === "send" ? ["USD", "PHP"] : RECEIVE_CURRENCIES;
 
   useEffect(() => closeRef.current?.focus({ preventScroll: true }), []);
 
+  const finishClose = useCallback(() => {
+    const pendingSelection = pendingSelectionRef.current;
+    pendingSelectionRef.current = null;
+    if (pendingSelection) onSelect(pendingSelection);
+    onClose();
+  }, [onClose, onSelect]);
+
   const closeSheet = useCallback(() => {
     if (isClosing) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      onClose();
+      finishClose();
       return;
     }
     setIsClosing(true);
-  }, [isClosing, onClose]);
+  }, [finishClose, isClosing]);
 
   useEffect(() => {
     if (!isClosing) return;
-    const timeout = window.setTimeout(onClose, 240);
+    const timeout = window.setTimeout(finishClose, 240);
     return () => window.clearTimeout(timeout);
-  }, [isClosing, onClose]);
+  }, [finishClose, isClosing]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -246,6 +252,12 @@ function CurrencyBottomSheet({ kind, selected, disabledCurrency, onClose, onSele
     window.setTimeout(() => sheet.classList.remove(styles.sheetSnapping), 230);
   }
 
+  function selectCurrency(currency: CurrencyCode) {
+    if (isClosing) return;
+    pendingSelectionRef.current = currency;
+    closeSheet();
+  }
+
   return (
     <div className={`${styles.sheetOverlay}${isClosing ? ` ${styles.sheetOverlayClosing}` : ""}`} role="presentation">
       <button className={styles.sheetBackdrop} type="button" aria-label="Close currency selection" onClick={closeSheet} />
@@ -267,8 +279,8 @@ function CurrencyBottomSheet({ kind, selected, disabledCurrency, onClose, onSele
                 type="button"
                 className={`${styles.currencyRow}${isSelected ? ` ${styles.currencyRowSelected}` : ""}${disabled ? ` ${styles.currencyRowDisabled}` : ""}${locked ? ` ${styles.currencyRowLocked}` : ""}`}
                 key={`${currency}-${index}`}
-                disabled={disabled}
-                onClick={() => locked ? undefined : onSelect(currency)}
+                disabled={disabled || isClosing}
+                onClick={() => locked ? undefined : selectCurrency(currency)}
               >
                 <CurrencyFlag currency={currency} size={32} />
                 <strong>{currency}</strong>
