@@ -5,7 +5,8 @@ export type PrototypeV1AnimationId =
   | "currency-sheet"
   | "bottom-navigation"
   | "enter-exchange"
-  | "return-home";
+  | "return-home"
+  | "scrolling-header";
 
 export interface PrototypeV1SourceFile {
   readonly id: string;
@@ -961,6 +962,218 @@ timeline
     gsap.killTweensOf([...homeContent, ...exchangeContent]);
   };
 }, []);`,
+      },
+    ],
+  },
+  {
+    id: "scrolling-header",
+    index: "08",
+    category: "Scroll interactions",
+    title: "Scrolling wallet header",
+    shortTitle: "Scrolling header",
+    runtime: "React + GSAP + CSS",
+    duration: "0.28s",
+    trigger: "Scroll the wallet and offers area past the top of the wallet card.",
+    overview: "The header expands smoothly and reveals a compact wallet row immediately. Scrolling back to the top reverses the reveal. The row follows the selected currency and balance visibility, and opens All Wallets when tapped.",
+    timeline: [
+      { time: "0.00s", label: "Detect scroll", detail: "Compare scrollTop with the wallet card's offsetTop; a small exit buffer prevents flicker near the threshold." },
+      { time: "0.00–0.24s", label: "Reveal wallet", detail: "Fade in the compact row and move it down 3px using power3.out, with no start delay." },
+      { time: "0.00–0.28s", label: "Expand header", detail: "Animate header height from 58px to 108px using ease-in-out." },
+      { time: "On scroll back", label: "Reverse", detail: "Reverse the existing timeline and collapse the header without moving the scroll container." },
+    ],
+    implementationNotes: [
+      "Keep the scroll area inset at 58px while the header grows over it to avoid scroll jumps.",
+      "Reuse one paused GSAP timeline so a direction change continues from the current animation position.",
+      "Start the wallet reveal at timeline position 0 so it responds immediately.",
+      "GSAP matchMedia reverts the animation on cleanup and when reduced-motion preferences change.",
+    ],
+    accessibility: "The hidden row is inert, aria-hidden, and removed from the tab order. Reduced motion skips GSAP and the height transition, applying the final CSS state immediately. The accessible label respects hidden balances.",
+    files: [
+      {
+        id: "motion",
+        label: "Motion",
+        fileName: "prototype-v1-page.tsx",
+        language: "TSX",
+        code: String.raw`const scrollRef = useRef<HTMLDivElement>(null);
+const walletRef = useRef<HTMLElement>(null);
+const stickyWalletRef = useRef<HTMLButtonElement>(null);
+const balanceHeaderTimelineRef = useRef<gsap.core.Timeline | null>(null);
+const balanceHeaderStateRef = useRef(false);
+const [isBalanceHeader, setIsBalanceHeader] = useState(false);
+
+const updateBalanceHeader = useCallback(() => {
+  const scroll = scrollRef.current;
+  if (!scroll) return;
+  const threshold = walletRef.current?.offsetTop ?? 24;
+  const exitBuffer = scroll.clientWidth * .012;
+  const visible = scroll.scrollTop >= threshold - (balanceHeaderStateRef.current ? exitBuffer : 0);
+  if (visible === balanceHeaderStateRef.current) return;
+  balanceHeaderStateRef.current = visible;
+  setIsBalanceHeader(visible);
+}, []);
+
+useLayoutEffect(() => {
+  const stickyWallet = stickyWalletRef.current;
+  if (!stickyWallet) return;
+  const media = gsap.matchMedia();
+  media.add("(prefers-reduced-motion: no-preference)", () => {
+    const timeline = gsap.timeline({ paused: true })
+      .fromTo(stickyWallet,
+        { autoAlpha: 0, y: -3 },
+        { autoAlpha: 1, y: 0, duration: .24, ease: "power3.out" }, 0);
+    timeline.progress(balanceHeaderStateRef.current ? 1 : 0).pause();
+    balanceHeaderTimelineRef.current = timeline;
+    return () => {
+      balanceHeaderTimelineRef.current = null;
+      timeline.kill();
+    };
+  });
+  return () => media.revert();
+}, []);
+
+useLayoutEffect(() => {
+  const timeline = balanceHeaderTimelineRef.current;
+  if (isBalanceHeader) timeline?.play();
+  else timeline?.reverse();
+}, [isBalanceHeader]);`,
+      },
+      {
+        id: "integration",
+        label: "Integration",
+        fileName: "prototype-v1-page.tsx",
+        language: "TSX",
+        code: String.raw`<header className={styles.header} data-balance-sticky={isBalanceHeader || undefined} data-screen-content>
+  {/* Existing country selectors stay above the compact wallet row. */}
+  <button
+    ref={stickyWalletRef}
+    className={styles.stickyWallet}
+    type="button"
+    onClick={() => openPanel("wallets")}
+    aria-haspopup="dialog"
+    aria-expanded={panel === "wallets"}
+    aria-hidden={!isBalanceHeader}
+    inert={!isBalanceHeader}
+    tabIndex={isBalanceHeader ? 0 : -1}
+    aria-label={wallet.currency + " Wallet, " + (balanceVisible ? wallet.symbol + "3,000.00" : "balance hidden") + ". View all wallets"}
+  >
+    <span className={styles.stickyWalletName}>
+      <span className={styles.walletIcon}><Asset name="icon-wallet.svg" width={22} /></span>
+      <strong>{wallet.currency} Wallet</strong>
+    </span>
+    <strong className={styles.stickyWalletBalance}>
+      {wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}
+    </strong>
+    <Image className={styles.stickyWalletArrow} src="/assets/prototype-figma/icon-wallet-forward.svg" alt="" width={24} height={24} unoptimized />
+  </button>
+</header>
+
+<div className={styles.scroll} ref={scrollRef} onScroll={updateBalanceHeader} tabIndex={0} aria-label="Wallet and offers" data-screen-content>
+  <section ref={walletRef} className={styles.wallet}>
+    {/* Existing wallet card. */}
+  </section>
+  {/* Existing promotions. */}
+</div>`,
+      },
+      {
+        id: "styles",
+        label: "Styles",
+        fileName: "prototype-v1-page.module.css",
+        language: "CSS",
+        code: String.raw`.header {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 375px;
+  height: 58px;
+  background: #fff;
+  box-shadow: 0 -5px 19px rgb(0 0 0 / 12%);
+  transition: height 280ms ease-in-out;
+}
+
+.header[data-balance-sticky] { height: 108px; }
+
+.stickyWallet {
+  position: absolute;
+  top: 54px;
+  left: 15px;
+  width: 343px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 7px rgb(0 0 0 / 6%);
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-3px);
+}
+
+.header[data-balance-sticky] .stickyWallet {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.stickyWalletName {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  color: #424242;
+  font-size: 12px;
+  letter-spacing: -.12px;
+  white-space: nowrap;
+}
+
+.walletIcon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 16px;
+  background: #f6f9fe;
+}
+
+.stickyWalletName .walletIcon {
+  position: static;
+  flex: 0 0 32px;
+}
+
+.stickyWalletName strong { font-weight: 600; }
+
+.stickyWalletBalance {
+  position: absolute;
+  top: 12.5px;
+  left: 123px;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stickyWalletArrow {
+  position: absolute;
+  top: 10px;
+  left: 311px;
+  transform: scaleX(-1);
+}
+
+.scroll {
+  position: absolute;
+  inset: 58px 0 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 24px 16px 100px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header { transition: none; }
+}`,
       },
     ],
   },

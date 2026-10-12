@@ -4,6 +4,7 @@ import { type KeyboardEvent, useState } from "react";
 import { Icon } from "@iconify/react";
 import { PrototypeIcon, type PrototypeIconName } from "@/components/prototype/prototype-icon";
 import { PrototypeV1AnimationSource } from "./prototype-v1-animation-source";
+import { PROTOTYPE_V1_ANIMATIONS } from "@/content/prototype-v1-animation-source";
 import styles from "./prototype-v1-page.module.css";
 
 type ExperienceTab = "guide" | "motion";
@@ -111,7 +112,7 @@ export function PrototypeV1ExperiencePanel() {
               <h2>Animation source</h2>
               <p>See how each transition works.</p>
             </div>
-            <span>7 interactions</span>
+            <span>{PROTOTYPE_V1_ANIMATIONS.length} interactions</span>
           </div>
 
           <div className={styles.motionSource}>

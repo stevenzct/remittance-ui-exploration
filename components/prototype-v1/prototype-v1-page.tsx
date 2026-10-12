@@ -70,6 +70,10 @@ export function PrototypeV1Page() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const walletRef = useRef<HTMLElement>(null);
+  const stickyWalletRef = useRef<HTMLButtonElement>(null);
+  const balanceHeaderTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const balanceHeaderStateRef = useRef(false);
   const homeScreenRef = useRef<HTMLDivElement>(null);
   const profileScreenRef = useRef<HTMLDivElement>(null);
   const transferScreenRef = useRef<HTMLDivElement>(null);
@@ -90,6 +94,7 @@ export function PrototypeV1Page() {
   const toastSequenceRef = useRef(0);
   const panelTriggerRef = useRef<HTMLElement | null>(null);
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const [isBalanceHeader, setIsBalanceHeader] = useState(false);
   const [panel, setPanel] = useState<V1Panel | null>(null);
   const [workCountry, setWorkCountry] = useState<V1WorkCountry | null>(null);
   const [activeWallet, setActiveWallet] = useState<V1WalletId>("php");
@@ -104,6 +109,42 @@ export function PrototypeV1Page() {
   const needsReceivingAccount = wallet.receivingBank === null;
   const workWallet = V1_WORK_WALLETS.find((item) => item.country === workCountry);
   const workArtwork = workCountry ? V1_WORK_ARTWORK[workCountry] : null;
+
+  const updateBalanceHeader = useCallback(() => {
+    const scroll = scrollRef.current;
+    if (!scroll) return;
+    const threshold = walletRef.current?.offsetTop ?? 24;
+    const exitBuffer = scroll.clientWidth * .012;
+    const visible = scroll.scrollTop >= threshold - (balanceHeaderStateRef.current ? exitBuffer : 0);
+    if (visible === balanceHeaderStateRef.current) return;
+    balanceHeaderStateRef.current = visible;
+    setIsBalanceHeader(visible);
+  }, []);
+
+  useLayoutEffect(() => {
+    const stickyWallet = stickyWalletRef.current;
+    if (!stickyWallet) return;
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const timeline = gsap.timeline({ paused: true })
+        .fromTo(stickyWallet,
+          { autoAlpha: 0, y: -3 },
+          { autoAlpha: 1, y: 0, duration: .24, ease: "power3.out" }, 0);
+      timeline.progress(balanceHeaderStateRef.current ? 1 : 0).pause();
+      balanceHeaderTimelineRef.current = timeline;
+      return () => {
+        balanceHeaderTimelineRef.current = null;
+        timeline.kill();
+      };
+    });
+    return () => media.revert();
+  }, []);
+
+  useLayoutEffect(() => {
+    const timeline = balanceHeaderTimelineRef.current;
+    if (isBalanceHeader) timeline?.play();
+    else timeline?.reverse();
+  }, [isBalanceHeader]);
 
   const showToast = useCallback((message: string, kind: V1Toast["kind"] = "info") => {
     toastSequenceRef.current += 1;
@@ -397,7 +438,7 @@ export function PrototypeV1Page() {
           <div ref={viewportRef} className={`phone-screen-viewport ${styles.viewport}`}>
             <div ref={canvasRef} className={styles.canvas}>
               <div ref={homeScreenRef} className={`${styles.home} ${styles.screenLayer}`} aria-hidden={activeScreen !== "home"} inert={panel !== null || loadingCountry !== null || activeScreen !== "home"}>
-                <header className={styles.header} data-screen-content>
+                <header className={styles.header} data-balance-sticky={isBalanceHeader || undefined} data-screen-content>
                   <button className={styles.country} type="button" onClick={(event) => selectHomeCountry(event.currentTarget)} aria-label="Philippines home wallet" aria-pressed={!isWorkWallet}>
                     {isWorkWallet ? <Asset name="country-pill-ph-unselected.svg" width={101} height={30} className={styles.countryInactiveBackground} /> : <Asset name="country-pill.svg" width={129} height={58} className={styles.countryBackground} priority />}
                     <Asset name="flag-ph.svg" width={22} className={styles.flag} priority />
@@ -409,10 +450,18 @@ export function PrototypeV1Page() {
                     <span className={styles.workLabel}>{workCountry ?? "Where you work"}</span>
                     {!workCountry && <Asset name="icon-down.svg" width={16} className={styles.down} />}
                   </button>
+                  <button ref={stickyWalletRef} className={styles.stickyWallet} type="button" onClick={() => openPanel("wallets")} aria-haspopup="dialog" aria-expanded={panel === "wallets"} aria-hidden={!isBalanceHeader} inert={!isBalanceHeader} tabIndex={isBalanceHeader ? 0 : -1} aria-label={`${wallet.currency} Wallet, ${balanceVisible ? `${wallet.symbol}3,000.00` : "balance hidden"}. View all wallets`}>
+                    <span className={styles.stickyWalletName}>
+                      <span className={styles.walletIcon}><Asset name="icon-wallet.svg" width={22} /></span>
+                      <strong>{wallet.currency} Wallet</strong>
+                    </span>
+                    <strong className={styles.stickyWalletBalance}>{wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}</strong>
+                    <Image className={styles.stickyWalletArrow} src="/assets/prototype-figma/icon-wallet-forward.svg" alt="" width={24} height={24} unoptimized />
+                  </button>
                 </header>
 
-                <div className={styles.scroll} ref={scrollRef} tabIndex={0} aria-label="Wallet and offers" data-screen-content>
-                  <section className={styles.wallet} data-currency={activeWallet} data-needs-account={needsReceivingAccount || undefined} aria-label={`${wallet.currency} wallet`}>
+                <div className={styles.scroll} ref={scrollRef} onScroll={updateBalanceHeader} tabIndex={0} aria-label="Wallet and offers" data-screen-content>
+                  <section ref={walletRef} className={styles.wallet} data-currency={activeWallet} data-needs-account={needsReceivingAccount || undefined} aria-label={`${wallet.currency} wallet`}>
                     {needsReceivingAccount ? <div className={styles.workWatermark} aria-hidden="true">
                       <Asset name={activeWallet === "sgd" ? "flag-watermark-sg.png" : "flag-watermark-sa.png"} width={200} height={150} priority />
                     </div> : isHongKong ? <Asset name="flag-watermark-hk.png" width={183} className={styles.hongKongWatermark} priority /> : <div className={styles.fabric} aria-hidden="true">

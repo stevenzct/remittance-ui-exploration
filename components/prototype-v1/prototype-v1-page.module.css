@@ -478,6 +478,7 @@
   height: 58px;
   background: #fff;
   box-shadow: 0 -5px 19px rgb(0 0 0 / 12%);
+  transition: height 280ms ease-in-out;
 }
 
 .country,
@@ -492,6 +493,70 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: -.12px;
+}
+
+.header[data-balance-sticky] {
+  height: 108px;
+}
+
+.stickyWallet {
+  position: absolute;
+  top: 54px;
+  left: 15px;
+  width: 343px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 7px rgb(0 0 0 / 6%);
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-3px);
+}
+
+.header[data-balance-sticky] .stickyWallet {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.stickyWalletName {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  color: #424242;
+  font-size: 12px;
+  letter-spacing: -.12px;
+  white-space: nowrap;
+}
+
+.stickyWalletName .walletIcon {
+  position: static;
+  flex: 0 0 32px;
+}
+
+.stickyWalletName strong { font-weight: 600; }
+
+.stickyWalletBalance {
+  position: absolute;
+  top: 12.5px;
+  left: 123px;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stickyWalletArrow {
+  position: absolute;
+  top: 10px;
+  left: 311px;
+  transform: scaleX(-1);
 }
 
 .country {
@@ -1239,5 +1304,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .header { transition: none; }
   .toast { transform: none; }
 }
