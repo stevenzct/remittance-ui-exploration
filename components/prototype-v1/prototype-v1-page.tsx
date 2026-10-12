@@ -71,6 +71,7 @@ export function PrototypeV1Page() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const walletRef = useRef<HTMLElement>(null);
+  const balanceRef = useRef<HTMLParagraphElement>(null);
   const stickyWalletRef = useRef<HTMLButtonElement>(null);
   const balanceHeaderTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const balanceHeaderStateRef = useRef(false);
@@ -112,8 +113,10 @@ export function PrototypeV1Page() {
 
   const updateBalanceHeader = useCallback(() => {
     const scroll = scrollRef.current;
-    if (!scroll) return;
-    const threshold = walletRef.current?.offsetTop ?? 24;
+    const wallet = walletRef.current;
+    const balance = balanceRef.current;
+    if (!scroll || !wallet || !balance) return;
+    const threshold = wallet.offsetTop + balance.offsetTop + balance.offsetHeight / 2;
     const exitBuffer = scroll.clientWidth * .012;
     const visible = scroll.scrollTop >= threshold - (balanceHeaderStateRef.current ? exitBuffer : 0);
     if (visible === balanceHeaderStateRef.current) return;
@@ -478,7 +481,7 @@ export function PrototypeV1Page() {
                         {balanceVisible ? <Asset name="icon-eye.svg" width={18} height={15} /> : <PrototypeIcon name="eye-off" size={18} />}
                       </button>
                     </div>
-                    <p className={styles.balance} aria-live="polite">{wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}</p>
+                    <p ref={balanceRef} className={styles.balance} aria-live="polite">{wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}</p>
                     <p className={styles.receivingLabel}>{wallet.country} · Receiving Account</p>
                     {needsReceivingAccount ? <button className={styles.openReceivingAccount} type="button" onClick={() => showToast(`${wallet.currency} receiving account setup coming soon`)}>
                       <span className={styles.addAccountIcon}><Asset name="icon-add-account.png" width={36} /></span>

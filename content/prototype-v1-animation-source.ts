@@ -973,10 +973,10 @@ timeline
     shortTitle: "Scrolling header",
     runtime: "React + GSAP + CSS",
     duration: "0.28s",
-    trigger: "Scroll the wallet and offers area past the top of the wallet card.",
-    overview: "The header expands smoothly and reveals a compact wallet row immediately. Scrolling back to the top reverses the reveal. The row follows the selected currency and balance visibility, and opens All Wallets when tapped.",
+    trigger: "Scroll the wallet and offers area until the midpoint of the balance amount reaches the header.",
+    overview: "Once the balance amount is halfway past the header, the header expands smoothly and reveals a compact wallet row. Scrolling back to the amount reverses the reveal. The row follows the selected currency and balance visibility, and opens All Wallets when tapped.",
     timeline: [
-      { time: "0.00s", label: "Detect scroll", detail: "Compare scrollTop with the wallet card's offsetTop; a small exit buffer prevents flicker near the threshold." },
+      { time: "0.00s", label: "Detect scroll", detail: "Compare scrollTop with the midpoint of the wallet balance amount; a small exit buffer prevents flicker near the threshold." },
       { time: "0.00–0.24s", label: "Reveal wallet", detail: "Fade in the compact row and move it down 3px using power3.out, with no start delay." },
       { time: "0.00–0.28s", label: "Expand header", detail: "Animate header height from 58px to 108px using ease-in-out." },
       { time: "On scroll back", label: "Reverse", detail: "Reverse the existing timeline and collapse the header without moving the scroll container." },
@@ -996,6 +996,7 @@ timeline
         language: "TSX",
         code: String.raw`const scrollRef = useRef<HTMLDivElement>(null);
 const walletRef = useRef<HTMLElement>(null);
+const balanceRef = useRef<HTMLParagraphElement>(null);
 const stickyWalletRef = useRef<HTMLButtonElement>(null);
 const balanceHeaderTimelineRef = useRef<gsap.core.Timeline | null>(null);
 const balanceHeaderStateRef = useRef(false);
@@ -1003,8 +1004,10 @@ const [isBalanceHeader, setIsBalanceHeader] = useState(false);
 
 const updateBalanceHeader = useCallback(() => {
   const scroll = scrollRef.current;
-  if (!scroll) return;
-  const threshold = walletRef.current?.offsetTop ?? 24;
+  const wallet = walletRef.current;
+  const balance = balanceRef.current;
+  if (!scroll || !wallet || !balance) return;
+  const threshold = wallet.offsetTop + balance.offsetTop + balance.offsetHeight / 2;
   const exitBuffer = scroll.clientWidth * .012;
   const visible = scroll.scrollTop >= threshold - (balanceHeaderStateRef.current ? exitBuffer : 0);
   if (visible === balanceHeaderStateRef.current) return;
@@ -1069,7 +1072,11 @@ useLayoutEffect(() => {
 
 <div className={styles.scroll} ref={scrollRef} onScroll={updateBalanceHeader} tabIndex={0} aria-label="Wallet and offers" data-screen-content>
   <section ref={walletRef} className={styles.wallet}>
-    {/* Existing wallet card. */}
+    {/* Existing wallet title and balance label. */}
+    <p ref={balanceRef} className={styles.balance} aria-live="polite">
+      {wallet.symbol}{balanceVisible ? "3,000.00" : "••••••••"}
+    </p>
+    {/* Existing receiving account and actions. */}
   </section>
   {/* Existing promotions. */}
 </div>`,
